@@ -15,7 +15,7 @@ class AuthController {
         return res.status(200).json({ data: body });
     }
     async register(req, res) {
-        return;
+        return res.status(200).json({ data: '' });
     }
     async profile(req, res) {
         return;
