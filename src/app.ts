@@ -11,9 +11,8 @@ class App {
     this.config()
   }
   private config(): void {
-    this.app.use(bodyParser.urlencoded({ extended: false }))
+    this.app.use(bodyParser.json({ limit: '50mb' }))
     initializeRouteV1(this.app)
-    
   }
 }
 

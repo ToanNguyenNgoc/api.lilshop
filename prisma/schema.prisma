@@ -15,9 +15,33 @@ model Account{
   telephone         String @db.VarChar(10) @unique
   email             String @db.VarChar(64) @unique
   password          String @db.VarChar(255)
+  manager           Boolean @default(false)
   status            Boolean @default(true)
   deleted           Boolean @default(false)
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
+  roles             RolesOnAccounts[]
   @@map("tb_account")
+}
+
+model Role{
+  id                Int @id @default(autoincrement())
+  name              String @db.VarChar(255)
+  status            Boolean @default(true)
+  deleted           Boolean @default(false)
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  code              String @db.Char(50)
+  accounts          RolesOnAccounts[]
+  @@map("tb_role")
+}
+
+model RolesOnAccounts {
+  account           Account@relation(fields: [accountId], references: [id])
+  accountId         Int
+  role              Role@relation(fields: [roleId], references: [id])
+  roleId            Int
+  created_at        DateTime @default(now())
+  @@id([accountId, roleId])
+  @@map("tb_role_on_account")
 }

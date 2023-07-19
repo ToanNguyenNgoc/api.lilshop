@@ -1,2 +1,1 @@
-export * from './http.exception'
-export * from './validate.exception'
+export * from "./error.exception"
