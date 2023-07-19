@@ -13,5 +13,12 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
 var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("./error.exception"), exports);
+exports.dotenvInitialize = void 0;
+const dotenv_1 = __importDefault(require("dotenv"));
+const dotenvInitialize = () => dotenv_1.default.config({});
+exports.dotenvInitialize = dotenvInitialize;
+__exportStar(require("./encode"), exports);

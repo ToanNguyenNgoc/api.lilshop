@@ -22,23 +22,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const bodyParser = __importStar(require("body-parser"));
-const dotenv_1 = __importDefault(require("dotenv"));
-const routes_1 = __importDefault(require("./v1/routes"));
-dotenv_1.default.config();
-class App {
-    constructor() {
-        this.app = (0, express_1.default)();
-        this.config();
-    }
-    config() {
-        this.app.use(bodyParser.json({ limit: '50mb' }));
-        (0, routes_1.default)(this.app);
-    }
+exports.decode = exports.encode = void 0;
+const base64 = __importStar(require("base-64"));
+const utf8 = __importStar(require("utf8"));
+function encode(text) {
+    const bytes = utf8.encode(text);
+    const code = base64.encode(bytes);
+    return code;
 }
-exports.default = new App().app;
+exports.encode = encode;
+function decode(code) {
+    const types = base64.decode(code);
+    const text = utf8.decode(types);
+    return text;
+}
+exports.decode = decode;

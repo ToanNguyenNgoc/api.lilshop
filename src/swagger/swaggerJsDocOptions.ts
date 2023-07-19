@@ -3,7 +3,9 @@ import { login, loginSchema, register, profile, registerSchema, roleAuth } from 
 import { postBanner } from '~/swagger/banner'
 import { postAccountInit, postAccountInitSchema } from '~/swagger/initial'
 import { postRole, postRoleSchema } from '~/swagger/role'
+import { dotenvInitialize } from '~/utils'
 
+dotenvInitialize()
 const swaggerJsDocOptions: Options = {
   definition: {
     openapi: "3.0.0",
@@ -17,7 +19,7 @@ const swaggerJsDocOptions: Options = {
     },
     servers: [
       {
-        url: 'http://localhost:4000/v1',
+        url: `${process.env.DOMAIN}/v1`,
       },
     ],
     components: {
