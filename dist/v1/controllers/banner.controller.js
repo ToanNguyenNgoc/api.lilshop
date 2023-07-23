@@ -6,5 +6,8 @@ class BannerController {
     create(req, res) {
         return res.send((0, helpers_1.transformDataHelper)('create banner'));
     }
+    update(req, res) {
+        return res.send((0, helpers_1.transformDataHelper)('update banner'));
+    }
 }
 exports.bannerController = new BannerController();

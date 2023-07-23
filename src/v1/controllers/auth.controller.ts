@@ -40,7 +40,7 @@ class AuthController {
     body.telephone = req.body.telephone
     body.email = req.body.email
     body.password = await generatePassword(req.body.password)
-    body.manager = true
+    body.manager = false
     await validatorHelper<RegisterDTO>(body)
     if (await prisma.account.findUnique({ where: { email: body.email } })) {
       throw new ErrorException(403, `Email belong to another account`)

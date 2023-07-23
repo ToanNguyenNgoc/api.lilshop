@@ -1,8 +1,10 @@
 import { Options } from 'swagger-jsdoc'
+import { getAccount, getDetailAccount, putAccount, putAccountSchema } from './account'
 import { login, loginSchema, register, profile, registerSchema, roleAuth } from './auth'
-import { postBanner } from '~/swagger/banner'
+import { postBanner, putBanner } from '~/swagger/banner'
 import { postAccountInit, postAccountInitSchema } from '~/swagger/initial'
-import { postRole, postRoleSchema } from '~/swagger/role'
+import { getRole, postRole, postRoleSchema, putRole, putRoleSchema, deleteRole } from '~/swagger/role'
+import { postPermission, postPermissionSchema, getPermissions } from "~/swagger/permission"
 import { dotenvInitialize } from '~/utils'
 
 dotenvInitialize()
@@ -31,10 +33,12 @@ const swaggerJsDocOptions: Options = {
         },
       },
       schemas: {
+        putAccountSchema,
         loginSchema,
         registerSchema,
         postAccountInitSchema,
-        postRoleSchema
+        postRoleSchema, putRoleSchema,
+        postPermissionSchema
       },
     },
     security: [
@@ -43,19 +47,29 @@ const swaggerJsDocOptions: Options = {
       },
     ],
     tags: [
+      { name: 'Account', description: 'Account API Mapping' },
       { name: 'Auth', description: 'Authentication API Mapping' },
       { name: 'Banner', description: 'Banner API Mapping' },
-      { name: 'Initial', description: 'Initial role & account API Mapping' }
+      { name: 'Initial', description: 'Initial role & account API Mapping' },
+      { name: 'Role & Permission', description: 'Role & Permission API Mapping' }
     ],
     paths: {
+      '/accounts': { get: getAccount },
+      '/accounts/{id}': {get: getDetailAccount, put: putAccount },
+
       '/auth/login': { post: login },
       '/auth/register': { post: register },
       '/auth/profile': { get: profile },
       '/auth/roles': { get: roleAuth },
 
       '/banners': { post: postBanner },
+      '/banners/{id}': { put: putBanner },
 
       '/initial/account': { post: postAccountInit },
+
+      '/roles': { get: getRole, post: postRole },
+      '/roles/{id}': { put: putRole, delete: deleteRole },
+      '/permissions': { get: getPermissions, post: postPermission }
     }
   },
   apis: ['./v1/routes/*.ts']

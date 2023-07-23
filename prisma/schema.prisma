@@ -3,12 +3,14 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
 model Account{
   id                Int @id @default(autoincrement())
   fullname          String? @db.VarChar(255) 
@@ -21,6 +23,9 @@ model Account{
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
   roles             RolesOnAccounts[]
+  @@fulltext([fullname])
+  @@fulltext([fullname, email])
+  @@fulltext([fullname, email, telephone])
   @@map("tb_account")
 }
 
@@ -33,6 +38,7 @@ model Role{
   created_at        DateTime @default(now())
   code              String @db.Char(50)
   accounts          RolesOnAccounts[]
+  permissions       PermissionsOnRoles[]
   @@map("tb_role")
 }
 
@@ -44,4 +50,24 @@ model RolesOnAccounts {
   created_at        DateTime @default(now())
   @@id([accountId, roleId])
   @@map("tb_role_on_account")
+}
+
+model Permission{
+  id                Int @id @default(autoincrement())
+  name              String @db.Char(50)
+  path              String @db.Char(100) @unique
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  roles             PermissionsOnRoles[]
+  @@map("tb_permission")
+}
+
+model PermissionsOnRoles{
+  role              Role@relation(fields: [roleId], references: [id])
+  roleId            Int
+  permission        Permission@relation(fields: [permissionId], references: [id])
+  permissionId      Int
+  created_at        DateTime @default(now())
+  @@id([roleId, permissionId])
+  @@map("tb_permission_on_role")
 }

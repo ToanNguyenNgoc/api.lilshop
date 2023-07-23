@@ -5,22 +5,27 @@ export const errHandler = (err: any, req: Request, res: Response, next: NextFunc
   if (err.statusCode === 400) {
     error.statusCode = 400
     error.message = err.message
+    putLogs(req, err.statusCode, err.message)
   }
   if (err.statusCode === 401) {
     error.statusCode = 401
     error.message = err.message
+    putLogs(req, err.statusCode, err.message)
   }
   if (err.statusCode === 403) {
     error.statusCode = 403
     error.message = err.message
+    putLogs(req, err.statusCode, err.message)
   }
   if (err.statusCode === 404) {
     error.statusCode = 404
     error.message = err.message
+    putLogs(req, err.statusCode, err.message)
   }
   if (err.statusCode === 502) {
     error.statusCode = 502
     error.message = err.message
+    putLogs(req, err.statusCode, err.message)
   }
   const statusCode = error.statusCode || 500
   const message = error.message || 'Server Error'
@@ -28,4 +33,10 @@ export const errHandler = (err: any, req: Request, res: Response, next: NextFunc
     statusCode,
     message
   })
+  if (statusCode === 500) {
+    putLogs(req, 500, 'Server Error')
+  }
+}
+export const putLogs = (req: Request, statusCode: number, message: string) => {
+  // return console.log(req.originalUrl, req.headers, statusCode, message)
 }

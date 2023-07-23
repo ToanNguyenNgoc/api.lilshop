@@ -18,3 +18,4 @@ __exportStar(require("./validator.helper"), exports);
 __exportStar(require("./password.helper"), exports);
 __exportStar(require("./transform-data.helper"), exports);
 __exportStar(require("./token.helper"), exports);
+__exportStar(require("./validate-data-exist.helper"), exports);

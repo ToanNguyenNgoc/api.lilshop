@@ -22,3 +22,4 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const dotenvInitialize = () => dotenv_1.default.config({});
 exports.dotenvInitialize = dotenvInitialize;
 __exportStar(require("./encode"), exports);
+__exportStar(require("./convert"), exports);

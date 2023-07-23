@@ -9,4 +9,11 @@ bannerRoute.post('/',
   bannerController.create
 )
 
+bannerRoute.put(
+  '/:id',
+  authMiddleware.authentication,
+  authMiddleware.role,
+  bannerController.update
+)
+
 export default bannerRoute
