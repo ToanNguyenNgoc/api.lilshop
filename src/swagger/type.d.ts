@@ -23,7 +23,23 @@ export type PathRequest = {
           $ref: string,
         },
       },
-    },
+    }
+    |
+    {
+      'multipart/form-data': {
+        schema: {
+          type: 'object',
+          properties: {
+            file: {
+              type: 'string',
+              format: 'binary',
+              nullable: true
+            }
+          }
+        }
+      }
+    }
+    ,
     required?: boolean,
   },
   responses?: {

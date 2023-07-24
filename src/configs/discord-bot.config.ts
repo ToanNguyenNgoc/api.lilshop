@@ -10,6 +10,7 @@ export const discordBotConfig = () => {
     rest,
   })
 
+
   const client = new Client({ rest, gateway });
   client.once(GatewayDispatchEvents.Ready, () => console.log('Discord BOT is ready!'))
   gateway.connect();

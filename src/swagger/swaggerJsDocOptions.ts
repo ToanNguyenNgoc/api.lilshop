@@ -5,6 +5,7 @@ import { postBanner, putBanner } from '~/swagger/banner'
 import { postAccountInit, postAccountInitSchema } from '~/swagger/initial'
 import { getRole, postRole, postRoleSchema, putRole, putRoleSchema, deleteRole } from '~/swagger/role'
 import { postPermission, postPermissionSchema, getPermissions } from "~/swagger/permission"
+import { uploadMedia } from "./upload-media"
 import { dotenvInitialize } from '~/utils'
 
 dotenvInitialize()
@@ -51,11 +52,12 @@ const swaggerJsDocOptions: Options = {
       { name: 'Auth', description: 'Authentication API Mapping' },
       { name: 'Banner', description: 'Banner API Mapping' },
       { name: 'Initial', description: 'Initial role & account API Mapping' },
-      { name: 'Role & Permission', description: 'Role & Permission API Mapping' }
+      { name: 'Role & Permission', description: 'Role & Permission API Mapping' },
+      { name: 'Upload & Media', description: 'Upload & Media API Mapping' },
     ],
     paths: {
       '/accounts': { get: getAccount },
-      '/accounts/{id}': {get: getDetailAccount, put: putAccount },
+      '/accounts/{id}': { get: getDetailAccount, put: putAccount },
 
       '/auth/login': { post: login },
       '/auth/register': { post: register },
@@ -69,7 +71,9 @@ const swaggerJsDocOptions: Options = {
 
       '/roles': { get: getRole, post: postRole },
       '/roles/{id}': { put: putRole, delete: deleteRole },
-      '/permissions': { get: getPermissions, post: postPermission }
+      '/permissions': { get: getPermissions, post: postPermission },
+
+      '/upload/media': { post: uploadMedia }
     }
   },
   apis: ['./v1/routes/*.ts']
