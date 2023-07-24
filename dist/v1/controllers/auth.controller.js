@@ -60,19 +60,19 @@ class AuthController {
     }
     async findRolesByUser(req, res) {
         const user = req.user;
-        const response = await prisma.account.findUnique({
-            where: {
-                id: user.id
-            },
+        const includes = typeof req.query.includes === 'string' ? req.query.includes.trim().split('|') : [];
+        const data = await prisma.rolesOnAccounts.findMany({
+            where: { accountId: user.id },
             include: {
-                roles: {
-                    include: {
-                        role: true
+                role: {
+                    select: {
+                        id: true, name: true, status: true, deleted: true, updated_at: true, created_at: true, code: true,
+                        permissions: includes.includes('permissions') && { select: { permission: true } }
                     }
                 }
             }
         });
-        return res.send((0, helpers_1.transformDataHelper)((0, lodash_1.omit)(response, 'password')));
+        return res.send((0, helpers_1.transformDataHelper)({ data }));
     }
 }
 exports.authController = new AuthController();

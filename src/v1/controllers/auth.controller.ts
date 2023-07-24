@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response, NextFunction, query } from 'express'
 import {
   generatePassword,
   comparePassword,
@@ -63,19 +63,19 @@ class AuthController {
   }
   async findRolesByUser(req: RequestHeader, res: Response) {
     const user = req.user
-    const response = await prisma.account.findUnique({
-      where: {
-        id: user.id
-      },
+    const includes: string[] = typeof req.query.includes === 'string' ? req.query.includes.trim().split('|') : []
+    const data = await prisma.rolesOnAccounts.findMany({
+      where: { accountId: user.id },
       include: {
-        roles: {
-          include: {
-            role: true
+        role: {
+          select: {
+            id: true, name: true, status: true, deleted: true, updated_at: true, created_at: true, code: true,
+            permissions: includes.includes('permissions') && { select: { permission: true } }
           }
         }
       }
-    });
-    return res.send(transformDataHelper(omit(response, 'password')))
+    })
+    return res.send(transformDataHelper({ data }))
   }
 }
 export const authController = new AuthController()

@@ -1,4 +1,7 @@
+import { EmbedBuilder } from "discord.js"
+import { APIEmbed } from "@discordjs/core"
 import { Request, Response, NextFunction } from "express"
+import { discordBotConfig } from "~/configs"
 
 export const errHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   let error = { ...err }
@@ -38,5 +41,26 @@ export const errHandler = (err: any, req: Request, res: Response, next: NextFunc
   }
 }
 export const putLogs = (req: Request, statusCode: number, message: string) => {
-  // return console.log(req.originalUrl, req.headers, statusCode, message)
+  const { client } = discordBotConfig()
+  const exampleEmbed: APIEmbed = {
+    color: statusCode === 500 ? 0xFF0000 : 0xFFFF00,
+    title: message,
+    url: 'https://discord.js.org/',
+    author: {
+      name: req.headers["user-agent"] || 'NONAME'
+    },
+    description: 'Some description here',
+    fields: [
+      { name: 'Host', value: req.headers.host || '' },
+      { name: 'Header referer', value: req.headers.referer || '' },
+      { name: 'Path', value: req.url },
+      { name: 'Method', value: req.method },
+      { name: 'Body', value: req.body ? JSON.stringify(req.body) : 'NO BODY' },
+    ],
+    footer: { text: 'By Swatcat BOT', icon_url: 'https://i.imgur.com/mliFXKq.jpg' }
+  }
+  client.api.channels.createMessage(process.env.DISCORD_CHANEL_ID_LOG || '', {
+    content: `STATUS CODE: ${statusCode}`,
+    embeds: [exampleEmbed]
+  })
 }

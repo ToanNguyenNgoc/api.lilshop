@@ -73,6 +73,14 @@ export const getAccount: PathRequest = {
       required: false,
       schema: { type: 'string', enum: ['asc', 'desc'] },
       description: 'Sort created at',
+    },
+    {
+      in:'query',
+      name:'includes',
+      type:'string',
+      description:'Includes: roles',
+      default:'roles',
+      required:false
     }
   ],
   responses: {

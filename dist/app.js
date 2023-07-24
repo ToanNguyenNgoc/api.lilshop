@@ -30,6 +30,7 @@ const express_1 = __importDefault(require("express"));
 const bodyParser = __importStar(require("body-parser"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const routes_1 = __importDefault(require("./v1/routes"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 dotenv_1.default.config();
 class App {
     constructor() {
@@ -37,6 +38,7 @@ class App {
         this.config();
     }
     config() {
+        this.app.use((0, cookie_parser_1.default)());
         this.app.use(bodyParser.json({ limit: '50mb' }));
         (0, routes_1.default)(this.app);
     }

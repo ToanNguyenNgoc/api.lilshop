@@ -68,6 +68,16 @@ export const roleAuth: PathRequest = {
       bearerAuth: []
     }
   ],
+  parameters:[
+    {
+      in:'query',
+      name:'includes',
+      type:'string',
+      description:'Includes: permissions',
+      default:'permissions',
+      required:false
+    }
+  ],
   responses: {
     '200': { description: 'Return user roles' }
   }

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.putLogs = exports.errHandler = void 0;
+const configs_1 = require("../configs");
 const errHandler = (err, req, res, next) => {
     let error = { ...err };
     if (err.statusCode === 400) {
@@ -40,6 +41,27 @@ const errHandler = (err, req, res, next) => {
 };
 exports.errHandler = errHandler;
 const putLogs = (req, statusCode, message) => {
-    // return console.log(req.originalUrl, req.headers, statusCode, message)
+    const { client } = (0, configs_1.discordBotConfig)();
+    const exampleEmbed = {
+        color: statusCode === 500 ? 0xFF0000 : 0xFFFF00,
+        title: message,
+        url: 'https://discord.js.org/',
+        author: {
+            name: req.headers["user-agent"] || 'NONAME'
+        },
+        description: 'Some description here',
+        fields: [
+            { name: 'Host', value: req.headers.host || '' },
+            { name: 'Header referer', value: req.headers.referer || '' },
+            { name: 'Path', value: req.url },
+            { name: 'Method', value: req.method },
+            { name: 'Body', value: req.body ? JSON.stringify(req.body) : 'NO BODY' },
+        ],
+        footer: { text: 'By Swatcat BOT', icon_url: 'https://i.imgur.com/mliFXKq.jpg' }
+    };
+    client.api.channels.createMessage(process.env.DISCORD_CHANEL_ID_LOG || '', {
+        content: `STATUS CODE: ${statusCode}`,
+        embeds: [exampleEmbed]
+    });
 };
 exports.putLogs = putLogs;
