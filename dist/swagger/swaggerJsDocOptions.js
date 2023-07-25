@@ -6,6 +6,8 @@ const banner_1 = require("../swagger/banner");
 const initial_1 = require("../swagger/initial");
 const role_1 = require("../swagger/role");
 const permission_1 = require("../swagger/permission");
+const upload_media_1 = require("./upload-media");
+const province_1 = require("./province");
 const utils_1 = require("../utils");
 (0, utils_1.dotenvInitialize)();
 const swaggerJsDocOptions = {
@@ -51,7 +53,9 @@ const swaggerJsDocOptions = {
             { name: 'Auth', description: 'Authentication API Mapping' },
             { name: 'Banner', description: 'Banner API Mapping' },
             { name: 'Initial', description: 'Initial role & account API Mapping' },
-            { name: 'Role & Permission', description: 'Role & Permission API Mapping' }
+            { name: 'Province', description: 'Province API Mapping' },
+            { name: 'Role & Permission', description: 'Role & Permission API Mapping' },
+            { name: 'Upload & Media', description: 'Upload & Media API Mapping' },
         ],
         paths: {
             '/accounts': { get: account_1.getAccount },
@@ -65,7 +69,11 @@ const swaggerJsDocOptions = {
             '/initial/account': { post: initial_1.postAccountInit },
             '/roles': { get: role_1.getRole, post: role_1.postRole },
             '/roles/{id}': { put: role_1.putRole, delete: role_1.deleteRole },
-            '/permissions': { get: permission_1.getPermissions, post: permission_1.postPermission }
+            '/permissions': { get: permission_1.getPermissions, post: permission_1.postPermission },
+            '/upload/media': { post: upload_media_1.uploadMedia },
+            '/provinces': { get: province_1.getProvinces },
+            '/provinces/{province_code}/districts': { get: province_1.getDistricts },
+            '/districts/{district_code}/wards': { get: province_1.getWards },
         }
     },
     apis: ['./v1/routes/*.ts']

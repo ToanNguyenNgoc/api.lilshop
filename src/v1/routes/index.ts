@@ -7,6 +7,8 @@ import roleRoute from "~/v1/routes/role.route"
 import permissionRoute from "~/v1/routes/permission.route"
 import uploadRoute from "~/v1/routes/upload.route"
 import mediaRoute from "~/v1/routes/media.route"
+import provinceRouter from "~/v1/routes/province.route"
+import districtRoute from "~/v1/routes/district.route"
 
 const initializeRouteV1 = (app: express.Application) => {
   app.use('/v1/accounts', accountRoute)
@@ -16,6 +18,8 @@ const initializeRouteV1 = (app: express.Application) => {
   app.use('/v1/roles', roleRoute)
   app.use('/v1/permissions', permissionRoute)
   app.use('/v1/upload', uploadRoute)
+  app.use('/v1/provinces', provinceRouter)
+  app.use('/v1/districts', districtRoute)
   app.use('/media', mediaRoute)
 }
 export default initializeRouteV1

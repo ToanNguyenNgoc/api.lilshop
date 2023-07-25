@@ -6,6 +6,7 @@ import { postAccountInit, postAccountInitSchema } from '~/swagger/initial'
 import { getRole, postRole, postRoleSchema, putRole, putRoleSchema, deleteRole } from '~/swagger/role'
 import { postPermission, postPermissionSchema, getPermissions } from "~/swagger/permission"
 import { uploadMedia } from "./upload-media"
+import { getDistricts, getProvinces, getWards } from "./province"
 import { dotenvInitialize } from '~/utils'
 
 dotenvInitialize()
@@ -52,6 +53,7 @@ const swaggerJsDocOptions: Options = {
       { name: 'Auth', description: 'Authentication API Mapping' },
       { name: 'Banner', description: 'Banner API Mapping' },
       { name: 'Initial', description: 'Initial role & account API Mapping' },
+      { name: 'Province', description: 'Province API Mapping' },
       { name: 'Role & Permission', description: 'Role & Permission API Mapping' },
       { name: 'Upload & Media', description: 'Upload & Media API Mapping' },
     ],
@@ -73,7 +75,11 @@ const swaggerJsDocOptions: Options = {
       '/roles/{id}': { put: putRole, delete: deleteRole },
       '/permissions': { get: getPermissions, post: postPermission },
 
-      '/upload/media': { post: uploadMedia }
+      '/upload/media': { post: uploadMedia },
+
+      '/provinces': { get: getProvinces },
+      '/provinces/{province_code}/districts': { get: getDistricts },
+      '/districts/{district_code}/wards': { get: getWards },
     }
   },
   apis: ['./v1/routes/*.ts']

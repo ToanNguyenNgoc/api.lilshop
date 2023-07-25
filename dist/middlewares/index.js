@@ -17,3 +17,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./async.middleware"), exports);
 __exportStar(require("./error.handler"), exports);
 __exportStar(require("./auth.middleware"), exports);
+__exportStar(require("./multer.middleware"), exports);

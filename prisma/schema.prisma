@@ -71,3 +71,43 @@ model PermissionsOnRoles{
   @@id([roleId, permissionId])
   @@map("tb_permission_on_role")
 }
+
+model Media{
+  id                Int @id @default(autoincrement())
+  name              String @db.Char(250)
+  file_name         String @db.Char(250)
+  mime_type         String @db.Char(20)
+  size              Int @db.Int()
+  disk              String @db.Char(20)
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+  original_url      String @db.Char(250)
+  @@map("tb_media")
+}
+
+model Province{
+  code            Int @id
+  name            String @db.Char(250)
+  division_type   String @db.Char(20)
+  codename        String @db.Char(250)
+  phone_code      Int @db.Int
+  @@map("tb_province")
+}
+
+model District{
+  code            Int @id
+  name            String @db.Char(250)
+  division_type   String @db.Char(20)
+  codename        String @db.Char(250)
+  province_code   Int @db.Int
+  @@map("tb_district")
+}
+
+model Ward{
+  code            Int @id
+  name            String @db.Char(250)
+  division_type   String @db.Char(20)
+  codename        String @db.Char(250)
+  district_code   Int @db.Int
+  @@map("tb_ward")
+}

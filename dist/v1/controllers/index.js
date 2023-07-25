@@ -20,3 +20,5 @@ __exportStar(require("./banner.controller"), exports);
 __exportStar(require("./initial.controller"), exports);
 __exportStar(require("./role.controller"), exports);
 __exportStar(require("./permissions.controller"), exports);
+__exportStar(require("./upload.controller"), exports);
+__exportStar(require("./province.controller"), exports);
