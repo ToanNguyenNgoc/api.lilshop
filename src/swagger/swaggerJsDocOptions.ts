@@ -14,9 +14,9 @@ const swaggerJsDocOptions: Options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: 'LilShop API Docs',
+      title: 'Fashional Shop API Docs',
       version: '1.0.0',
-      description: 'LilShop API Docs',
+      description: 'Fashional Shop API Docs',
       contact: {
         email: 'ngoctoan06011998@gmail.com'
       }
