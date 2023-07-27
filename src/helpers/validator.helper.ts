@@ -8,7 +8,8 @@ export const validatorHelper = async <T extends object>(body: T) => {
       i.constraints?.isNotEmpty ||
       i.constraints?.isArray ||
       i.constraints?.isBoolean ||
-      i.constraints?.isEmail
+      i.constraints?.isEmail ||
+      i.constraints?.isNumber
     ).join(', ')
     throw new ErrorException(400, constraints)
   }

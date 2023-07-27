@@ -13,7 +13,7 @@ discordBotConfig()
 const PORT = process.env.POST || 4000
 const specs = swaggerJSDoc(swaggerJsDocOptions)
 app.use(cors({
-  origin: ['https://api.fashional.pro', 'https://fashional.pro', 'http://localhost:4200'],
+  origin: ['https://api.fashional.pro','https://fashional.pro','http://localhost:4200'],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   preflightContinue: true,
   credentials: true

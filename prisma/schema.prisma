@@ -82,32 +82,59 @@ model Media{
   created_at        DateTime @default(now())
   updated_at        DateTime @updatedAt
   original_url      String @db.Char(250)
+  branch            Branch?
   @@map("tb_media")
 }
 
 model Province{
-  code            Int @id
-  name            String @db.Char(250)
-  division_type   String @db.Char(20)
-  codename        String @db.Char(250)
-  phone_code      Int @db.Int
+  code              Int @id
+  name              String @db.Char(250)
+  division_type     String @db.Char(20)
+  codename          String @db.Char(250)
+  phone_code        Int @db.Int
+  branches          Branch[]
   @@map("tb_province")
 }
 
 model District{
-  code            Int @id
-  name            String @db.Char(250)
-  division_type   String @db.Char(20)
-  codename        String @db.Char(250)
-  province_code   Int @db.Int
+  code              Int @id
+  name              String @db.Char(250)
+  division_type     String @db.Char(20)
+  codename          String @db.Char(250)
+  province_code     Int @db.Int
+  branches          Branch[]
   @@map("tb_district")
 }
 
 model Ward{
-  code            Int @id
-  name            String @db.Char(250)
-  division_type   String @db.Char(20)
-  codename        String @db.Char(250)
-  district_code   Int @db.Int
+  code              Int @id
+  name              String @db.Char(250)
+  division_type     String @db.Char(20)
+  codename          String @db.Char(250)
+  district_code     Int @db.Int
+  branches          Branch[]
   @@map("tb_ward")
+}
+
+model Branch{
+  id                Int @id @default(autoincrement())
+  name              String @db.VarChar(250)
+  media             Media? @relation(fields: [media_id], references: [id])
+  media_id          Int? @unique
+  status            Boolean @default(true)
+  deleted           Boolean @default(false)
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  short_address     String? @db.VarChar(50)
+  province          Province? @relation(fields: [province_code],references: [code])
+  province_code     Int?
+  district          District? @relation(fields: [district_code], references: [code])
+  district_code     Int?
+  ward              Ward? @relation(fields: [ward_code], references: [code])
+  ward_code         Int?
+  lat               Float?
+  long              Float?
+  hotline           String? @db.Char(20)
+  email             String? @db.Char(50)
+  @@map("tb_branch")
 }

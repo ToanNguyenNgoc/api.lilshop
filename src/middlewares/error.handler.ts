@@ -1,7 +1,4 @@
-import { EmbedBuilder } from "discord.js"
-import { APIEmbed } from "@discordjs/core"
 import { Request, Response, NextFunction } from "express"
-import { discordBotConfig } from "~/configs"
 import { pushLogErrorDiscord } from "~/helpers"
 
 export const errHandler = (err: any, req: Request, res: Response, next: NextFunction) => {

@@ -1,14 +1,14 @@
 import { PathRequest } from "~/swagger/type";
 
 export const getProvinces: PathRequest = {
-  tags: ['Provinces'],
+  tags: ['Province'],
   summary: 'v1/provinces.GET',
   responses: {
     '200': { description: 'Return list of province' }
   }
 }
 export const getDistricts: PathRequest = {
-  tags: ['Provinces'],
+  tags: ['Province'],
   summary: 'v1/provinces/:province_code/districts.GET',
   parameters: [
     {
@@ -23,7 +23,7 @@ export const getDistricts: PathRequest = {
   }
 }
 export const getWards: PathRequest = {
-  tags: ['Provinces'],
+  tags: ['Province'],
   summary: 'v1/districts/:district_code/wards.GET',
   parameters: [
     {

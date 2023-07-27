@@ -7,6 +7,8 @@ import { getRole, postRole, postRoleSchema, putRole, putRoleSchema, deleteRole }
 import { postPermission, postPermissionSchema, getPermissions } from "~/swagger/permission"
 import { uploadMedia } from "./upload-media"
 import { getDistricts, getProvinces, getWards } from "./province"
+import { getBranch, postBranch, postBranchSchema } from "./branch"
+
 import { dotenvInitialize } from '~/utils'
 
 dotenvInitialize()
@@ -40,7 +42,8 @@ const swaggerJsDocOptions: Options = {
         registerSchema,
         postAccountInitSchema,
         postRoleSchema, putRoleSchema,
-        postPermissionSchema
+        postPermissionSchema,
+        postBranchSchema
       },
     },
     security: [
@@ -52,6 +55,7 @@ const swaggerJsDocOptions: Options = {
       { name: 'Account', description: 'Account API Mapping' },
       { name: 'Auth', description: 'Authentication API Mapping' },
       { name: 'Banner', description: 'Banner API Mapping' },
+      { name: 'Branch', description: 'Branch API Mapping' },
       { name: 'Initial', description: 'Initial role & account API Mapping' },
       { name: 'Province', description: 'Province API Mapping' },
       { name: 'Role & Permission', description: 'Role & Permission API Mapping' },
@@ -68,6 +72,8 @@ const swaggerJsDocOptions: Options = {
 
       '/banners': { post: postBanner },
       '/banners/{id}': { put: putBanner },
+
+      '/branches': { get: getBranch, post: postBranch },
 
       '/initial/account': { post: postAccountInit },
 
