@@ -9,7 +9,8 @@ const validatorHelper = async (body) => {
         const constraints = errors.map(i => i.constraints?.isNotEmpty ||
             i.constraints?.isArray ||
             i.constraints?.isBoolean ||
-            i.constraints?.isEmail).join(', ');
+            i.constraints?.isEmail ||
+            i.constraints?.isNumber).join(', ');
         throw new exceptions_1.ErrorException(400, constraints);
     }
 };

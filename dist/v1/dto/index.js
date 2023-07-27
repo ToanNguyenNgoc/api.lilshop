@@ -16,3 +16,4 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./auth.dto"), exports);
 __exportStar(require("./role.dto"), exports);
+__exportStar(require("./branch.dto"), exports);

@@ -9,7 +9,7 @@ const discordBotConfig = () => {
     const gateway = new ws_1.WebSocketManager({
         token: process.env.DISCORD_BOT_TOKEN || '',
         intents: core_1.GatewayIntentBits.GuildMessages | core_1.GatewayIntentBits.MessageContent,
-        rest,
+        rest
     });
     const client = new core_1.Client({ rest, gateway });
     client.once(core_1.GatewayDispatchEvents.Ready, () => console.log('Discord BOT is ready!'));

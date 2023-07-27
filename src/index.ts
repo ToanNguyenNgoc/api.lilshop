@@ -3,9 +3,10 @@ import dotenv from 'dotenv'
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUI from 'swagger-ui-express'
 import swaggerJsDocOptions from '~/swagger/swaggerJsDocOptions'
-import { errHandler } from "~/middlewares"
+import { errHandler } from '~/middlewares'
 import { discordBotConfig } from '~/configs'
 import cors from "cors"
+import helmet from 'helmet'
 
 dotenv.config()
 discordBotConfig()
@@ -18,6 +19,7 @@ app.use(cors({
   preflightContinue: true,
   credentials: true
 }))
+app.use(helmet())
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(specs))
 app.use(errHandler)
 

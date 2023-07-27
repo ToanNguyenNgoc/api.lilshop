@@ -8,6 +8,7 @@ const role_1 = require("../swagger/role");
 const permission_1 = require("../swagger/permission");
 const upload_media_1 = require("./upload-media");
 const province_1 = require("./province");
+const branch_1 = require("./branch");
 const utils_1 = require("../utils");
 (0, utils_1.dotenvInitialize)();
 const swaggerJsDocOptions = {
@@ -40,7 +41,8 @@ const swaggerJsDocOptions = {
                 registerSchema: auth_1.registerSchema,
                 postAccountInitSchema: initial_1.postAccountInitSchema,
                 postRoleSchema: role_1.postRoleSchema, putRoleSchema: role_1.putRoleSchema,
-                postPermissionSchema: permission_1.postPermissionSchema
+                postPermissionSchema: permission_1.postPermissionSchema,
+                postBranchSchema: branch_1.postBranchSchema
             },
         },
         security: [
@@ -52,6 +54,7 @@ const swaggerJsDocOptions = {
             { name: 'Account', description: 'Account API Mapping' },
             { name: 'Auth', description: 'Authentication API Mapping' },
             { name: 'Banner', description: 'Banner API Mapping' },
+            { name: 'Branch', description: 'Branch API Mapping' },
             { name: 'Initial', description: 'Initial role & account API Mapping' },
             { name: 'Province', description: 'Province API Mapping' },
             { name: 'Role & Permission', description: 'Role & Permission API Mapping' },
@@ -66,6 +69,7 @@ const swaggerJsDocOptions = {
             '/auth/roles': { get: auth_1.roleAuth },
             '/banners': { post: banner_1.postBanner },
             '/banners/{id}': { put: banner_1.putBanner },
+            '/branches': { get: branch_1.getBranch, post: branch_1.postBranch },
             '/initial/account': { post: initial_1.postAccountInit },
             '/roles': { get: role_1.getRole, post: role_1.postRole },
             '/roles/{id}': { put: role_1.putRole, delete: role_1.deleteRole },

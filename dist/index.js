@@ -11,6 +11,7 @@ const swaggerJsDocOptions_1 = __importDefault(require("./swagger/swaggerJsDocOpt
 const middlewares_1 = require("./middlewares");
 const configs_1 = require("./configs");
 const cors_1 = __importDefault(require("cors"));
+const helmet_1 = __importDefault(require("helmet"));
 dotenv_1.default.config();
 (0, configs_1.discordBotConfig)();
 const PORT = process.env.POST || 4000;
@@ -21,6 +22,7 @@ app_1.default.use((0, cors_1.default)({
     preflightContinue: true,
     credentials: true
 }));
+app_1.default.use((0, helmet_1.default)());
 app_1.default.use('/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(specs));
 app_1.default.use(middlewares_1.errHandler);
 app_1.default.listen(PORT, () => {
