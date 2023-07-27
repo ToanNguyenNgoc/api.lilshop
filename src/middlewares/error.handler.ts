@@ -6,27 +6,22 @@ export const errHandler = (err: any, req: Request, res: Response, next: NextFunc
   if (err.statusCode === 400) {
     error.statusCode = 400
     error.message = err.message
-    pushLogErrorDiscord(req, err.statusCode, err.message)
   }
   if (err.statusCode === 401) {
     error.statusCode = 401
     error.message = err.message
-    pushLogErrorDiscord(req, err.statusCode, err.message)
   }
   if (err.statusCode === 403) {
     error.statusCode = 403
     error.message = err.message
-    pushLogErrorDiscord(req, err.statusCode, err.message)
   }
   if (err.statusCode === 404) {
     error.statusCode = 404
     error.message = err.message
-    pushLogErrorDiscord(req, err.statusCode, err.message)
   }
   if (err.statusCode === 502) {
     error.statusCode = 502
     error.message = err.message
-    pushLogErrorDiscord(req, err.statusCode, err.message)
   }
   const statusCode = error.statusCode || 500
   const message = error.message || 'Server Error'
@@ -34,7 +29,5 @@ export const errHandler = (err: any, req: Request, res: Response, next: NextFunc
     statusCode,
     message
   })
-  if (statusCode === 500) {
-    pushLogErrorDiscord(req, 500, 'Server Error')
-  }
+  //pushLogErrorDiscord(req, statusCode, message)
 }

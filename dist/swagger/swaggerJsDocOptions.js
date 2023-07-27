@@ -42,7 +42,7 @@ const swaggerJsDocOptions = {
                 postAccountInitSchema: initial_1.postAccountInitSchema,
                 postRoleSchema: role_1.postRoleSchema, putRoleSchema: role_1.putRoleSchema,
                 postPermissionSchema: permission_1.postPermissionSchema,
-                postBranchSchema: branch_1.postBranchSchema
+                postBranchSchema: branch_1.postBranchSchema, putBranchSchema: branch_1.putBranchSchema
             },
         },
         security: [
@@ -70,6 +70,7 @@ const swaggerJsDocOptions = {
             '/banners': { post: banner_1.postBanner },
             '/banners/{id}': { put: banner_1.putBanner },
             '/branches': { get: branch_1.getBranch, post: branch_1.postBranch },
+            '/branches/{id}': { get: branch_1.getDetailBranch, put: branch_1.putBranch, delete: branch_1.deleteBranch },
             '/initial/account': { post: initial_1.postAccountInit },
             '/roles': { get: role_1.getRole, post: role_1.postRole },
             '/roles/{id}': { put: role_1.putRole, delete: role_1.deleteRole },

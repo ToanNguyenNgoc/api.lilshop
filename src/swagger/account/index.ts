@@ -75,12 +75,12 @@ export const getAccount: PathRequest = {
       description: 'Sort created at',
     },
     {
-      in:'query',
-      name:'includes',
-      type:'string',
-      description:'Includes: roles',
-      default:'roles',
-      required:false
+      in: 'query',
+      name: 'includes',
+      type: 'string',
+      description: 'Includes: roles',
+      default: 'roles',
+      required: false
     }
   ],
   responses: {
@@ -89,15 +89,15 @@ export const getAccount: PathRequest = {
     '403': { description: 'Forbidden' }
   }
 }
-export const getDetailAccount:PathRequest = {
-  tags:['Account'],
-  summary:'v1/accounts/:id.GET',
-  security:[{bearerAuth:[]}],
-  parameters:[
-    {in:'path', name:'id', type:'integer', description:'Account id', required:true}
+export const getDetailAccount: PathRequest = {
+  tags: ['Account'],
+  summary: 'v1/accounts/:id.GET',
+  security: [{ bearerAuth: [] }],
+  parameters: [
+    { in: 'path', name: 'id', type: 'integer', description: 'Account id', required: true }
   ],
-  responses:{
-    '200':{description:'Return account detail by id'}
+  responses: {
+    '200': { description: 'Return account detail by id' }
   }
 }
 export const putAccount: PathRequest = {

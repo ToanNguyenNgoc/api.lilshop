@@ -10,10 +10,17 @@ export const postBranchSchema = {
     district_code: { type: 'integer' },
     ward_code: { type: 'integer' },
     hotline: { type: 'string' },
-    email: { type: 'string', example:'string@gmail.com' },
+    email: { type: 'string', example: 'string@gmail.com' },
     lat: { type: 'float', example: 10.00000 },
     long: { type: 'float', example: 20.00000 }
   },
+}
+export const putBranchSchema = {
+  ...postBranchSchema,
+  properties: {
+    ...postBranchSchema.properties,
+    status: { type: 'boolean' }
+  }
 }
 
 export const getBranch: PathRequest = {
@@ -68,6 +75,16 @@ export const getBranch: PathRequest = {
     '200': { description: 'Return list of branch' }
   }
 }
+export const getDetailBranch: PathRequest = {
+  tags: ['Branch'],
+  summary: 'v1/branches/:id.GET',
+  parameters: [
+    { in: 'path', name: 'id', type: 'integer', description: 'Branch id', required: true }
+  ],
+  responses: {
+    '200': { description: 'Return branch detail by id' }
+  }
+}
 export const postBranch: PathRequest = {
   tags: ['Branch'],
   summary: 'v1/branches.POST',
@@ -85,4 +102,42 @@ export const postBranch: PathRequest = {
     required: true
   },
   responses: { '200': { description: 'Return new branch' } }
+}
+export const putBranch: PathRequest = {
+  tags: ['Branch'],
+  summary: 'v1/branches/:id.PUT',
+  security: [
+    { bearerAuth: [] }
+  ],
+  parameters: [
+    {
+      in: 'path',
+      name: 'id',
+      description: 'Branch id',
+      type: 'integer',
+      required: true
+    }
+  ],
+  requestBody: {
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/putBranchSchema',
+        }
+      }
+    },
+    required: true
+  },
+  responses: { '200': { description: 'Return update branch' } }
+}
+export const deleteBranch: PathRequest = {
+  tags: ['Branch'],
+  summary: 'v1/branches/:id.DELETE',
+  security: [{ bearerAuth: [] }],
+  parameters: [
+    { in: 'path', name: 'id', type: 'integer', description: 'Branch id', required: true }
+  ],
+  responses: {
+    '200': { description: 'Return delete branch' }
+  }
 }
