@@ -8,6 +8,7 @@ import { postPermission, postPermissionSchema, getPermissions } from "~/swagger/
 import { uploadMedia } from "./upload-media"
 import { getDistricts, getProvinces, getWards } from "./province"
 import { getBranch, postBranch, postBranchSchema, getDetailBranch, putBranch, putBranchSchema, deleteBranch } from "./branch"
+import { postProduct, postProductSchema, getProduct } from "./product"
 
 import { dotenvInitialize } from '~/utils'
 
@@ -43,7 +44,8 @@ const swaggerJsDocOptions: Options = {
         postAccountInitSchema,
         postRoleSchema, putRoleSchema,
         postPermissionSchema,
-        postBranchSchema, putBranchSchema
+        postBranchSchema, putBranchSchema,
+        postProduct, postProductSchema
       },
     },
     security: [
@@ -57,6 +59,7 @@ const swaggerJsDocOptions: Options = {
       { name: 'Banner', description: 'Banner API Mapping' },
       { name: 'Branch', description: 'Branch API Mapping' },
       { name: 'Initial', description: 'Initial role & account API Mapping' },
+      { name: 'Product', description: 'Product API Mapping' },
       { name: 'Province', description: 'Province API Mapping' },
       { name: 'Role & Permission', description: 'Role & Permission API Mapping' },
       { name: 'Upload & Media', description: 'Upload & Media API Mapping' },
@@ -87,6 +90,8 @@ const swaggerJsDocOptions: Options = {
       '/provinces': { get: getProvinces },
       '/provinces/{province_code}/districts': { get: getDistricts },
       '/districts/{district_code}/wards': { get: getWards },
+
+      '/products': { get: getProduct, post: postProduct }
     }
   },
   apis: ['./v1/routes/*.ts']

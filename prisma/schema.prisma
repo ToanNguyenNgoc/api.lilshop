@@ -23,6 +23,7 @@ model Account{
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
   roles             RolesOnAccounts[]
+  products          Product[]
   @@fulltext([fullname])
   @@fulltext([fullname, email])
   @@fulltext([fullname, email, telephone])
@@ -83,6 +84,7 @@ model Media{
   updated_at        DateTime @updatedAt
   original_url      String @db.Char(250)
   branch            Branch?
+  product_media     ProductMedia?
   @@map("tb_media")
 }
 
@@ -137,4 +139,36 @@ model Branch{
   hotline           String? @db.Char(20)
   email             String? @db.Char(50)
   @@map("tb_branch")
+}
+
+model Product{
+  id                Int @id @default(autoincrement())
+  name              String @db.VarChar(250)
+  name_slugify      String @db.Char(250)
+  price_original    Int @db.Int
+  price             Int @db.Int
+  price_special     Int @db.Int
+  short_content     String? @db.VarChar(250)
+  status            Boolean @default(true)
+  deleted           Boolean @default(false)
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  account           Account @relation(fields: [created_by_id], references: [id])
+  created_by_id     Int
+  media             ProductMedia[]
+  @@map("tb_product")
+  @@fulltext([name])
+}
+
+model ProductMedia{
+  id                Int @id @default(autoincrement())
+  product           Product @relation(fields: [product_id], references: [id])
+  product_id        Int
+  media             Media? @relation(fields: [media_id], references: [id])
+  media_id          Int? @unique
+  status            Boolean @default(true)
+  deleted           Boolean @default(false)
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  @@map("tb_product_media")
 }
