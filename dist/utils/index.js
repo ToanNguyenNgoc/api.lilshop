@@ -23,3 +23,4 @@ const dotenvInitialize = () => dotenv_1.default.config({});
 exports.dotenvInitialize = dotenvInitialize;
 __exportStar(require("./encode"), exports);
 __exportStar(require("./convert"), exports);
+__exportStar(require("./slugify"), exports);

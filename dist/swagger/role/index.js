@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteRole = exports.putRole = exports.postRole = exports.getRole = exports.putRoleSchema = exports.postRoleSchema = void 0;
+exports.deleteRole = exports.putRole = exports.postRole = exports.getDetailRole = exports.getRole = exports.putRoleSchema = exports.postRoleSchema = void 0;
 exports.postRoleSchema = {
     type: 'object',
     properties: {
@@ -31,8 +31,26 @@ exports.getRole = {
             bearerAuth: []
         }
     ],
+    parameters: [
+        { in: 'query', name: 'includes', description: 'Includes: permissions', default: 'permissions', required: false }
+    ],
     responses: {
         '200': { description: 'Return list of role' }
+    }
+};
+exports.getDetailRole = {
+    tags: ['Role & Permission'],
+    summary: 'v1/roles/:id.GET',
+    security: [
+        {
+            bearerAuth: []
+        }
+    ],
+    parameters: [
+        { in: 'path', name: 'id', description: 'Role id', required: true }
+    ],
+    responses: {
+        '200': { description: 'Return detail role' }
     }
 };
 exports.postRole = {

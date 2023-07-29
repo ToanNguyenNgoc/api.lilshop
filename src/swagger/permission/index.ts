@@ -5,7 +5,9 @@ export const postPermissionSchema = {
   items: {
     type: 'string',
   },
-  example: '["accounts","roles","permissions","banners"]'
+  example: '['
+    + '"accounts","roles","permissions","banners","products","products medias"'
+    + ']'
 }
 export const postPermission: PathRequest = {
   tags: ['Role & Permission'],

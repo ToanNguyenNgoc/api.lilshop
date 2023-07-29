@@ -6,7 +6,9 @@ exports.postPermissionSchema = {
     items: {
         type: 'string',
     },
-    example: '["accounts","roles","permissions","banners"]'
+    example: '['
+        + '"accounts","roles","permissions","banners","products","products medias"'
+        + ']'
 };
 exports.postPermission = {
     tags: ['Role & Permission'],

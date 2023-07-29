@@ -10,11 +10,37 @@ const dto_1 = require("../../v1/dto");
 const prisma = new client_1.PrismaClient();
 class RoleController {
     async findAll(req, res) {
+        const includes = typeof req.query.includes === "string" ? req.query.includes.split('|') : [];
         const [data, total] = await prisma.$transaction([
-            prisma.role.findMany({ where: { deleted: false } }),
+            prisma.role.findMany({
+                where: {
+                    deleted: false
+                },
+                include: {
+                    permissions: includes.includes('permissions') && {
+                        select: { permission: true }
+                    }
+                }
+            }),
             prisma.role.count({ where: { deleted: false } })
         ]);
         return res.send((0, helpers_1.transformDataHelper)({ data, total }));
+    }
+    async findById(req, res) {
+        const id = Number(req.params.id);
+        if (!id)
+            throw new exceptions_1.ErrorException(404, 'Resource not found');
+        const response = await prisma.role.findFirst({
+            where: { id: id, deleted: false },
+            include: {
+                permissions: {
+                    select: { permission: true }
+                }
+            }
+        });
+        if (!response)
+            throw new exceptions_1.ErrorException(404, 'Resource not found');
+        return res.send((0, helpers_1.transformDataHelper)(response));
     }
     async create(req, res) {
         const body = new dto_1.RoleDTO();

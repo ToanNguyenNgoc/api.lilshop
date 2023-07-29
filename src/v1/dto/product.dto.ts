@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import {  IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 
 export class CreateProductDTO {
   @IsNotEmpty()
@@ -20,7 +20,28 @@ export class CreateProductDTO {
   @IsOptional()
   short_content!: string;
 
+}
+
+export class UpdateProductDTO {
   @IsOptional()
-  @IsArray()
-  media_ids!: Array<number>
+  name!: string
+
+  @IsOptional()
+  name_slugify!: string
+
+  @IsOptional()
+  @IsNumber()
+  price_original!: number
+
+  @IsOptional()
+  @IsNumber()
+  price!: number
+  
+  @IsOptional()
+  @IsNumber()
+  price_special!: number;
+
+  @IsOptional()
+  short_content!: string;
+
 }

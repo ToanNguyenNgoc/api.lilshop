@@ -4,6 +4,7 @@ const controllers_1 = require("../../v1/controllers");
 const express_1 = require("express");
 const middlewares_1 = require("../../middlewares");
 const roleRoute = (0, express_1.Router)();
+roleRoute.get('/:id', middlewares_1.authMiddleware.authentication, middlewares_1.authMiddleware.role, (0, middlewares_1.asyncMiddleware)(controllers_1.roleController.findById));
 roleRoute.get('/', middlewares_1.authMiddleware.authentication, middlewares_1.authMiddleware.role, (0, middlewares_1.asyncMiddleware)(controllers_1.roleController.findAll));
 roleRoute.post('/', middlewares_1.authMiddleware.authentication, middlewares_1.authMiddleware.role, (0, middlewares_1.asyncMiddleware)(controllers_1.roleController.create));
 roleRoute.put('/:id', middlewares_1.authMiddleware.authentication, middlewares_1.authMiddleware.role, (0, middlewares_1.asyncMiddleware)(controllers_1.roleController.update));

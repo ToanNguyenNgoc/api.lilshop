@@ -28,7 +28,9 @@ class AccountController {
         const [data, total] = await prisma.$transaction([
             prisma.account.findMany({
                 select: {
-                    fullname: true, email: true, telephone: true, status: true, deleted: true, created_at: true, updated_at: true, manager: true,
+                    id: true,
+                    fullname: true, email: true, telephone: true, status: true,
+                    deleted: true, created_at: true, updated_at: true, manager: true,
                     roles: includes.includes('roles') && { select: { role: true } }
                 },
                 skip: ((page * limit) - limit),

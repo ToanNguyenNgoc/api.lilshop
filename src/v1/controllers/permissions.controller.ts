@@ -14,13 +14,24 @@ class PermissionController {
   }
   async create(req: Request, res: Response) {
     const permissions = req.body.map((i: string) => {
-      return [
-        { name: i, path: `v1/${i}.GET` },
-        { name: i, path: `v1/${i}/:id.GET` },
-        { name: i, path: `v1/${i}.POST` },
-        { name: i, path: `v1/${i}/:id.PUT` },
-        { name: i, path: `v1/${i}/:id.DELETE` }
-      ]
+      const splitArray = i.split(/\s+(?=\w)/)
+      if (splitArray.length === 1)
+        return [
+          { name: i, path: `v1/${i}.GET` },
+          { name: i, path: `v1/${i}/:id.GET` },
+          { name: i, path: `v1/${i}.POST` },
+          { name: i, path: `v1/${i}/:id.PUT` },
+          { name: i, path: `v1/${i}/:id.DELETE` }
+        ]
+      if (splitArray.length === 2) {
+        return [
+          { name: i, path: `v1/${splitArray[0]}/:id/${splitArray[1]}.GET` },
+          { name: i, path: `v1/${splitArray[0]}/:id/${splitArray[1]}/:child_id.GET` },
+          { name: i, path: `v1/${splitArray[0]}/:id/${splitArray[1]}/.POST` },
+          { name: i, path: `v1/${splitArray[0]}/:id/${splitArray[1]}/:child_id.PUT` },
+          { name: i, path: `v1/${splitArray[0]}/:id/${splitArray[1]}/:child_id.DELETE` },
+        ]
+      }
     }).flat()
     const response = await prisma.permission.createMany({
       data: permissions

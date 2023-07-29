@@ -3,12 +3,13 @@ import { getAccount, getDetailAccount, putAccount, putAccountSchema } from './ac
 import { login, loginSchema, register, profile, registerSchema, roleAuth } from './auth'
 import { postBanner, putBanner } from '~/swagger/banner'
 import { postAccountInit, postAccountInitSchema } from '~/swagger/initial'
-import { getRole, postRole, postRoleSchema, putRole, putRoleSchema, deleteRole } from '~/swagger/role'
+import { getRole, postRole, postRoleSchema, putRole, putRoleSchema, getDetailRole, deleteRole } from '~/swagger/role'
 import { postPermission, postPermissionSchema, getPermissions } from "~/swagger/permission"
 import { uploadMedia } from "./upload-media"
 import { getDistricts, getProvinces, getWards } from "./province"
 import { getBranch, postBranch, postBranchSchema, getDetailBranch, putBranch, putBranchSchema, deleteBranch } from "./branch"
-import { postProduct, postProductSchema, getProduct } from "./product"
+import { postProduct, postProductSchema, getProduct, getDetailProduct, putProduct, putProductSchema } from "./product"
+import { getProductMedia, postProductMedia, postProductMediaSchema, deleteProductMedia } from "./product-media"
 
 import { dotenvInitialize } from '~/utils'
 
@@ -45,7 +46,8 @@ const swaggerJsDocOptions: Options = {
         postRoleSchema, putRoleSchema,
         postPermissionSchema,
         postBranchSchema, putBranchSchema,
-        postProduct, postProductSchema
+        postProductSchema, putProductSchema,
+        postProductMediaSchema
       },
     },
     security: [
@@ -59,7 +61,7 @@ const swaggerJsDocOptions: Options = {
       { name: 'Banner', description: 'Banner API Mapping' },
       { name: 'Branch', description: 'Branch API Mapping' },
       { name: 'Initial', description: 'Initial role & account API Mapping' },
-      { name: 'Product', description: 'Product API Mapping' },
+      { name: 'Product & Product media', description: 'Product API Mapping' },
       { name: 'Province', description: 'Province API Mapping' },
       { name: 'Role & Permission', description: 'Role & Permission API Mapping' },
       { name: 'Upload & Media', description: 'Upload & Media API Mapping' },
@@ -82,7 +84,7 @@ const swaggerJsDocOptions: Options = {
       '/initial/account': { post: postAccountInit },
 
       '/roles': { get: getRole, post: postRole },
-      '/roles/{id}': { put: putRole, delete: deleteRole },
+      '/roles/{id}': { get: getDetailRole, put: putRole, delete: deleteRole },
       '/permissions': { get: getPermissions, post: postPermission },
 
       '/upload/media': { post: uploadMedia },
@@ -91,7 +93,9 @@ const swaggerJsDocOptions: Options = {
       '/provinces/{province_code}/districts': { get: getDistricts },
       '/districts/{district_code}/wards': { get: getWards },
 
-      '/products': { get: getProduct, post: postProduct }
+      '/products': { get: getProduct, post: postProduct },
+      '/products/{id}': { get: getDetailProduct, put: putProduct },
+      '/products/{id}/medias': { get: getProductMedia, post: postProductMedia, delete:deleteProductMedia }
     }
   },
   apis: ['./v1/routes/*.ts']

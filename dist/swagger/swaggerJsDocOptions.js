@@ -9,6 +9,8 @@ const permission_1 = require("../swagger/permission");
 const upload_media_1 = require("./upload-media");
 const province_1 = require("./province");
 const branch_1 = require("./branch");
+const product_1 = require("./product");
+const product_media_1 = require("./product-media");
 const utils_1 = require("../utils");
 (0, utils_1.dotenvInitialize)();
 const swaggerJsDocOptions = {
@@ -42,7 +44,9 @@ const swaggerJsDocOptions = {
                 postAccountInitSchema: initial_1.postAccountInitSchema,
                 postRoleSchema: role_1.postRoleSchema, putRoleSchema: role_1.putRoleSchema,
                 postPermissionSchema: permission_1.postPermissionSchema,
-                postBranchSchema: branch_1.postBranchSchema, putBranchSchema: branch_1.putBranchSchema
+                postBranchSchema: branch_1.postBranchSchema, putBranchSchema: branch_1.putBranchSchema,
+                postProductSchema: product_1.postProductSchema, putProductSchema: product_1.putProductSchema,
+                postProductMediaSchema: product_media_1.postProductMediaSchema
             },
         },
         security: [
@@ -56,6 +60,7 @@ const swaggerJsDocOptions = {
             { name: 'Banner', description: 'Banner API Mapping' },
             { name: 'Branch', description: 'Branch API Mapping' },
             { name: 'Initial', description: 'Initial role & account API Mapping' },
+            { name: 'Product & Product media', description: 'Product API Mapping' },
             { name: 'Province', description: 'Province API Mapping' },
             { name: 'Role & Permission', description: 'Role & Permission API Mapping' },
             { name: 'Upload & Media', description: 'Upload & Media API Mapping' },
@@ -73,12 +78,15 @@ const swaggerJsDocOptions = {
             '/branches/{id}': { get: branch_1.getDetailBranch, put: branch_1.putBranch, delete: branch_1.deleteBranch },
             '/initial/account': { post: initial_1.postAccountInit },
             '/roles': { get: role_1.getRole, post: role_1.postRole },
-            '/roles/{id}': { put: role_1.putRole, delete: role_1.deleteRole },
+            '/roles/{id}': { get: role_1.getDetailRole, put: role_1.putRole, delete: role_1.deleteRole },
             '/permissions': { get: permission_1.getPermissions, post: permission_1.postPermission },
             '/upload/media': { post: upload_media_1.uploadMedia },
             '/provinces': { get: province_1.getProvinces },
             '/provinces/{province_code}/districts': { get: province_1.getDistricts },
             '/districts/{district_code}/wards': { get: province_1.getWards },
+            '/products': { get: product_1.getProduct, post: product_1.postProduct },
+            '/products/{id}': { get: product_1.getDetailProduct, put: product_1.putProduct },
+            '/products/{id}/medias': { get: product_media_1.getProductMedia, post: product_media_1.postProductMedia, delete: product_media_1.deleteProductMedia }
         }
     },
     apis: ['./v1/routes/*.ts']

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.errHandler = void 0;
+const helpers_1 = require("../helpers");
 const errHandler = (err, req, res, next) => {
     let error = { ...err };
     if (err.statusCode === 400) {
@@ -29,6 +30,6 @@ const errHandler = (err, req, res, next) => {
         statusCode,
         message
     });
-    //pushLogErrorDiscord(req, statusCode, message)
+    (0, helpers_1.pushLogErrorDiscord)(req, statusCode, message);
 };
 exports.errHandler = errHandler;

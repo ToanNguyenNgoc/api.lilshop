@@ -23,3 +23,5 @@ __exportStar(require("./permissions.controller"), exports);
 __exportStar(require("./upload.controller"), exports);
 __exportStar(require("./province.controller"), exports);
 __exportStar(require("./branch.controller"), exports);
+__exportStar(require("./product.controller"), exports);
+__exportStar(require("./product-media.controller"), exports);

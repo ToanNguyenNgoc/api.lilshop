@@ -7,17 +7,20 @@ export const postProductSchema = {
     price_original: { type: 'integer' },
     price: { type: 'integer' },
     price_special: { type: 'integer' },
-    short_content: { type: 'string' },
-    media_ids: {
-      type: 'array',
-      items: {
-        type: 'number'
-      }
-    }
+    short_content: { type: 'string' }
   },
 }
+export const putProductSchema =
+  Object.assign(
+    postProductSchema,
+    {
+      properties: Object.assign(postProductSchema.properties, {
+        status: { type: 'boolean' }
+      })
+    }
+  )
 export const postProduct: PathRequest = {
-  tags: ['Product'],
+  tags: ['Product & Product media'],
   summary: 'v1/products.POST',
   security: [
     { bearerAuth: [] }
@@ -34,8 +37,29 @@ export const postProduct: PathRequest = {
   },
   responses: { '200': { description: 'Return new product' } }
 }
+export const putProduct: PathRequest = {
+  tags: ['Product & Product media'],
+  summary: 'v1/products/:id.PUT',
+  security: [
+    { bearerAuth: [] }
+  ],
+  parameters:[
+    {in:'path', name:'id', type:'integer', description:'Product id', required:true}
+  ],
+  requestBody: {
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/putProductSchema',
+        }
+      }
+    },
+    required: true
+  },
+  responses: { '200': { description: 'Return new product' } }
+}
 export const getProduct: PathRequest = {
-  tags: ['Product'],
+  tags: ['Product & Product media'],
   summary: 'v1/products.GET',
   parameters: [
     {
@@ -136,5 +160,17 @@ export const getProduct: PathRequest = {
   ],
   responses: {
     '200': { description: 'Return list of product' }
+  }
+}
+export const getDetailProduct: PathRequest = {
+  tags: ['Product & Product media'],
+  summary: 'v1/products/:id.GET',
+  security:[{bearerAuth:[]}],
+  parameters: [
+    { in: 'path', name: 'id', type: 'integer', description: 'Support product name_slugify', required: true },
+    { in: 'query', name: 'includes', description: 'Includes: created_by|category|sizes', type: 'string', required: false }
+  ],
+  responses: {
+    '200': { description: 'Return product detail by id' }
   }
 }

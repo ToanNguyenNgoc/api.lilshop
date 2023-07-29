@@ -5,6 +5,13 @@ import { authMiddleware, asyncMiddleware } from "~/middlewares";
 const roleRoute = Router()
 
 roleRoute.get(
+  '/:id',
+  authMiddleware.authentication,
+  authMiddleware.role,
+  asyncMiddleware(roleController.findById)
+)
+
+roleRoute.get(
   '/',
   authMiddleware.authentication,
   authMiddleware.role,

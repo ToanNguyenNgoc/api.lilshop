@@ -51,10 +51,10 @@ exports.authMiddleware = {
                 next();
             }
             else {
-                const permissions_path = roles.map(role => role.role.permissions.map(i => i.permission.path)).flat();
+                const permissions_user_path = roles.map(role => role.role.permissions.map(i => i.permission.path)).flat();
                 const routePath = (req.baseUrl + req.route.path).replace(/^\/|\/$/g, '');
                 const permissionRoutePath = `${routePath}.${req.method}`;
-                if (permissions_path.includes(permissionRoutePath)) {
+                if (permissions_user_path.includes(permissionRoutePath)) {
                     next();
                 }
                 else {

@@ -30,8 +30,26 @@ export const getRole: PathRequest = {
       bearerAuth: []
     }
   ],
+  parameters: [
+    { in: 'query', name: 'includes', description: 'Includes: permissions', default: 'permissions', required: false }
+  ],
   responses: {
     '200': { description: 'Return list of role' }
+  }
+}
+export const getDetailRole: PathRequest = {
+  tags: ['Role & Permission'],
+  summary: 'v1/roles/:id.GET',
+  security: [
+    {
+      bearerAuth: []
+    }
+  ],
+  parameters: [
+    { in: 'path', name: 'id', description: 'Role id', required: true }
+  ],
+  responses: {
+    '200': { description: 'Return detail role' }
   }
 }
 export const postRole: PathRequest = {
