@@ -23,11 +23,15 @@ productRoute.post(
 
 productRoute.put(
   '/:id',
-  productController.update
+  authMiddleware.authentication,
+  authMiddleware.role,
+  asyncMiddleware(productController.update)
 )
 productRoute.delete(
   '/:id',
-  productController.delete
+  authMiddleware.authentication,
+  authMiddleware.role,
+  asyncMiddleware(productController.delete)
 )
 
 export default productRoute

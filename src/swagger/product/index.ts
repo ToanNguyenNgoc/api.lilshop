@@ -8,16 +8,7 @@ export const postProductSchema = {
     price: { type: 'integer' },
     price_special: { type: 'integer' },
     short_content: { type: 'string' },
-    sizes:{
-      type: 'array',
-      items: {
-        type:'object',
-        properties:{
-          name: { type: 'string' },
-          status:{type:'boolean'}
-        }
-      }
-    }
+    tag_id:{type:'integer'}
   },
 }
 export const putProductSchema =
@@ -100,6 +91,13 @@ export const getProduct: PathRequest = {
       name: 'branch_id',
       type: 'integer',
       description: 'Filter branch id',
+      required: false
+    },
+    {
+      in: 'query',
+      name: 'tag_id',
+      type: 'string',
+      description: 'Filter tag id, support tag name slugify',
       required: false
     },
     {

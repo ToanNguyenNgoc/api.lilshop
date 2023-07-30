@@ -11,6 +11,7 @@ import { getBranch, postBranch, postBranchSchema, getDetailBranch, putBranch, pu
 import { postProduct, postProductSchema, getProduct, getDetailProduct, putProduct, putProductSchema } from "./product"
 import { getProductMedia, postProductMedia, postProductMediaSchema, deleteProductMedia } from "./product-media"
 import { getProductSize, postProductSize, postProductSizeSchema, putProductSize, putProductSizeSchema, deleteProductSize } from "./product-size"
+import { getTags, postTag, postTagSchema, putTag, putTagSchema, deleteTag, getDetailTag } from "./tag"
 
 import { dotenvInitialize } from '~/utils'
 
@@ -49,7 +50,8 @@ const swaggerJsDocOptions: Options = {
         postBranchSchema, putBranchSchema,
         postProductSchema, putProductSchema,
         postProductMediaSchema,
-        postProductSizeSchema, putProductSizeSchema
+        postProductSizeSchema, putProductSizeSchema,
+        postTagSchema, putTagSchema
       },
     },
     security: [
@@ -66,6 +68,7 @@ const swaggerJsDocOptions: Options = {
       { name: 'Product & Product media & Product size', description: 'Product API Mapping' },
       { name: 'Province', description: 'Province API Mapping' },
       { name: 'Role & Permission', description: 'Role & Permission API Mapping' },
+      { name: 'Tag', description: 'Tag API Mapping' },
       { name: 'Upload & Media', description: 'Upload & Media API Mapping' },
     ],
     paths: {
@@ -90,7 +93,7 @@ const swaggerJsDocOptions: Options = {
       '/permissions': { get: getPermissions, post: postPermission },
 
       '/upload/media': { post: uploadMedia },
-      '/upload/media_multiple':{post:uploadMediaMultiple},
+      '/upload/media_multiple': { post: uploadMediaMultiple },
 
       '/provinces': { get: getProvinces },
       '/provinces/{province_code}/districts': { get: getDistricts },
@@ -100,7 +103,10 @@ const swaggerJsDocOptions: Options = {
       '/products/{id}': { get: getDetailProduct, put: putProduct },
       '/products/{id}/medias': { get: getProductMedia, post: postProductMedia, delete: deleteProductMedia },
       '/products/{id}/sizes': { get: getProductSize, post: postProductSize },
-      '/products/{id}/sizes/{child_id}': { put:putProductSize, delete:deleteProductSize }
+      '/products/{id}/sizes/{child_id}': { put: putProductSize, delete: deleteProductSize },
+
+      '/tags': { get: getTags, post: postTag },
+      '/tags/{id}': { get: getDetailTag, put: putTag, delete: deleteTag },
     }
   },
   apis: ['./v1/routes/*.ts']

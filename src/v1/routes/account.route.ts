@@ -12,6 +12,8 @@ accountRoute.get(
 )
 accountRoute.get(
   '/:id',
+  authMiddleware.authentication,
+  authMiddleware.role,
   asyncMiddleware(accountController.findById)
 )
 

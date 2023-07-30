@@ -14,18 +14,31 @@ class ProductController {
     const search = req.query.search as any
     const includes: string[] = typeof req.query.includes === "string" ? req.query.includes.trim().split('|') : []
     const orderBy = convertOrderByProduct(req.query.sort)
+    const tag_id = req.query.tag_id as any
     const _filter = {
-      deleted: false,
-      status: convertBoolean(req.query.status),
-      name: search ? { contains: search } : {},
-      price: {
-        gte: req.query.min_price ? Number(req.query.min_price) : undefined,
-        lte: req.query.max_price ? Number(req.query.max_price) : undefined,
-      },
-      price_original: {
-        gte: req.query.min_price_original ? Number(req.query.min_price_original) : undefined,
-        lte: req.query.max_price_original ? Number(req.query.max_price_original) : undefined,
-      }
+      AND: [
+        {
+          OR: [
+            { tag_id: Number(tag_id) || undefined },
+            { tag: { name_slugify: tag_id } }
+          ]
+        },
+        { deleted: false },
+        { status: convertBoolean(req.query.status) },
+        { name: search ? { contains: search } : {} },
+        {
+          price: {
+            gte: req.query.min_price ? Number(req.query.min_price) : undefined,
+            lte: req.query.max_price ? Number(req.query.max_price) : undefined,
+          }
+        },
+        {
+          price_original: {
+            gte: req.query.min_price_original ? Number(req.query.min_price_original) : undefined,
+            lte: req.query.max_price_original ? Number(req.query.max_price_original) : undefined,
+          }
+        }
+      ]
     }
     const [data, total] = await prismaClient.$transaction([
       prismaClient.product.findMany({
@@ -35,6 +48,7 @@ class ProductController {
             where: { status: true },
             select: { media: true }
           },
+          tag: { select: { id: true, name: true, name_slugify: true } },
           account: includes.includes('created_by') && { select: { id: true, fullname: true } }
         },
         orderBy: orderBy,
@@ -78,6 +92,7 @@ class ProductController {
     body.price = req.body.price
     body.price_special = req.body.price_special || req.body.price
     body.short_content = req.body.short_content
+    body.tag_id = req.body.tag_id
     await validatorHelper(body)
     const response = await prismaClient.product.create({
       data: {
@@ -101,6 +116,7 @@ class ProductController {
     body.price_original = req.body.price_original
     body.price_special = req.body.price_special || req.body.price
     body.short_content = req.body.short_content
+    body.tag_id = req.body.tag_id
     await validatorHelper(pickBy(body, identity))
     const result = await prismaClient.product.update({
       where: { id: product_id },

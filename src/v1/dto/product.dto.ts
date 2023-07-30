@@ -20,6 +20,9 @@ export class CreateProductDTO {
   @IsOptional()
   short_content!: string;
 
+  @IsNumber()
+  tag_id!:number;
+
 }
 
 export class UpdateProductDTO {
@@ -43,6 +46,9 @@ export class UpdateProductDTO {
 
   @IsOptional()
   short_content!: string;
+
+  @IsOptional()
+  tag_id!:number
 }
 export class ProductSizeDTO {
   @IsNotEmpty()

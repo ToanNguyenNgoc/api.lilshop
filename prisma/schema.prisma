@@ -140,6 +140,18 @@ model Branch{
   email             String? @db.Char(50)
   @@map("tb_branch")
 }
+model Tag{
+  id                Int @id @default(autoincrement())
+  name              String @db.VarChar(50)
+  name_slugify      String @db.Char(250)
+  type              String? @db.VarChar(50)
+  status            Boolean @default(true)
+  deleted           Boolean @default(false)
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  products          Product[] 
+  @@map("tb_tag")
+}
 
 model Product{
   id                Int @id @default(autoincrement())
@@ -157,6 +169,8 @@ model Product{
   created_by_id     Int
   media             ProductMedia[]
   sizes             ProductSize[]
+  tag               Tag? @relation(fields: [tag_id], references: [id])
+  tag_id            Int?
   @@map("tb_product")
   @@fulltext([name])
 }
@@ -173,6 +187,7 @@ model ProductMedia{
   created_at        DateTime @default(now())
   @@map("tb_product_media")
 }
+
 model ProductSize{
   id                Int @id @default(autoincrement())
   product           Product @relation(fields: [product_id], references: [id])
