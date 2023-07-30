@@ -14,7 +14,7 @@ class InitController {
   }
 
   async update(req: Request, res: Response) {
-    return res.send('create')
+    return res.send('update')
   }
 
   async delete(req: Request, res: Response) {

@@ -13,7 +13,7 @@ export const postProductMediaSchema = {
 }
 
 export const getProductMedia: PathRequest = {
-  tags: ['Product & Product media'],
+  tags: ['Product & Product media & Product size'],
   summary: 'v1/products/:id/medias.GET',
   parameters: [
     { in: 'path', name: 'id', type: 'integer', description: 'Product id', required: true },
@@ -23,7 +23,7 @@ export const getProductMedia: PathRequest = {
   }
 }
 export const postProductMedia: PathRequest = {
-  tags: ['Product & Product media'],
+  tags: ['Product & Product media & Product size'],
   summary: 'v1/products/:id/medias.POST',
   security: [{ bearerAuth: [] }],
   parameters: [
@@ -44,7 +44,7 @@ export const postProductMedia: PathRequest = {
   }
 }
 export const deleteProductMedia: PathRequest = {
-  tags: ['Product & Product media'],
+  tags: ['Product & Product media & Product size'],
   summary: 'v1/products/:id/medias.DELETE',
   security: [{ bearerAuth: [] }],
   parameters: [

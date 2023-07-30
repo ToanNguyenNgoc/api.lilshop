@@ -5,7 +5,7 @@ import { paginationData, transformDataHelper, validatorHelper } from "~/helpers"
 import { RequestHeader } from "~/interfaces"
 import { prismaClient } from "~/prisma-client"
 import { convertBoolean, convertOrderByProduct, slugify } from "~/utils"
-import { CreateProductDTO, UpdateProductDTO } from "~/v1/dto"
+import { CreateProductDTO, ProductSizeDTO, UpdateProductDTO } from "~/v1/dto"
 
 class ProductController {
   async findAll(req: Request, res: Response) {

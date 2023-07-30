@@ -1,4 +1,4 @@
-import {  IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 
 export class CreateProductDTO {
   @IsNotEmpty()
@@ -36,12 +36,23 @@ export class UpdateProductDTO {
   @IsOptional()
   @IsNumber()
   price!: number
-  
+
   @IsOptional()
   @IsNumber()
   price_special!: number;
 
   @IsOptional()
   short_content!: string;
+}
+export class ProductSizeDTO {
+  @IsNotEmpty()
+  name!:string
+}
+export class UpdateProductSizeDTO{
+  @IsOptional()
+  name!:string;
 
+  @IsOptional()
+  @IsBoolean()
+  status!:boolean
 }

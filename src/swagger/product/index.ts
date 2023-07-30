@@ -7,7 +7,17 @@ export const postProductSchema = {
     price_original: { type: 'integer' },
     price: { type: 'integer' },
     price_special: { type: 'integer' },
-    short_content: { type: 'string' }
+    short_content: { type: 'string' },
+    sizes:{
+      type: 'array',
+      items: {
+        type:'object',
+        properties:{
+          name: { type: 'string' },
+          status:{type:'boolean'}
+        }
+      }
+    }
   },
 }
 export const putProductSchema =
@@ -20,7 +30,7 @@ export const putProductSchema =
     }
   )
 export const postProduct: PathRequest = {
-  tags: ['Product & Product media'],
+  tags: ['Product & Product media & Product size'],
   summary: 'v1/products.POST',
   security: [
     { bearerAuth: [] }
@@ -38,7 +48,7 @@ export const postProduct: PathRequest = {
   responses: { '200': { description: 'Return new product' } }
 }
 export const putProduct: PathRequest = {
-  tags: ['Product & Product media'],
+  tags: ['Product & Product media & Product size'],
   summary: 'v1/products/:id.PUT',
   security: [
     { bearerAuth: [] }
@@ -59,7 +69,7 @@ export const putProduct: PathRequest = {
   responses: { '200': { description: 'Return new product' } }
 }
 export const getProduct: PathRequest = {
-  tags: ['Product & Product media'],
+  tags: ['Product & Product media & Product size'],
   summary: 'v1/products.GET',
   parameters: [
     {
@@ -163,7 +173,7 @@ export const getProduct: PathRequest = {
   }
 }
 export const getDetailProduct: PathRequest = {
-  tags: ['Product & Product media'],
+  tags: ['Product & Product media & Product size'],
   summary: 'v1/products/:id.GET',
   security:[{bearerAuth:[]}],
   parameters: [

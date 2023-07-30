@@ -34,7 +34,8 @@ class PermissionController {
       }
     }).flat()
     const response = await prisma.permission.createMany({
-      data: permissions
+      data: permissions,
+      skipDuplicates:true
     })
     return res.send(transformDataHelper(response))
   }

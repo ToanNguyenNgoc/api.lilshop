@@ -5,11 +5,12 @@ import { postBanner, putBanner } from '~/swagger/banner'
 import { postAccountInit, postAccountInitSchema } from '~/swagger/initial'
 import { getRole, postRole, postRoleSchema, putRole, putRoleSchema, getDetailRole, deleteRole } from '~/swagger/role'
 import { postPermission, postPermissionSchema, getPermissions } from "~/swagger/permission"
-import { uploadMedia } from "./upload-media"
+import { uploadMedia, uploadMediaMultiple } from "./upload-media"
 import { getDistricts, getProvinces, getWards } from "./province"
 import { getBranch, postBranch, postBranchSchema, getDetailBranch, putBranch, putBranchSchema, deleteBranch } from "./branch"
 import { postProduct, postProductSchema, getProduct, getDetailProduct, putProduct, putProductSchema } from "./product"
 import { getProductMedia, postProductMedia, postProductMediaSchema, deleteProductMedia } from "./product-media"
+import { getProductSize, postProductSize, postProductSizeSchema, putProductSize, putProductSizeSchema, deleteProductSize } from "./product-size"
 
 import { dotenvInitialize } from '~/utils'
 
@@ -47,7 +48,8 @@ const swaggerJsDocOptions: Options = {
         postPermissionSchema,
         postBranchSchema, putBranchSchema,
         postProductSchema, putProductSchema,
-        postProductMediaSchema
+        postProductMediaSchema,
+        postProductSizeSchema, putProductSizeSchema
       },
     },
     security: [
@@ -61,7 +63,7 @@ const swaggerJsDocOptions: Options = {
       { name: 'Banner', description: 'Banner API Mapping' },
       { name: 'Branch', description: 'Branch API Mapping' },
       { name: 'Initial', description: 'Initial role & account API Mapping' },
-      { name: 'Product & Product media', description: 'Product API Mapping' },
+      { name: 'Product & Product media & Product size', description: 'Product API Mapping' },
       { name: 'Province', description: 'Province API Mapping' },
       { name: 'Role & Permission', description: 'Role & Permission API Mapping' },
       { name: 'Upload & Media', description: 'Upload & Media API Mapping' },
@@ -88,6 +90,7 @@ const swaggerJsDocOptions: Options = {
       '/permissions': { get: getPermissions, post: postPermission },
 
       '/upload/media': { post: uploadMedia },
+      '/upload/media_multiple':{post:uploadMediaMultiple},
 
       '/provinces': { get: getProvinces },
       '/provinces/{province_code}/districts': { get: getDistricts },
@@ -95,7 +98,9 @@ const swaggerJsDocOptions: Options = {
 
       '/products': { get: getProduct, post: postProduct },
       '/products/{id}': { get: getDetailProduct, put: putProduct },
-      '/products/{id}/medias': { get: getProductMedia, post: postProductMedia, delete:deleteProductMedia }
+      '/products/{id}/medias': { get: getProductMedia, post: postProductMedia, delete: deleteProductMedia },
+      '/products/{id}/sizes': { get: getProductSize, post: postProductSize },
+      '/products/{id}/sizes/{child_id}': { put:putProductSize, delete:deleteProductSize }
     }
   },
   apis: ['./v1/routes/*.ts']

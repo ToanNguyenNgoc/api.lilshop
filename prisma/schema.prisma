@@ -156,6 +156,7 @@ model Product{
   account           Account @relation(fields: [created_by_id], references: [id])
   created_by_id     Int
   media             ProductMedia[]
+  sizes             ProductSize[]
   @@map("tb_product")
   @@fulltext([name])
 }
@@ -171,4 +172,14 @@ model ProductMedia{
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
   @@map("tb_product_media")
+}
+model ProductSize{
+  id                Int @id @default(autoincrement())
+  product           Product @relation(fields: [product_id], references: [id])
+  product_id        Int
+  name              String @db.Char(10)
+  status            Boolean @default(true)
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  @@map("tb_product_size")
 }

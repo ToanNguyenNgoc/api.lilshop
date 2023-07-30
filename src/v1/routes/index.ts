@@ -12,6 +12,7 @@ import districtRoute from "~/v1/routes/district.route"
 import branchRoute from "~/v1/routes/branch.route"
 import productRoute from "~/v1/routes/product.route"
 import productMediaRoute from "~/v1/routes/product-media.route"
+import productSizeRoute from "~/v1/routes/product-size.route"
 
 const initializeRouteV1 = (app: express.Application) => {
   app.use('/v1/accounts', accountRoute)
@@ -20,6 +21,7 @@ const initializeRouteV1 = (app: express.Application) => {
   app.use('/v1/branches', branchRoute)
   app.use('/v1/products', productRoute)
   app.use('/v1/products', productMediaRoute)
+  app.use('/v1/products', productSizeRoute)
   app.use('/v1/initial', initialRoute)
   app.use('/v1/roles', roleRoute)
   app.use('/v1/permissions', permissionRoute)
