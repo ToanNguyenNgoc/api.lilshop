@@ -149,8 +149,22 @@ model Tag{
   deleted           Boolean @default(false)
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
-  products          Product[] 
+  products          Product[]
+  categories        Category[]
   @@map("tb_tag")
+}
+model Category{
+  id                Int @id @default(autoincrement())
+  name              String @db.VarChar(50)
+  name_slugify      String @db.Char(250)
+  status            Boolean @default(true)
+  deleted           Boolean @default(false)
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  tag               Tag? @relation(fields: [tag_id], references: [id])
+  tag_id            Int?
+  products          Product[]
+  @@map("tb_category")
 }
 
 model Product{
@@ -171,6 +185,8 @@ model Product{
   sizes             ProductSize[]
   tag               Tag? @relation(fields: [tag_id], references: [id])
   tag_id            Int?
+  category          Category? @relation(fields: [category_id], references: [id])
+  category_id       Int?
   @@map("tb_product")
   @@fulltext([name])
 }

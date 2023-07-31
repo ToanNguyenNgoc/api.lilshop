@@ -14,6 +14,7 @@ import tagRoute from "~/v1/routes/tag.route"
 import productRoute from "~/v1/routes/product.route"
 import productMediaRoute from "~/v1/routes/product-media.route"
 import productSizeRoute from "~/v1/routes/product-size.route"
+import categoryRoute from "~/v1/routes/category.route"
 
 const initializeRouteV1 = (app: express.Application) => {
   app.use('/v1/accounts', accountRoute)
@@ -21,6 +22,7 @@ const initializeRouteV1 = (app: express.Application) => {
   app.use('/v1/banners', bannerRoute)
   app.use('/v1/branches', branchRoute)
   app.use('/v1/tags', tagRoute)
+  app.use('/v1/categories', categoryRoute)
   app.use('/v1/products', productRoute)
   app.use('/v1/products', productMediaRoute)
   app.use('/v1/products', productSizeRoute)

@@ -12,6 +12,7 @@ import { postProduct, postProductSchema, getProduct, getDetailProduct, putProduc
 import { getProductMedia, postProductMedia, postProductMediaSchema, deleteProductMedia } from "./product-media"
 import { getProductSize, postProductSize, postProductSizeSchema, putProductSize, putProductSizeSchema, deleteProductSize } from "./product-size"
 import { getTags, postTag, postTagSchema, putTag, putTagSchema, deleteTag, getDetailTag } from "./tag"
+import { deleteCategory, getCategories, getCategory, postCategory, postCategorySchema, putCategory, putCategorySchema } from "./category"
 
 import { dotenvInitialize } from '~/utils'
 
@@ -51,7 +52,8 @@ const swaggerJsDocOptions: Options = {
         postProductSchema, putProductSchema,
         postProductMediaSchema,
         postProductSizeSchema, putProductSizeSchema,
-        postTagSchema, putTagSchema
+        postTagSchema, putTagSchema,
+        postCategorySchema, putCategorySchema
       },
     },
     security: [
@@ -64,6 +66,7 @@ const swaggerJsDocOptions: Options = {
       { name: 'Auth', description: 'Authentication API Mapping' },
       { name: 'Banner', description: 'Banner API Mapping' },
       { name: 'Branch', description: 'Branch API Mapping' },
+      { name: 'Category', description: 'Category API Mapping' },
       { name: 'Initial', description: 'Initial role & account API Mapping' },
       { name: 'Product & Product media & Product size', description: 'Product API Mapping' },
       { name: 'Province', description: 'Province API Mapping' },
@@ -107,6 +110,9 @@ const swaggerJsDocOptions: Options = {
 
       '/tags': { get: getTags, post: postTag },
       '/tags/{id}': { get: getDetailTag, put: putTag, delete: deleteTag },
+
+      '/categories': { get: getCategories, post: postCategory },
+      '/categories/{id}': { get: getCategory, put: putCategory, delete: deleteCategory }
     }
   },
   apis: ['./v1/routes/*.ts']
