@@ -138,6 +138,7 @@ model Branch{
   long              Float?
   hotline           String? @db.Char(20)
   email             String? @db.Char(50)
+  products          ProductsOnBranches[]
   @@map("tb_branch")
 }
 model Tag{
@@ -166,7 +167,16 @@ model Category{
   products          Product[]
   @@map("tb_category")
 }
-
+model ProductsOnBranches{
+  branch            Branch @relation(fields: [branch_id], references: [id])
+  branch_id         Int
+  product           Product @relation(fields: [product_id], references: [id])
+  product_id        Int
+  quantity          Int
+  created_at        DateTime @default(now())
+  @@id([branch_id, product_id])
+  @@map("tb_products_on_branches")
+}
 model Product{
   id                Int @id @default(autoincrement())
   name              String @db.VarChar(250)
@@ -187,6 +197,7 @@ model Product{
   tag_id            Int?
   category          Category? @relation(fields: [category_id], references: [id])
   category_id       Int?
+  branches          ProductsOnBranches[]
   @@map("tb_product")
   @@fulltext([name])
 }

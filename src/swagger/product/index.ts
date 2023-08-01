@@ -8,7 +8,8 @@ export const postProductSchema = {
     price: { type: 'integer' },
     price_special: { type: 'integer' },
     short_content: { type: 'string' },
-    tag_id:{type:'integer'}
+    tag_id: { type: 'integer' },
+    category_id: { type: 'integer' }
   },
 }
 export const putProductSchema =
@@ -44,8 +45,8 @@ export const putProduct: PathRequest = {
   security: [
     { bearerAuth: [] }
   ],
-  parameters:[
-    {in:'path', name:'id', type:'integer', description:'Product id', required:true}
+  parameters: [
+    { in: 'path', name: 'id', type: 'integer', description: 'Product id', required: true }
   ],
   requestBody: {
     content: {
@@ -102,9 +103,9 @@ export const getProduct: PathRequest = {
     },
     {
       in: 'query',
-      name: 'category_id',
+      name: 'category_ids',
       type: 'integer',
-      description: 'Filter category id',
+      description: 'Filter multiple category ids, support category names slugify. Example: category_name1|category_name2 ',
       required: false
     },
     {
@@ -173,7 +174,7 @@ export const getProduct: PathRequest = {
 export const getDetailProduct: PathRequest = {
   tags: ['Product & Product media & Product size'],
   summary: 'v1/products/:id.GET',
-  security:[{bearerAuth:[]}],
+  security: [{ bearerAuth: [] }],
   parameters: [
     { in: 'path', name: 'id', type: 'integer', description: 'Support product name_slugify', required: true },
     { in: 'query', name: 'includes', description: 'Includes: created_by|category|sizes', type: 'string', required: false }

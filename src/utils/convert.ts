@@ -1,3 +1,5 @@
+import { Request, Response } from "express"
+
 export function convertBoolean(type: any) {
   let result
   if (type === 'false') return result = false
@@ -28,4 +30,14 @@ export function convertOrderByProduct(type: any) {
       break;
   }
   return orderBy
+}
+export function convertFilterCategoryProduct(req: Request) {
+  const category_names: string[] = typeof req.query.category_ids === "string" ?
+    req.query.category_ids.split('|') : []
+  const category_ids: number[] = category_names.length > 0 ?
+    category_names.map(i => Number(i)).filter(Boolean) : []
+  return {
+    category_names,
+    category_ids
+  }
 }

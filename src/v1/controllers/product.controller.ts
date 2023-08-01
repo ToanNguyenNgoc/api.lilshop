@@ -4,8 +4,8 @@ import { ErrorException } from "~/exceptions"
 import { paginationData, transformDataHelper, validatorHelper } from "~/helpers"
 import { RequestHeader } from "~/interfaces"
 import { prismaClient } from "~/prisma-client"
-import { convertBoolean, convertOrderByProduct, slugify } from "~/utils"
-import { CreateProductDTO, ProductSizeDTO, UpdateProductDTO } from "~/v1/dto"
+import { convertBoolean, convertFilterCategoryProduct, convertOrderByProduct, slugify } from "~/utils"
+import { CreateProductDTO, UpdateProductDTO } from "~/v1/dto"
 
 class ProductController {
   async findAll(req: Request, res: Response) {
@@ -15,12 +15,25 @@ class ProductController {
     const includes: string[] = typeof req.query.includes === "string" ? req.query.includes.trim().split('|') : []
     const orderBy = convertOrderByProduct(req.query.sort)
     const tag_id = req.query.tag_id as any
+    const { category_names, category_ids } = convertFilterCategoryProduct(req)
     const _filter = {
       AND: [
         {
           OR: [
             { tag_id: Number(tag_id) || undefined },
             { tag: { name_slugify: tag_id } }
+          ]
+        },
+        {
+          OR: [
+            { category_id: { in: category_ids.length > 0 ? category_ids : undefined } },
+            {
+              category: {
+                name_slugify: {
+                  in: category_names.length > 0 ? category_names : undefined
+                }
+              }
+            }
           ]
         },
         { deleted: false },
@@ -49,6 +62,7 @@ class ProductController {
             select: { media: true }
           },
           tag: { select: { id: true, name: true, name_slugify: true } },
+          category: { select: { id: true, name: true, name_slugify: true } },
           account: includes.includes('created_by') && { select: { id: true, fullname: true } }
         },
         orderBy: orderBy,
@@ -74,8 +88,10 @@ class ProductController {
       include: {
         media: {
           where: { status: true },
-          select: { media: true }
+          select: { media: true, },
         },
+        tag: { select: { id: true, name: true, name_slugify: true } },
+        category: { select: { id: true, name: true, name_slugify: true } },
         account: includes.includes('created_by') && { select: { id: true, fullname: true } }
       }
     })
@@ -92,7 +108,14 @@ class ProductController {
     body.price = req.body.price
     body.price_special = req.body.price_special || req.body.price
     body.short_content = req.body.short_content
-    body.tag_id = req.body.tag_id
+    body.tag_id = Number(req.body.tag_id)
+    body.category_id = Number(req.body.category_id)
+    const tag = await prismaClient.tag.findFirst({ where: { id: body.tag_id, deleted: false } })
+    if (!tag) throw new ErrorException(404, "Tag is not found")
+    const category = await prismaClient.category.findFirst({
+      where: { id: body.category_id, deleted: false, tag_id: body.tag_id }
+    })
+    if (!category) throw new ErrorException(404, `Category is children of ${tag.name}(id=${tag.id})`)
     await validatorHelper(body)
     const response = await prismaClient.product.create({
       data: {
@@ -117,6 +140,7 @@ class ProductController {
     body.price_special = req.body.price_special || req.body.price
     body.short_content = req.body.short_content
     body.tag_id = req.body.tag_id
+    body.category_id = req.body.category_id
     await validatorHelper(pickBy(body, identity))
     const result = await prismaClient.product.update({
       where: { id: product_id },

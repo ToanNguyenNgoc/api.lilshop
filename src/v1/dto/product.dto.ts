@@ -23,6 +23,8 @@ export class CreateProductDTO {
   @IsNumber()
   tag_id!:number;
 
+  @IsNumber()
+  category_id!:number
 }
 
 export class UpdateProductDTO {
@@ -49,6 +51,9 @@ export class UpdateProductDTO {
 
   @IsOptional()
   tag_id!:number
+
+  @IsOptional()
+  category_id!:number
 }
 export class ProductSizeDTO {
   @IsNotEmpty()
