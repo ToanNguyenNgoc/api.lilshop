@@ -13,6 +13,7 @@ import { getProductMedia, postProductMedia, postProductMediaSchema, deleteProduc
 import { getProductSize, postProductSize, postProductSizeSchema, putProductSize, putProductSizeSchema, deleteProductSize } from "./product-size"
 import { getTags, postTag, postTagSchema, putTag, putTagSchema, deleteTag, getDetailTag } from "./tag"
 import { deleteCategory, getCategories, getCategory, postCategory, postCategorySchema, putCategory, putCategorySchema } from "./category"
+import { getProductBranches, deleteProductBranch, postProductBranches, postProductBranchesSchema, putProductBranches, putProductBranchesSchema, } from "./product-branch"
 
 import { dotenvInitialize } from '~/utils'
 
@@ -53,7 +54,8 @@ const swaggerJsDocOptions: Options = {
         postProductMediaSchema,
         postProductSizeSchema, putProductSizeSchema,
         postTagSchema, putTagSchema,
-        postCategorySchema, putCategorySchema
+        postCategorySchema, putCategorySchema,
+        postProductBranchesSchema, putProductBranchesSchema
       },
     },
     security: [
@@ -104,6 +106,8 @@ const swaggerJsDocOptions: Options = {
 
       '/products': { get: getProduct, post: postProduct },
       '/products/{id}': { get: getDetailProduct, put: putProduct },
+      '/products/{id}/branches': { get: getProductBranches, post: postProductBranches },
+      '/products/{id}/branches/{child_id}': { put: putProductBranches, delete: deleteProductBranch },
       '/products/{id}/medias': { get: getProductMedia, post: postProductMedia, delete: deleteProductMedia },
       '/products/{id}/sizes': { get: getProductSize, post: postProductSize },
       '/products/{id}/sizes/{child_id}': { put: putProductSize, delete: deleteProductSize },

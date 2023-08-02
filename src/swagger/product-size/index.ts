@@ -49,7 +49,7 @@ export const postProductSize: PathRequest = {
 }
 export const putProductSize: PathRequest = {
   tags: ['Product & Product media & Product size'],
-  summary: 'v1/products/:id/sizes/:id.PUT',
+  summary: 'v1/products/:id/sizes/:child_id.PUT',
   security: [{ bearerAuth: [] }],
   parameters: [
     { in: 'path', name: 'id', type: 'integer', description: 'Product id', required: true },
@@ -71,7 +71,7 @@ export const putProductSize: PathRequest = {
 }
 export const deleteProductSize: PathRequest = {
   tags: ['Product & Product media & Product size'],
-  summary: 'v1/products/:id/sizes.DELETE',
+  summary: 'v1/products/:id/sizes/:child_id.DELETE',
   security: [{ bearerAuth: [] }],
   parameters: [
     { in: 'path', name: 'id', type: 'integer', description: 'Product id', required: true },

@@ -21,10 +21,10 @@ export class CreateProductDTO {
   short_content!: string;
 
   @IsNumber()
-  tag_id!:number;
+  tag_id!: number;
 
   @IsNumber()
-  category_id!:number
+  category_id!: number
 }
 
 export class UpdateProductDTO {
@@ -50,20 +50,36 @@ export class UpdateProductDTO {
   short_content!: string;
 
   @IsOptional()
-  tag_id!:number
+  tag_id!: number
 
   @IsOptional()
-  category_id!:number
+  category_id!: number
 }
 export class ProductSizeDTO {
   @IsNotEmpty()
-  name!:string
+  name!: string
 }
-export class UpdateProductSizeDTO{
+export class UpdateProductSizeDTO {
   @IsOptional()
-  name!:string;
+  name!: string;
 
   @IsOptional()
   @IsBoolean()
-  status!:boolean
+  status!: boolean
+}
+export class CreateProductBranchDTO {
+  @IsNumber()
+  branch_id!: number;
+
+  @IsNumber()
+  quantity!: number
+}
+
+export class UpdateProductBranchDTO {
+  @IsOptional()
+  quantity!: number
+
+  @IsOptional()
+  @IsBoolean()
+  status!: boolean
 }

@@ -89,9 +89,9 @@ export const getProduct: PathRequest = {
     },
     {
       in: 'query',
-      name: 'branch_id',
+      name: 'branch_ids',
       type: 'integer',
-      description: 'Filter branch id',
+      description: 'Filter multiple branch ids. Example: branch_id1|branch_id2',
       required: false
     },
     {

@@ -173,6 +173,7 @@ model ProductsOnBranches{
   product           Product @relation(fields: [product_id], references: [id])
   product_id        Int
   quantity          Int
+  status            Boolean @default(true)
   created_at        DateTime @default(now())
   @@id([branch_id, product_id])
   @@map("tb_products_on_branches")

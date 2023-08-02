@@ -15,9 +15,21 @@ class ProductController {
     const includes: string[] = typeof req.query.includes === "string" ? req.query.includes.trim().split('|') : []
     const orderBy = convertOrderByProduct(req.query.sort)
     const tag_id = req.query.tag_id as any
+    const branch_ids = typeof req.query.branch_ids === "string" ?
+      req.query.branch_ids.split('|').map(i => Number(i)).filter(Boolean)
+      : []
     const { category_names, category_ids } = convertFilterCategoryProduct(req)
     const _filter = {
       AND: [
+        {
+          branches: {
+            some: {
+              branch_id: {
+                in: req.query.branch_ids ? branch_ids : undefined
+              }
+            }
+          }
+        },
         {
           OR: [
             { tag_id: Number(tag_id) || undefined },
@@ -57,6 +69,12 @@ class ProductController {
       prismaClient.product.findMany({
         where: _filter,
         include: {
+          branches: {
+            select: {
+              branch_id: true,
+              branch: { select: { name: true, short_address: true } }
+            }
+          },
           media: includes.includes('media') && {
             where: { status: true },
             select: { media: true }
