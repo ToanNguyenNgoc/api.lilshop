@@ -63,6 +63,7 @@ class AuthController {
   }
   async findRolesByUser(req: RequestHeader, res: Response) {
     const user = req.user
+    if (!user.manager) throw new ErrorException(403, 'You do not have the right roles')
     const includes: string[] = typeof req.query.includes === 'string' ? req.query.includes.trim().split('|') : []
     const data = await prisma.rolesOnAccounts.findMany({
       where: { accountId: user.id },
