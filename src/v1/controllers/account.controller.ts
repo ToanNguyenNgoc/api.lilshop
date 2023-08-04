@@ -30,7 +30,7 @@ class AccountController {
         select: {
           id: true,
           fullname: true, email: true, telephone: true, status: true,
-          deleted: true, created_at: true, updated_at: true, manager: true, avatar:true, full_address:true
+          deleted: true, created_at: true, updated_at: true, manager: true, avatar:true, full_address:true,
           roles: includes.includes('roles') && { select: { role: true } }
         },
         skip: ((page * limit) - limit),
