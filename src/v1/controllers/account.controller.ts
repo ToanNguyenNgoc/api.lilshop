@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client"
 import { Request, Response } from "express"
+import { omit } from "lodash"
 import { ErrorException } from "~/exceptions"
-import { paginationData, transformDataHelper, validatorHelper } from "~/helpers"
+import { generatePassword, paginationData, transformDataHelper, validateRolesExist, validatorHelper } from "~/helpers"
 import { convertBoolean, convertOrderBy } from "~/utils"
-import { UpdateAccountDTO } from "~/v1/dto/account.dto"
+import { CreateAccountDTO, UpdateAccountDTO } from "~/v1/dto/account.dto"
 
 const prisma = new PrismaClient()
 class AccountController {
@@ -27,8 +28,8 @@ class AccountController {
     const [data, total] = await prisma.$transaction([
       prisma.account.findMany({
         select: {
-          id:true,
-          fullname: true, email: true, telephone: true, status: true, 
+          id: true,
+          fullname: true, email: true, telephone: true, status: true,
           deleted: true, created_at: true, updated_at: true, manager: true,
           roles: includes.includes('roles') && { select: { role: true } }
         },
@@ -54,6 +55,38 @@ class AccountController {
     if (!response) throw new ErrorException(404, 'Resource not found')
     return res.send(transformDataHelper(response))
   }
+  async create(req: Request, res: Response) {
+    const body = new CreateAccountDTO()
+    body.fullname = req.body.fullname
+    body.email = req.body.email
+    body.avatar = req.body.avatar
+    body.password = await generatePassword(req.body.password)
+    body.telephone = req.body.telephone
+    body.full_address = req.body.full_address
+    body.roles = req.body.roles || []
+    await validatorHelper(body)
+    if (await prisma.account.findFirst({ where: { email: body.email } }))
+      throw new ErrorException(403, `Email belong to another account`)
+    if (await prisma.account.findFirst({ where: { telephone: body.telephone } }))
+      throw new ErrorException(403, `Telephone belong to another account`)
+    await validatorHelper(body)
+    if (!await validateRolesExist(body.roles))
+      throw new ErrorException(404, 'One or more roles do not exist')
+    const response = await prisma.account.create({
+      data: {
+        ...body,
+        manager: true,
+        roles: {
+          createMany: {
+            data: body.roles.map(i => ({
+              roleId: i
+            }))
+          }
+        }
+      }
+    })
+    return res.send(transformDataHelper(omit(response, 'password')))
+  }
   async update(req: Request, res: Response) {
     const id = Number(req.params.id)
     const body = new UpdateAccountDTO()
@@ -61,8 +94,12 @@ class AccountController {
     body.email = req.body.email
     body.telephone = req.body.telephone
     body.status = req.body.status
+    body.avatar = req.body.avatar
+    body.full_address = req.body.full_address
     body.roles = req.body.roles || []
     await validatorHelper(body)
+    if (!await validateRolesExist(body.roles))
+      throw new ErrorException(404, 'One or more roles do not exist')
     const response = await prisma.account.update({
       where: { id: id },
       data: {
@@ -77,9 +114,18 @@ class AccountController {
             }
           }))
         }
-      }
+      },
     })
-    return res.send(transformDataHelper(response))
+    return res.send(transformDataHelper(omit(response, "password")))
+  }
+  async delete(req: Request, res: Response) {
+    const id = Number(req.params.id)
+    if (!id) throw new ErrorException(404, "Resource not found")
+    await prisma.account.update({
+      where: { id: id },
+      data: { deleted: true }
+    })
+    return res.send(transformDataHelper({ message: "Delete success" }))
   }
 }
 export const accountController = new AccountController()

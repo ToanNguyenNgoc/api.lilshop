@@ -10,6 +10,12 @@ accountRoute.get(
   authMiddleware.role,
   asyncMiddleware(accountController.findAll)
 )
+accountRoute.post(
+  '/',
+  authMiddleware.authentication,
+  authMiddleware.role,
+  asyncMiddleware(accountController.create)
+)
 accountRoute.get(
   '/:id',
   authMiddleware.authentication,
@@ -22,6 +28,13 @@ accountRoute.put(
   authMiddleware.authentication,
   authMiddleware.role,
   asyncMiddleware(accountController.update)
+)
+
+accountRoute.delete(
+  '/:id',
+  authMiddleware.authentication,
+  authMiddleware.role,
+  asyncMiddleware(accountController.delete)
 )
 
 export default accountRoute

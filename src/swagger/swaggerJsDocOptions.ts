@@ -1,5 +1,5 @@
 import { Options } from 'swagger-jsdoc'
-import { getAccount, getDetailAccount, putAccount, putAccountSchema } from './account'
+import { getAccount, getDetailAccount, putAccount, putAccountSchema, postAccount, postAccountSchema, deleteAccount } from './account'
 import { login, loginSchema, register, profile, registerSchema, roleAuth } from './auth'
 import { postBanner, putBanner } from '~/swagger/banner'
 import { postAccountInit, postAccountInitSchema } from '~/swagger/initial'
@@ -43,7 +43,7 @@ const swaggerJsDocOptions: Options = {
         },
       },
       schemas: {
-        putAccountSchema,
+        putAccountSchema,postAccountSchema,
         loginSchema,
         registerSchema,
         postAccountInitSchema,
@@ -77,8 +77,8 @@ const swaggerJsDocOptions: Options = {
       { name: 'Upload & Media', description: 'Upload & Media API Mapping' },
     ],
     paths: {
-      '/accounts': { get: getAccount },
-      '/accounts/{id}': { get: getDetailAccount, put: putAccount },
+      '/accounts': { get: getAccount, post:postAccount },
+      '/accounts/{id}': { get: getDetailAccount, put: putAccount, delete:deleteAccount },
 
       '/auth/login': { post: login },
       '/auth/register': { post: register },

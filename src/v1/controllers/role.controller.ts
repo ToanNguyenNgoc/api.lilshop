@@ -46,7 +46,7 @@ class RoleController {
     body.permissions = req.body.permissions
     await validatorHelper<RoleDTO>(body)
     if (!await validatePermissionsExist(body.permissions)) {
-      throw new ErrorException(400, 'One or more permissions do not exist')
+      throw new ErrorException(404, 'One or more permissions do not exist')
     }
     const data = await prisma.role.create({
       data: {

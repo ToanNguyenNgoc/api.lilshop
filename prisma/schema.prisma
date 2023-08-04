@@ -24,6 +24,8 @@ model Account{
   created_at        DateTime @default(now())
   roles             RolesOnAccounts[]
   products          Product[]
+  avatar            String? @db.VarChar(255) 
+  full_address      String? @db.VarChar(255) 
   @@fulltext([fullname])
   @@fulltext([fullname, email])
   @@fulltext([fullname, email, telephone])

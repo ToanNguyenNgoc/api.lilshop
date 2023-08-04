@@ -1,12 +1,32 @@
 import { PathRequest } from "~/swagger/type"
 
+export const postAccountSchema = {
+  type: 'object',
+  properties: {
+    fullname: { type: 'string' },
+    email: { type: 'string' },
+    avatar: { type: 'string' },
+    password:{type:'string'},
+    telephone: { type: 'string' },
+    full_address: { type: 'string' },
+    roles: {
+      type: 'array',
+      items: {
+        type: 'number'
+      }
+    }
+  }
+}
+
 export const putAccountSchema = {
   type: 'object',
   properties: {
     fullname: { type: 'string' },
     email: { type: 'string' },
+    avatar: { type: 'string' },
     telephone: { type: 'string' },
     status: { type: 'string' },
+    full_address: { type: 'string' },
     roles: {
       type: 'array',
       items: {
@@ -100,6 +120,28 @@ export const getDetailAccount: PathRequest = {
     '200': { description: 'Return account detail by id' }
   }
 }
+export const postAccount: PathRequest = {
+  tags: ['Account'],
+  summary: 'v1/accounts.POST',
+  security: [
+    {
+      bearerAuth: []
+    }
+  ],
+  requestBody: {
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/postAccountSchema',
+        }
+      }
+    },
+    required: true
+  },
+  responses: {
+    '200': { description: 'Return new account' }
+  }
+}
 export const putAccount: PathRequest = {
   tags: ['Account'],
   summary: 'v1/accounts/:id.PUT',
@@ -128,5 +170,16 @@ export const putAccount: PathRequest = {
   },
   responses: {
     '200': { description: 'Return new account is updated' }
+  }
+}
+export const deleteAccount: PathRequest = {
+  tags: ['Account'],
+  summary: 'v1/accounts/:id.DELETE',
+  security: [{ bearerAuth: [] }],
+  parameters: [
+    { in: 'path', name: 'id', type: 'integer', description: 'Account id', required: true }
+  ],
+  responses: {
+    '200': { description: 'Return delete account' }
   }
 }
