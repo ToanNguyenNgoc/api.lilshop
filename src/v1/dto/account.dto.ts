@@ -18,7 +18,6 @@ export class CreateAccountDTO {
   @IsNotEmpty()
   telephone!: string;
 
-  full_address!: string;
 
   @IsArray()
   roles!: Array<number>;
@@ -40,8 +39,6 @@ export class UpdateAccountDTO {
   @Matches(/\.(jpg|jpeg|png|gif|bmp)$/, { message: 'Avatar is not match link' })
   avatar!: string
 
-  @IsOptional()
-  full_address!: string
 
   @IsOptional()
   @IsBoolean()
@@ -50,4 +47,8 @@ export class UpdateAccountDTO {
   @IsOptional()
   @IsArray()
   roles!: Array<number>
+}
+export class ForgotPassword{
+  @IsNotEmpty()
+  password!:string
 }

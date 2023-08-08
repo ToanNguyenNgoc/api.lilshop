@@ -1,6 +1,6 @@
 import { Options } from 'swagger-jsdoc'
 import { getAccount, getDetailAccount, putAccount, putAccountSchema, postAccount, postAccountSchema, deleteAccount } from './account'
-import { login, loginSchema, register, profile, registerSchema, roleAuth } from './auth'
+import { login, loginSchema, register, profile, registerSchema, roleAuth, forgot, forgotSchema } from './auth'
 import { postBanner, putBanner } from '~/swagger/banner'
 import { postAccountInit, postAccountInitSchema } from '~/swagger/initial'
 import { getRole, postRole, postRoleSchema, putRole, putRoleSchema, getDetailRole, deleteRole } from '~/swagger/role'
@@ -13,7 +13,15 @@ import { getProductMedia, postProductMedia, postProductMediaSchema, deleteProduc
 import { getProductSize, postProductSize, postProductSizeSchema, putProductSize, putProductSizeSchema, deleteProductSize } from "./product-size"
 import { getTags, postTag, postTagSchema, putTag, putTagSchema, deleteTag, getDetailTag } from "./tag"
 import { deleteCategory, getCategories, getCategory, postCategory, postCategorySchema, putCategory, putCategorySchema } from "./category"
-import { getProductBranches, deleteProductBranch, postProductBranches, postProductBranchesSchema, putProductBranches, putProductBranchesSchema, } from "./product-branch"
+import {
+  getProductBranches,
+  deleteProductBranch,
+  postProductBranches,
+  postProductBranchesSchema,
+  putProductBranches,
+  putProductBranchesSchema,
+} from "./product-branch"
+import { getAddresses, postAddress, postAddressSchema, putAddress, putAddressSchema, getAddress, deleteAddress } from "./customer"
 
 import { dotenvInitialize } from '~/utils'
 
@@ -43,9 +51,8 @@ const swaggerJsDocOptions: Options = {
         },
       },
       schemas: {
-        putAccountSchema,postAccountSchema,
-        loginSchema,
-        registerSchema,
+        putAccountSchema, postAccountSchema,
+        loginSchema, forgotSchema,registerSchema,
         postAccountInitSchema,
         postRoleSchema, putRoleSchema,
         postPermissionSchema,
@@ -55,7 +62,8 @@ const swaggerJsDocOptions: Options = {
         postProductSizeSchema, putProductSizeSchema,
         postTagSchema, putTagSchema,
         postCategorySchema, putCategorySchema,
-        postProductBranchesSchema, putProductBranchesSchema
+        postProductBranchesSchema, putProductBranchesSchema,
+        postAddressSchema, putAddressSchema
       },
     },
     security: [
@@ -69,6 +77,7 @@ const swaggerJsDocOptions: Options = {
       { name: 'Banner', description: 'Banner API Mapping' },
       { name: 'Branch', description: 'Branch API Mapping' },
       { name: 'Category', description: 'Category API Mapping' },
+      { name: 'Customer', description: 'Customer API Mapping' },
       { name: 'Initial', description: 'Initial role & account API Mapping' },
       { name: 'Product & Product media & Product size', description: 'Product API Mapping' },
       { name: 'Province', description: 'Province API Mapping' },
@@ -77,11 +86,12 @@ const swaggerJsDocOptions: Options = {
       { name: 'Upload & Media', description: 'Upload & Media API Mapping' },
     ],
     paths: {
-      '/accounts': { get: getAccount, post:postAccount },
-      '/accounts/{id}': { get: getDetailAccount, put: putAccount, delete:deleteAccount },
+      '/accounts': { get: getAccount, post: postAccount },
+      '/accounts/{id}': { get: getDetailAccount, put: putAccount, delete: deleteAccount },
 
       '/auth/login': { post: login },
       '/auth/register': { post: register },
+      '/auth/forgot': { post: forgot },
       '/auth/profile': { get: profile },
       '/auth/roles': { get: roleAuth },
 
@@ -116,7 +126,10 @@ const swaggerJsDocOptions: Options = {
       '/tags/{id}': { get: getDetailTag, put: putTag, delete: deleteTag },
 
       '/categories': { get: getCategories, post: postCategory },
-      '/categories/{id}': { get: getCategory, put: putCategory, delete: deleteCategory }
+      '/categories/{id}': { get: getCategory, put: putCategory, delete: deleteCategory },
+
+      '/customer/addresses': { get: getAddresses, post: postAddress },
+      '/customer/addresses/{id}': { get: getAddress, put: putAddress, delete: deleteAddress },
     }
   },
   apis: ['./v1/routes/*.ts']

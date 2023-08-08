@@ -1,25 +1,29 @@
-import { Request, Response, NextFunction, query } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import {
   generatePassword,
   comparePassword,
   transformDataHelper,
   validatorHelper,
-  generateToken
+  generateToken,
+  generateTokenForgot,
+  decodeTokenForgot
 } from '~/helpers'
 import { LoginDTO, RegisterDTO } from '~/v1/dto'
-import { PrismaClient } from "@prisma/client"
 import { omit } from "lodash"
 import { ErrorException } from '~/exceptions'
 import { RequestHeader } from '~/interfaces'
+import { prismaClient } from '~/prisma-client'
+import { ForgotPassword } from '../dto/account.dto'
+import { SendmailService } from '~/services'
 
-const prisma = new PrismaClient()
 class AuthController {
+
   async login(req: Request, res: Response, next: NextFunction) {
     const body = new LoginDTO()
     body.email = req.body.email
     body.password = req.body.password
     await validatorHelper<LoginDTO>(body)
-    const response = await prisma.account.findUnique({
+    const response = await prismaClient.account.findUnique({
       where: {
         email: body.email
       }
@@ -42,19 +46,19 @@ class AuthController {
     body.password = await generatePassword(req.body.password)
     body.manager = false
     await validatorHelper<RegisterDTO>(body)
-    if (await prisma.account.findUnique({ where: { email: body.email } })) {
+    if (await prismaClient.account.findUnique({ where: { email: body.email } })) {
       throw new ErrorException(403, `Email belong to another account`)
     }
-    if (await prisma.account.findUnique({ where: { telephone: body.telephone } })) {
+    if (await prismaClient.account.findUnique({ where: { telephone: body.telephone } })) {
       throw new ErrorException(403, `Telephone belong to another account`)
     }
-    const result = await prisma.account.create({
+    const result = await prismaClient.account.create({
       data: body
     })
     return res.send(transformDataHelper(omit(result, 'password')))
   }
   async profile(req: RequestHeader, res: Response) {
-    const response = await prisma.account.findUnique({
+    const response = await prismaClient.account.findUnique({
       where: {
         id: req.user?.id
       }
@@ -65,7 +69,7 @@ class AuthController {
     const user = req.user
     if (!user.manager) throw new ErrorException(403, 'You do not have the right roles')
     const includes: string[] = typeof req.query.includes === 'string' ? req.query.includes.trim().split('|') : []
-    const data = await prisma.rolesOnAccounts.findMany({
+    const data = await prismaClient.rolesOnAccounts.findMany({
       where: { accountId: user.id },
       include: {
         role: {
@@ -77,6 +81,32 @@ class AuthController {
       }
     })
     return res.send(transformDataHelper({ data }))
+  }
+  async forgot(req: RequestHeader, res: Response) {
+    const { email, token, password } = req.body
+    if (email) {
+      const user = await prismaClient.account.findFirst({
+        where: { email: email }
+      })
+      if (!user) throw new ErrorException(404, "Email does not exist")
+      const token = generateTokenForgot(email)
+      await SendmailService.forgot(email, token)
+      return res.send(transformDataHelper({ message: `An email send to ${email}` }))
+    }
+    if (token) {
+      const emailDecode = decodeTokenForgot(token)
+      if (!emailDecode) throw new ErrorException(401, "Unauthenticated")
+      const body = new ForgotPassword()
+      body.password = password
+      await validatorHelper(body)
+      await prismaClient.account.update({
+        where: { email: emailDecode },
+        data: {
+          password: await generatePassword(body.password)
+        }
+      })
+      return res.send(transformDataHelper({ message: "Change password success" }))
+    }
   }
 }
 export const authController = new AuthController()

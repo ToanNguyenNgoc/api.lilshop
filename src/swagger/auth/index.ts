@@ -3,8 +3,8 @@ import { PathRequest } from "~/swagger/type";
 export const loginSchema = {
   type: 'object',
   properties: {
-    email: { type: 'string'},
-    password: { type: 'string' }
+    email: {type:'string', example: 'customer@gmail.com'},
+    password: {type:'string', example: '06011998' }
   }
 }
 export const registerSchema = {
@@ -14,6 +14,13 @@ export const registerSchema = {
     telephone: { type: 'string' },
     email: { type: 'string'},
     password: { type: 'string' }
+  }
+}
+export const forgotSchema = {
+  type: 'object',
+  properties: {
+    email: {type:'string', example: 'customer@gmail.com'},
+    password: {type:'string', example: '06011998' }
   }
 }
 export const login: PathRequest = {
@@ -48,6 +55,25 @@ export const register: PathRequest = {
     '200': { description: 'Return new user information' }
   }
 }
+
+export const forgot: PathRequest = {
+  tags: ['Auth'],
+  summary: 'Auth forgot',
+  requestBody: {
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/forgotSchema',
+        }
+      }
+    }
+  },
+  responses: {
+    '200': { description: 'Return forgot password' }
+  }
+}
+
+
 export const profile: PathRequest = {
   tags: ['Auth'],
   summary: 'Auth profile',

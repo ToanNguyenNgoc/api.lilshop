@@ -8,7 +8,6 @@ export const postAccountSchema = {
     avatar: { type: 'string' },
     password:{type:'string'},
     telephone: { type: 'string' },
-    full_address: { type: 'string' },
     roles: {
       type: 'array',
       items: {
@@ -26,7 +25,6 @@ export const putAccountSchema = {
     avatar: { type: 'string' },
     telephone: { type: 'string' },
     status: { type: 'string' },
-    full_address: { type: 'string' },
     roles: {
       type: 'array',
       items: {

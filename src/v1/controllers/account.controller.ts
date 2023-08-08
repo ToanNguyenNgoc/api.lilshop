@@ -30,8 +30,7 @@ class AccountController {
         select: {
           id: true,
           fullname: true, email: true, telephone: true, status: true,
-          deleted: true, created_at: true, updated_at: true, manager: true, avatar:true, full_address:true,
-          roles: includes.includes('roles') && { select: { role: true } }
+          deleted: true, created_at: true, updated_at: true, manager: true, avatar:true
         },
         skip: ((page * limit) - limit),
         take: limit,
@@ -62,7 +61,6 @@ class AccountController {
     body.avatar = req.body.avatar
     body.password = await generatePassword(req.body.password)
     body.telephone = req.body.telephone
-    body.full_address = req.body.full_address
     body.roles = req.body.roles || []
     await validatorHelper(body)
     if (await prisma.account.findFirst({ where: { email: body.email } }))
@@ -95,7 +93,6 @@ class AccountController {
     body.telephone = req.body.telephone
     body.status = req.body.status
     body.avatar = req.body.avatar
-    body.full_address = req.body.full_address
     body.roles = req.body.roles || []
     await validatorHelper(body)
     if (!await validateRolesExist(body.roles))

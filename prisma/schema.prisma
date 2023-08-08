@@ -24,12 +24,32 @@ model Account{
   created_at        DateTime @default(now())
   roles             RolesOnAccounts[]
   products          Product[]
-  avatar            String? @db.VarChar(255) 
-  full_address      String? @db.VarChar(255) 
+  avatar            String? @db.VarChar(255)
+  addresses         AccountAddress[]
   @@fulltext([fullname])
   @@fulltext([fullname, email])
   @@fulltext([fullname, email, telephone])
   @@map("tb_account")
+}
+model AccountAddress{
+  id                Int @id @default(autoincrement())
+  account           Account @relation(fields: [account_id], references: [id])
+  account_id        Int
+  is_default        Boolean @default(true)
+  status            Boolean @default(true)
+  delete            Boolean @default(false)
+  short_address     String? @db.VarChar(50)
+  province          Province? @relation(fields: [province_code],references: [code])
+  province_code     Int?
+  district          District? @relation(fields: [district_code], references: [code])
+  district_code     Int?
+  ward              Ward? @relation(fields: [ward_code], references: [code])
+  ward_code         Int?
+  lat               Float?
+  long              Float?
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  @@map("tb_account_address")
 }
 
 model Role{
@@ -97,6 +117,7 @@ model Province{
   codename          String @db.Char(250)
   phone_code        Int @db.Int
   branches          Branch[]
+  account_addresses AccountAddress[]
   @@map("tb_province")
 }
 
@@ -107,6 +128,7 @@ model District{
   codename          String @db.Char(250)
   province_code     Int @db.Int
   branches          Branch[]
+  account_addresses AccountAddress[]
   @@map("tb_district")
 }
 
@@ -117,6 +139,7 @@ model Ward{
   codename          String @db.Char(250)
   district_code     Int @db.Int
   branches          Branch[]
+  account_addresses AccountAddress[]
   @@map("tb_ward")
 }
 
