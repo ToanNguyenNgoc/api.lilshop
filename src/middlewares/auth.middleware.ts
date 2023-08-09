@@ -10,17 +10,17 @@ const prisma = new PrismaClient()
 export const authMiddleware = {
   authentication: async (req: RequestHeader, res: Response, next: NextFunction) => {
     const authorization = req.headers.authorization
-    if (!authorization) return res.send({ statusCode: 401, message: 'Unauthenticated' })
+    if (!authorization) return res.status(401).send({ statusCode: 401, message: 'Unauthenticated' })
     const accessToken = authorization.split(" ")[1]
     jwt.verify(accessToken, process.env.JWT_SECRET_KET || 'jwt', async (err, user) => {
-      if (err) return res.send({ statusCode: 401, message: 'Unauthenticated' })
+      if (err) return res.status(401).send({ statusCode: 401, message: 'Unauthenticated' })
       req.user = user
       next()
     })
   },
   role: async (req: RequestHeader, res: Response, next: NextFunction) => {
     const user = req.user
-    if (!user.manager) return res.send({ statusCode: 403, message: 'You do not have the right roles' })
+    if (!user.manager) return res.status(401).send({ statusCode: 403, message: 'You do not have the right roles' })
     if (user.manager) {
       const roles = await prisma.rolesOnAccounts.findMany({
         where: {
@@ -50,7 +50,7 @@ export const authMiddleware = {
         if (permissions_user_path.includes(permissionRoutePath)) {
           next()
         } else {
-          return res.send({ statusCode: 403, message: `You do not use method: ${req.method} with this request` })
+          return res.status(401).send({ statusCode: 403, message: `You do not use method: ${req.method} with this request` })
         }
       }
     }

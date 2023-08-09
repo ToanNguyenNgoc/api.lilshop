@@ -83,14 +83,16 @@ class AuthController {
     return res.send(transformDataHelper({ data }))
   }
   async forgot(req: RequestHeader, res: Response) {
-    const { email, token, password } = req.body
+    const { email, token, password, platform } = req.body
+    if (!['CLIENT', 'ADMIN'].includes(platform))
+      throw new ErrorException(403, 'Platform is in [CLIENT,ADMIN]')
     if (email) {
       const user = await prismaClient.account.findFirst({
         where: { email: email }
       })
       if (!user) throw new ErrorException(404, "Email does not exist")
       const token = generateTokenForgot(email)
-      await SendmailService.forgot(email, token)
+      await SendmailService.forgot(email, token, platform)
       return res.send(transformDataHelper({ message: `An email send to ${email}` }))
     }
     if (token) {

@@ -1,6 +1,6 @@
-export const transformDataHelper = <T>(context: T) => {
+export const transformDataHelper = <T>(context: T, statusCode?: number) => {
   return {
-    statusCode: 200,
+    statusCode: statusCode || 200,
     context
   }
 }
