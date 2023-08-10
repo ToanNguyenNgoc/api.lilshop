@@ -117,7 +117,7 @@ class CustomerOrderController {
     const amount = products.reduce((total, product) => total + product.price_order, 0);
     const response = await prismaClient.order.create({
       data: {
-        account_id: 30,
+        account_id: req.user?.id,
         amount,
         order_original: 'CLIENT',
         payment_method_id: body.payment_method_id,
