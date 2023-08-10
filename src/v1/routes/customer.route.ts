@@ -19,7 +19,8 @@ customerRoute
     .post(
         '/addresses',
         authMiddleware.authentication,
-        asyncMiddleware(customerAddressController.create)
+        // asyncMiddleware(customerAddressController.create)
+        customerAddressController.create
     )
     .put(
         '/addresses/:id',
