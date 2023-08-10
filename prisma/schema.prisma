@@ -26,6 +26,7 @@ model Account{
   products          Product[]
   avatar            String? @db.VarChar(255)
   addresses         AccountAddress[]
+  orders            Order[]
   @@fulltext([fullname])
   @@fulltext([fullname, email])
   @@fulltext([fullname, email, telephone])
@@ -49,6 +50,7 @@ model AccountAddress{
   long              Float?
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
+  orders            Order[]
   @@map("tb_account_address")
 }
 
@@ -164,6 +166,7 @@ model Branch{
   hotline           String? @db.Char(20)
   email             String? @db.Char(50)
   products          ProductsOnBranches[]
+  orders            Order[]
   @@map("tb_branch")
 }
 model Tag{
@@ -224,6 +227,7 @@ model Product{
   category          Category? @relation(fields: [category_id], references: [id])
   category_id       Int?
   branches          ProductsOnBranches[]
+  orders            ProductsOnOrders[]
   @@map("tb_product")
   @@fulltext([name])
 }
@@ -250,4 +254,65 @@ model ProductSize{
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
   @@map("tb_product_size")
+}
+model PaymentMethod{
+  id                Int @id @default(autoincrement())
+  name              String @db.Char(200)
+  icon              String? @db.Char(100)
+  setting           String? @db.VarChar(500)
+  method_key        String @db.Char(20)
+  child_key         String? @db.Char(20)
+  deleted           Boolean @default(false)
+  status            Boolean @default(true)
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  orders            Order[]
+  @@map("tb_payment_method")
+}
+model PaymentGateway{
+  transaction_txn   String @id
+  transaction       String @db.VarChar(20)
+  amount            Int
+  description       String @db.VarChar(200)
+  payment_url       String @db.VarChar(1000)
+  callback_url      String @db.VarChar(500)
+  secure_hash       String @db.VarChar(500)
+  status            String @db.VarChar(50) @default("PENDING")
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  order             Order @relation(fields: [order_id], references: [id])
+  order_id          Int @unique
+  @@map("tb_payment_gateway")
+}
+model ProductsOnOrders{
+  id                Int @id @default(autoincrement())
+  product           Product @relation(fields: [product_id], references: [id])
+  product_id        Int
+  order             Order @relation(fields: [order_id], references: [id])
+  order_id          Int
+  quantity          Int
+  status            Boolean @default(true)
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  @@map("tb_products_on_orders")    
+}
+model Order{
+  id                Int @id @default(autoincrement())
+  products          ProductsOnOrders[]
+  account           Account @relation(fields: [account_id], references: [id])
+  account_id        Int
+  payment_method   PaymentMethod @relation(fields: [payment_method_id], references: [id])
+  payment_method_id Int
+  delivery_address  AccountAddress @relation(fields: [address_id], references: [id])
+  address_id        Int
+  branch            Branch? @relation(fields: [branch_id], references: [id])
+  branch_id         Int?
+  status            Boolean @default(true)
+  deleted           Boolean @default(false)
+  amount            Int
+  order_original    String @db.Char(20)
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  payment_gateway   PaymentGateway?
+  @@map("tb_order")
 }

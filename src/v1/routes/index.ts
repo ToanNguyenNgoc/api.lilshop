@@ -17,6 +17,8 @@ import productMediaRoute from "~/v1/routes/product-media.route"
 import productSizeRoute from "~/v1/routes/product-size.route"
 import categoryRoute from "~/v1/routes/category.route"
 import customerRoute from "./customer.route"
+import paymentMethodRoute from "./payment-method.route"
+import paymentGatewayRoute from "./payment-gateway.route"
 
 const initializeRouteV1 = (app: express.Application) => {
   app.use('/v1/accounts', accountRoute)
@@ -33,6 +35,8 @@ const initializeRouteV1 = (app: express.Application) => {
   app.use('/v1/initial', initialRoute)
   app.use('/v1/roles', roleRoute)
   app.use('/v1/permissions', permissionRoute)
+  app.use('/v1/paymentmethods', paymentMethodRoute)
+  app.use('/v1/paymentgateways', paymentGatewayRoute)
   app.use('/v1/upload', uploadRoute)
   app.use('/v1/provinces', provinceRouter)
   app.use('/v1/districts', districtRoute)

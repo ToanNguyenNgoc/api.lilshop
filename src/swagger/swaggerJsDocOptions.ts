@@ -21,7 +21,20 @@ import {
   putProductBranches,
   putProductBranchesSchema,
 } from "./product-branch"
-import { getAddresses, postAddress, postAddressSchema, putAddress, putAddressSchema, getAddress, deleteAddress } from "./customer"
+import {
+  getAddresses,
+  postAddress,
+  postAddressSchema,
+  putAddress,
+  putAddressSchema,
+  getAddress,
+  deleteAddress,
+  postOrder,
+  postOrderSchema,
+  getOrder,
+  getOrders
+} from "./customer"
+import { postPaymentMethod, postPaymentMethodSchema, getPaymentMethods, putPaymentMethod, putPaymentMethodSchema } from "./payment-method"
 
 import { dotenvInitialize } from '~/utils'
 
@@ -52,7 +65,7 @@ const swaggerJsDocOptions: Options = {
       },
       schemas: {
         putAccountSchema, postAccountSchema,
-        loginSchema, forgotSchema,registerSchema,
+        loginSchema, forgotSchema, registerSchema,
         postAccountInitSchema,
         postRoleSchema, putRoleSchema,
         postPermissionSchema,
@@ -63,7 +76,9 @@ const swaggerJsDocOptions: Options = {
         postTagSchema, putTagSchema,
         postCategorySchema, putCategorySchema,
         postProductBranchesSchema, putProductBranchesSchema,
-        postAddressSchema, putAddressSchema
+        postAddressSchema, putAddressSchema,
+        postOrderSchema,
+        postPaymentMethodSchema, putPaymentMethodSchema
       },
     },
     security: [
@@ -81,6 +96,7 @@ const swaggerJsDocOptions: Options = {
       { name: 'Initial', description: 'Initial role & account API Mapping' },
       { name: 'Product & Product media & Product size', description: 'Product API Mapping' },
       { name: 'Province', description: 'Province API Mapping' },
+      { name: 'Payment method', description: 'Payment method API Mapping' },
       { name: 'Role & Permission', description: 'Role & Permission API Mapping' },
       { name: 'Tag', description: 'Tag API Mapping' },
       { name: 'Upload & Media', description: 'Upload & Media API Mapping' },
@@ -130,6 +146,11 @@ const swaggerJsDocOptions: Options = {
 
       '/customer/addresses': { get: getAddresses, post: postAddress },
       '/customer/addresses/{id}': { get: getAddress, put: putAddress, delete: deleteAddress },
+      '/customer/orders': { get: getOrders, post: postOrder },
+      '/customer/orders/{id}': { get: getOrder },
+
+      '/paymentmethods': { get: getPaymentMethods, post: postPaymentMethod },
+      '/paymentmethods/{id}': { put: putPaymentMethod },
     }
   },
   apis: ['./v1/routes/*.ts']

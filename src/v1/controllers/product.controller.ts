@@ -22,13 +22,13 @@ class ProductController {
     const _filter = {
       AND: [
         {
-          branches: {
+          branches: req.query.branch_ids ? {
             some: {
               branch_id: {
-                in: req.query.branch_ids ? branch_ids : undefined
+                in: branch_ids
               }
             }
-          }
+          } : undefined
         },
         {
           OR: [
@@ -38,13 +38,11 @@ class ProductController {
         },
         {
           OR: [
-            { category_id: { in: category_ids.length > 0 ? category_ids : undefined } },
+            { category_id: category_ids.length > 0 ? { in: category_ids } : undefined },
             {
-              category: {
-                name_slugify: {
-                  in: category_names.length > 0 ? category_names : undefined
-                }
-              }
+              category: category_names.length > 0 ? {
+                name_slugify: { in: category_names }
+              } : undefined
             }
           ]
         },

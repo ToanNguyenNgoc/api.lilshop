@@ -6,7 +6,9 @@ export const postPermissionSchema = {
     type: 'string',
   },
   example: '['
-    + '"accounts","roles","permissions","banners","products","products branches","products medias","products sizes","tags","categories"'
+    + '"accounts","roles","permissions","banners","products","products branches"'
+    + ',"products medias","products sizes","tags","categories"'
+    + ',"orders","paymentmethods"'
     + ']'
 }
 export const postPermission: PathRequest = {

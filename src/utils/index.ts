@@ -4,3 +4,4 @@ export const dotenvInitialize = () => dotenv.config({})
 export * from "./encode"
 export * from "./convert"
 export * from "./slugify"
+export * from "./sort-object"
