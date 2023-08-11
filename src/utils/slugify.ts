@@ -20,3 +20,4 @@ export const slugify = (text: string) => {
     .replace(/^-+/, '')
     .replace(/-+$/, '')
 }
+export const fmPrice = (num: any) => parseInt(num)?.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')

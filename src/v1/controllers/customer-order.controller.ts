@@ -4,7 +4,7 @@ import { paginationData, transformDataHelper } from "~/helpers"
 import { validateOrderHelper } from "~/helpers/validate-order.helper"
 import { RequestHeader } from "~/interfaces"
 import { prismaClient } from "~/prisma-client"
-import { VnPayService } from "~/services"
+import { SendmailService, VnPayService } from "~/services"
 
 class CustomerOrderController {
   async findAll(req: RequestHeader, res: Response) {
@@ -22,7 +22,7 @@ class CustomerOrderController {
           products: {
             include: {
               product: includes.includes('products'),
-              product_size:includes.includes('products_size')
+              product_size: includes.includes('products_size')
             }
           },
           delivery_address: includes.includes('delivery_address') && {
@@ -74,7 +74,7 @@ class CustomerOrderController {
                 media: { select: { media: true } }
               }
             },
-            product_size:true
+            product_size: true
           }
         },
         payment_method: true,
@@ -132,16 +132,38 @@ class CustomerOrderController {
             data: products.map(product => ({
               product_id: product.id,
               quantity: product.quantity,
-              product_size_id: product.product_size_id
+              product_size_id: product.product_size_id,
+              price_order: product.price_order
             }))
           }
         },
       },
       include: {
         products: {
-          select: { id: true, quantity: true, product: true, product_size:{select:{id:true, name:true}} }
+          select: { id: true, quantity: true, product: true, price_order: true, product_size: { select: { id: true, name: true } } }
         },
-        payment_method: true
+        payment_method: true,
+        account: {
+          select: {
+            id: true,
+            email: true,
+            telephone: true,
+            fullname: true
+          }
+        },
+        delivery_address: {
+          select: {
+            id: true,
+            consignee_s_name: true,
+            consignee_s_telephone: true,
+            short_address: true,
+            is_default: true,
+            delete: true,
+            province: { select: { name: true } },
+            district: { select: { name: true } },
+            ward: { select: { name: true } },
+          }
+        },
       }
     })
     let payment_gateway
@@ -153,7 +175,11 @@ class CustomerOrderController {
       )
       payment_gateway = responseGateway
     }
-    return res.send(transformDataHelper({ ...response, payment_gateway: payment_gateway }))
+    const order = { ...response, payment_gateway: payment_gateway }
+    if (paymentMethod.method_key === "CASH") {
+      await new SendmailService().sendBillOrder(order)
+    }
+    return res.send(transformDataHelper(order))
   }
 
   async update(req: Request, res: Response) {

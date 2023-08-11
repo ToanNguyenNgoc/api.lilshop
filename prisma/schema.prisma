@@ -297,6 +297,7 @@ model ProductsOnOrders{
   quantity          Int
   product_size      ProductSize? @relation(fields: [product_size_id], references: [id])
   product_size_id   Int?
+  price_order       Int?
   status            Boolean @default(true)
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())

@@ -47,7 +47,8 @@ customerRoute
     .post(
         '/orders',
         authMiddleware.authentication,
-        asyncMiddleware(customerOrderController.create)
+        // asyncMiddleware(customerOrderController.create)
+        customerOrderController.create
     )
 
 export default customerRoute

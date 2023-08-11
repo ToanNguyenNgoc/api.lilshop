@@ -105,7 +105,7 @@ class AuthController {
       })
       if (!user) throw new ErrorException(404, "Email does not exist")
       const token = generateTokenForgot(email)
-      await SendmailService.forgot(email, token, platform)
+      await new SendmailService().forgot(email, token, platform)
       return res.send(transformDataHelper({ message: `An email send to ${email}` }))
     }
     if (token) {
