@@ -1,5 +1,5 @@
 import sgMail from "@sendgrid/mail"
-import { forgotTemplate } from "~/templates/mail"
+import { forgotTemplate, orderTemplate } from "~/templates/mail"
 
 export class SendmailService {
     static async forgot(email: string, token: string, platform: 'CLIENT' | 'ADMIN') {
@@ -16,5 +16,9 @@ export class SendmailService {
                     `${process.env.SEND_MAIL_REDIRECT_URL_ADMIN}?token=${token}`
             ),
         })
+    }
+    static async sendBillOrder() {
+        sgMail.setApiKey(process.env.SEND_GRID_MAIL_KEY || '')
+        return
     }
 }

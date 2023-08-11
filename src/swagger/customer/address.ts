@@ -3,6 +3,8 @@ import { PathRequest } from "../type";
 export const postAddressSchema = {
     type: 'object',
     properties: {
+        consignee_s_name:{type:'string'},
+        consignee_s_telephone:{type:'string'},
         short_address: { type: 'string' },
         province_code: { type: 'integer' },
         district_code: { type: 'integer' },

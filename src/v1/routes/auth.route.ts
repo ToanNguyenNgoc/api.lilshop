@@ -13,6 +13,6 @@ authRoute.post(
 )
 authRoute.get('/profile', authMiddleware.authentication, asyncMiddleware(authController.profile))
 authRoute.get('/roles', authMiddleware.authentication, asyncMiddleware(authController.findRolesByUser))
-
+authRoute.post('/refresh', asyncMiddleware(authController.refreshToken))
 
 export default authRoute

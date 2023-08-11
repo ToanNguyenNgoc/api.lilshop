@@ -11,7 +11,8 @@ export const postOrderSchema = {
                 type: 'object',
                 properties: {
                     product_id: { type: 'integer' },
-                    quantity: { type: 'integer' }
+                    quantity: { type: 'integer' },
+                    product_size_id: { type: 'integer' }
                 }
             }
         },
@@ -55,7 +56,7 @@ export const getOrders: PathRequest = {
             in: 'query',
             name: 'includes',
             type: 'string',
-            description: 'Includes: products|delivery_address',
+            description: 'Includes: products|products_size|delivery_address',
             required: false
         },
     ],

@@ -55,6 +55,8 @@ class CustomerAddressController {
     address.is_default = body.is_default
     address.lat = body.lat
     address.long = body.long
+    address.consignee_s_name = body.consignee_s_name
+    address.consignee_s_telephone = body.consignee_s_telephone
     await validatorHelper(address)
     if (body.is_default === true) {
       await prismaClient.accountAddress.updateMany({
@@ -85,6 +87,8 @@ class CustomerAddressController {
     address.is_default = body.is_default
     address.lat = body.lat
     address.long = body.long
+    address.consignee_s_name = body.consignee_s_name
+    address.consignee_s_telephone = body.consignee_s_telephone
     if (body.is_default === true) {
       await prismaClient.accountAddress.updateMany({
         where: { account_id: user.id },

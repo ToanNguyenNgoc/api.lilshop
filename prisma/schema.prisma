@@ -51,6 +51,8 @@ model AccountAddress{
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
   orders            Order[]
+  consignee_s_name  String? @db.VarChar(50)
+  consignee_s_telephone  String? @db.VarChar(12)
   @@map("tb_account_address")
 }
 
@@ -210,6 +212,7 @@ model Product{
   id                Int @id @default(autoincrement())
   name              String @db.VarChar(250)
   name_slugify      String @db.Char(250)
+  thumbnail_url     String? @db.VarChar(250)
   price_original    Int @db.Int
   price             Int @db.Int
   price_special     Int @db.Int
@@ -253,6 +256,7 @@ model ProductSize{
   status            Boolean @default(true)
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
+  productsOnOrders  ProductsOnOrders[]
   @@map("tb_product_size")
 }
 model PaymentMethod{
@@ -291,6 +295,8 @@ model ProductsOnOrders{
   order             Order @relation(fields: [order_id], references: [id])
   order_id          Int
   quantity          Int
+  product_size      ProductSize? @relation(fields: [product_size_id], references: [id])
+  product_size_id   Int?
   status            Boolean @default(true)
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
@@ -301,7 +307,7 @@ model Order{
   products          ProductsOnOrders[]
   account           Account @relation(fields: [account_id], references: [id])
   account_id        Int
-  payment_method   PaymentMethod @relation(fields: [payment_method_id], references: [id])
+  payment_method    PaymentMethod @relation(fields: [payment_method_id], references: [id])
   payment_method_id Int
   delivery_address  AccountAddress @relation(fields: [address_id], references: [id])
   address_id        Int

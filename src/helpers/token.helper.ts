@@ -1,14 +1,24 @@
 import jwt from "jsonwebtoken"
+import moment from "moment"
 import { aesDecode, aesEncode, dotenvInitialize } from "~/utils"
 
 dotenvInitialize()
-export const generateToken = (id: number, isManager: boolean): string => {
+
+export const generateRefreshToken = (email: string, uA: any) => {
+  return aesEncode(JSON.stringify({ email, uA }))
+}
+export const generateToken = (id: number, manager: boolean) => {
   const accessToken = jwt.sign({
-    id: id,
-    manager: isManager
+    ctx: aesEncode(JSON.stringify({ id, manager }))
   }, process.env.JWT_SECRET_KET || 'jwt',
-    { expiresIn: '10d' })
-  return accessToken
+    { expiresIn: '2m' })
+  const currentTime = new Date()
+  const newTime = currentTime.getTime() + (60 * 1000 * 2) + (60 * 1000 * 60 * Number(process.env.TIME_ZONE_UTC || 0))
+  const token_expired_at = moment(newTime).format('YYYY-MM-DD HH:mm:ss');
+  return {
+    accessToken,
+    token_expired_at
+  }
 }
 
 export const generateTokenForgot = (email: string) => {

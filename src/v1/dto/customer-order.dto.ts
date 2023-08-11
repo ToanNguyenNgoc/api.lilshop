@@ -6,6 +6,9 @@ class OrderProductIds {
 
     @IsNumber()
     quantity!: number;
+
+    @IsNumber()
+    product_size_id!: number
 }
 export class CreateCustomerOrderDTO {
     @IsNumber()

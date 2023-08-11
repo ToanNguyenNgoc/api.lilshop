@@ -15,6 +15,8 @@ class App {
     this.config()
   }
   private config(): void {
+    this.app.use(cookieParser())
+    this.app.use(bodyParser.json({ limit: '50mb' }))
     this.app.use(helmet())
     this.app.use(cors({
       origin: this.origin_cors,
@@ -22,9 +24,6 @@ class App {
       preflightContinue: true,
       credentials: true
     }))
-
-    this.app.use(cookieParser())
-    this.app.use(bodyParser.json({ limit: '50mb' }))
     initializeRouteV1(this.app)
   }
 }

@@ -2,6 +2,12 @@ import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 
 export class CreateCustomerAddressDTO {
     @IsNotEmpty()
+    consignee_s_name!:string;
+
+    @IsNotEmpty()
+    consignee_s_telephone!:string;
+
+    @IsNotEmpty()
     short_address!: string;
 
     @IsNumber()
@@ -23,6 +29,12 @@ export class CreateCustomerAddressDTO {
     long!: number
 }
 export class UpdateCustomerAddressDTO {
+    @IsOptional()
+    consignee_s_name!:string;
+
+    @IsOptional()
+    consignee_s_telephone!:string;
+
     @IsOptional()
     short_address!: string;
 

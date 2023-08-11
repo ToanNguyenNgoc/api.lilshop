@@ -1,7 +1,7 @@
 import { Response, NextFunction } from "express"
 import { RequestHeader } from "~/interfaces"
 import jwt from "jsonwebtoken"
-import { dotenvInitialize, encode } from "~/utils"
+import { aesDecode, dotenvInitialize, encode } from "~/utils"
 import { PrismaClient } from "@prisma/client"
 import { KEY } from "~/constants"
 
@@ -12,8 +12,9 @@ export const authMiddleware = {
     const authorization = req.headers.authorization
     if (!authorization) return res.status(401).send({ statusCode: 401, message: 'Unauthenticated' })
     const accessToken = authorization.split(" ")[1]
-    jwt.verify(accessToken, process.env.JWT_SECRET_KET || 'jwt', async (err, user) => {
+    jwt.verify(accessToken, process.env.JWT_SECRET_KET || 'jwt', async (err, jwtDecode: any) => {
       if (err) return res.status(401).send({ statusCode: 401, message: 'Unauthenticated' })
+      const user = JSON.parse(aesDecode(jwtDecode.ctx))
       req.user = user
       next()
     })

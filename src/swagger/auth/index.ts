@@ -110,3 +110,10 @@ export const roleAuth: PathRequest = {
     '200': { description: 'Return user roles' }
   }
 }
+export const refreshToken: PathRequest = {
+  tags: ['Auth'],
+  summary: 'Auth refresh token',
+  responses: {
+    '200': { description: 'Return refresh token' }
+  }
+}

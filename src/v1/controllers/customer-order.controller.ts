@@ -21,7 +21,8 @@ class CustomerOrderController {
         include: {
           products: {
             include: {
-              product: includes.includes('products')
+              product: includes.includes('products'),
+              product_size:includes.includes('products_size')
             }
           },
           delivery_address: includes.includes('delivery_address') && {
@@ -72,7 +73,8 @@ class CustomerOrderController {
               include: {
                 media: { select: { media: true } }
               }
-            }
+            },
+            product_size:true
           }
         },
         payment_method: true,
@@ -104,10 +106,13 @@ class CustomerOrderController {
       },
     })
     const products = productables.map(productable => {
-      const quantity = body.product_ids.find(product_id => product_id.product_id === productable.id)?.quantity || 1
+      const productItem = body.product_ids.find(product_id => product_id.product_id === productable.id)
+      const quantity = productItem?.quantity || 1
+      const product_size_id = productItem?.product_size_id || 1
       return {
         ...productable,
         quantity: quantity,
+        product_size_id: product_size_id,
         price_order: productable.price_special < productable.price ?
           quantity * productable.price_special
           :
@@ -126,14 +131,15 @@ class CustomerOrderController {
           createMany: {
             data: products.map(product => ({
               product_id: product.id,
-              quantity: product.quantity
+              quantity: product.quantity,
+              product_size_id: product.product_size_id
             }))
           }
         },
       },
       include: {
         products: {
-          select: { id: true, quantity: true, product: true }
+          select: { id: true, quantity: true, product: true, product_size:{select:{id:true, name:true}} }
         },
         payment_method: true
       }

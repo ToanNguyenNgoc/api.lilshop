@@ -6,7 +6,8 @@ import {
   validatorHelper,
   generateToken,
   generateTokenForgot,
-  decodeTokenForgot
+  decodeTokenForgot,
+  generateRefreshToken
 } from '~/helpers'
 import { LoginDTO, RegisterDTO } from '~/v1/dto'
 import { omit } from "lodash"
@@ -15,9 +16,10 @@ import { RequestHeader } from '~/interfaces'
 import { prismaClient } from '~/prisma-client'
 import { ForgotPassword } from '../dto/account.dto'
 import { SendmailService } from '~/services'
+import { aesDecode } from '~/utils'
+import { COOKIE_AGE } from '~/constants'
 
 class AuthController {
-
   async login(req: Request, res: Response, next: NextFunction) {
     const body = new LoginDTO()
     body.email = req.body.email
@@ -32,11 +34,22 @@ class AuthController {
     if (!response.status) throw new ErrorException(403, `Account is blocked`)
     const passwordMatch = await comparePassword(body.password, response.password)
     if (!passwordMatch) throw new ErrorException(403, 'Password is wrong')
-    const accessToken = generateToken(response.id, response.manager)
-    res.send(transformDataHelper(omit({
-      ...response,
-      accessToken: accessToken
-    }, 'password')))
+    const { accessToken, token_expired_at } = generateToken(response.id, response.manager)
+    const refreshToken = generateRefreshToken(
+      response.email, req.headers['user-agent']
+    )
+    res
+      .cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: COOKIE_AGE
+      })
+      .send(transformDataHelper(omit({
+        ...response,
+        accessToken,
+        token_expired_at
+      }, 'password')))
   }
   async register(req: Request, res: Response) {
     const body = new RegisterDTO()
@@ -109,6 +122,19 @@ class AuthController {
       })
       return res.send(transformDataHelper({ message: "Change password success" }))
     }
+  }
+  async refreshToken(req: Request, res: Response) {
+    const obj: any = JSON.parse(aesDecode(req.cookies.refreshToken))
+    if (obj.uA !== req.headers['user-agent'])
+      throw new ErrorException(401, "Unauthenticated")
+    const user = await prismaClient.account.findFirst({
+      where: {
+        email: obj.email
+      }
+    })
+    if (!user) throw new ErrorException(401, "Unauthenticated")
+    const { accessToken, token_expired_at } = generateToken(user?.id, user?.manager)
+    return res.send(transformDataHelper({ accessToken, token_expired_at }))
   }
 }
 export const authController = new AuthController()
