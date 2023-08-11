@@ -69,11 +69,7 @@ class CustomerOrderController {
       include: {
         products: {
           include: {
-            product: {
-              include: {
-                media: { select: { media: true } }
-              }
-            },
+            product: true,
             product_size: true
           }
         },
