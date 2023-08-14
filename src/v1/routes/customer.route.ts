@@ -50,5 +50,9 @@ customerRoute
         asyncMiddleware(customerOrderController.create)
         // customerOrderController.create
     )
+    .delete(
+        '/orders',
+        customerOrderController.delete
+    )
 
 export default customerRoute
