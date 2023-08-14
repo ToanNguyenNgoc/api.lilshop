@@ -17,7 +17,24 @@ class App {
   private config(): void {
     this.app.use(cookieParser())
     this.app.use(bodyParser.json({ limit: '50mb' }))
-    this.app.use(helmet())
+    this.app.use(helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: [
+            "'self'",
+            "https://www.googletagmanager.com",
+            "'self'",
+            "https://www.google-analytics.com",
+            "'unsafe-inline'",
+            ...this.origin_cors,
+          ],
+          imgSrc: ["'self'", ...this.origin_cors],
+        },
+      },
+      crossOriginEmbedderPolicy: false,
+      crossOriginResourcePolicy: false,
+    }));
     this.app.use(cors({
       origin: this.origin_cors,
       methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],

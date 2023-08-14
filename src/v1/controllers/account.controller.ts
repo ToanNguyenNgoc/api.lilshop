@@ -46,7 +46,7 @@ class AccountController {
     const response = await prisma.account.findFirst({
       where: { id: id, deleted: false },
       select: {
-        fullname: true, email: true, telephone: true, status: true,
+        fullname: true, email: true,avatar:true, telephone: true, status: true,
         deleted: true, created_at: true, updated_at: true, manager: true,
         roles: { select: { role: true } }
       }

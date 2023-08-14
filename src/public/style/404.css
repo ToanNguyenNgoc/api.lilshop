@@ -622,7 +622,7 @@ body {
   height: 20rem;
   width: 2px;
   background-color: #DB242A;
-  left: calc(50% - 1px);
+  left: calc(50% - 15px);
   bottom: 20rem
 }
 
@@ -715,7 +715,7 @@ body {
 .cat-upper .cat-leg:nth-child(2) {
   border-top-left-radius: 0;
   border-top-right-radius: 100px;
-  right: 10px
+  right: 30px
 }
 
 .cat-upper .cat-leg:nth-child(2):after {

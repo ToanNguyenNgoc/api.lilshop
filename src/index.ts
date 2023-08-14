@@ -13,7 +13,7 @@ dotenv.config()
 discordBotConfig()
 ///
 
-const PORT = process.env.POST || 4000
+const PORT = process.env.POST || 4001
 const specs = swaggerJSDoc(swaggerJsDocOptions)
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(specs))
 app.use(errHandler)
@@ -26,6 +26,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get('/', (req, res) => res.render('index'))
 app.get('*', (req, res) => res.render('404'));
 
-app.listen(PORT, () => {
+app.listen(PORT,() => {
   console.log(`Server is running on port: ${PORT}`)
 })
