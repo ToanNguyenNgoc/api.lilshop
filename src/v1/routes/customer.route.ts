@@ -48,11 +48,6 @@ customerRoute
         '/orders',
         authMiddleware.authentication,
         asyncMiddleware(customerOrderController.create)
-        // customerOrderController.create
-    )
-    .delete(
-        '/orders',
-        customerOrderController.delete
     )
 
 export default customerRoute

@@ -1,10 +1,12 @@
 import { Request, Response } from "express"
+import { ORDER_DELIVERY } from "~/constants"
 import { ErrorException } from "~/exceptions"
 import { paginationData, transformDataHelper } from "~/helpers"
 import { validateOrderHelper } from "~/helpers/validate-order.helper"
 import { RequestHeader } from "~/interfaces"
 import { prismaClient } from "~/prisma-client"
-import { SendmailService, VnPayService } from "~/services"
+import { OrderService, SendmailService, VnPayService } from "~/services"
+
 
 class CustomerOrderController {
   async findAll(req: RequestHeader, res: Response) {
@@ -86,6 +88,7 @@ class CustomerOrderController {
             ward: { select: { name: true } },
           }
         },
+        order_deliveries: true
       }
     })
     if (!response) throw new ErrorException(404, "Resource not found")
@@ -133,6 +136,12 @@ class CustomerOrderController {
             }))
           }
         },
+        order_deliveries: {
+          create: {
+            status_name: ORDER_DELIVERY.INIT.key,
+            note: ORDER_DELIVERY.INIT.txt
+          }
+        }
       },
       include: {
         products: {
@@ -173,6 +182,7 @@ class CustomerOrderController {
     }
     const order = { ...response, payment_gateway: payment_gateway }
     if (paymentMethod.method_key === "CASH") {
+      await OrderService.methodCash(response.id, amount, `${productables.map(i => i.name).join(',')}`)
       await new SendmailService().sendBillOrder(order)
     }
     return res.send(transformDataHelper(order))

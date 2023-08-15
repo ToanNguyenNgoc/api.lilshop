@@ -34,7 +34,14 @@ import {
   getOrder,
   getOrders
 } from "./customer"
-import { postPaymentMethod, postPaymentMethodSchema, getPaymentMethods, putPaymentMethod, putPaymentMethodSchema } from "./payment-method"
+import {
+  postPaymentMethod,
+  postPaymentMethodSchema,
+  getPaymentMethods,
+  putPaymentMethod,
+  putPaymentMethodSchema
+} from "./payment-method"
+import { getOrdersAdmin, getOrderAdmin } from "./order"
 
 import { dotenvInitialize } from '~/utils'
 
@@ -94,6 +101,7 @@ const swaggerJsDocOptions: Options = {
       { name: 'Category', description: 'Category API Mapping' },
       { name: 'Customer', description: 'Customer API Mapping' },
       { name: 'Initial', description: 'Initial role & account API Mapping' },
+      { name: 'Order', description: 'Order API Mapping' },
       { name: 'Product & Product media & Product size', description: 'Product API Mapping' },
       { name: 'Province', description: 'Province API Mapping' },
       { name: 'Payment method', description: 'Payment method API Mapping' },
@@ -152,6 +160,9 @@ const swaggerJsDocOptions: Options = {
 
       '/paymentmethods': { get: getPaymentMethods, post: postPaymentMethod },
       '/paymentmethods/{id}': { put: putPaymentMethod },
+
+      '/orders': { get: getOrdersAdmin },
+      '/orders/{id}': { get: getOrderAdmin }
     }
   },
   apis: ['./v1/routes/*.ts']

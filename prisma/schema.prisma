@@ -27,6 +27,7 @@ model Account{
   avatar            String? @db.VarChar(255)
   addresses         AccountAddress[]
   orders            Order[]
+  order_deliveries    OrderDelivery[]
   @@fulltext([fullname])
   @@fulltext([fullname, email])
   @@fulltext([fullname, email, telephone])
@@ -277,11 +278,11 @@ model PaymentGateway{
   transaction_txn   String @id
   transaction       String @db.VarChar(20)
   amount            Int
-  description       String @db.VarChar(200)
-  payment_url       String @db.VarChar(1000)
-  callback_url      String @db.VarChar(500)
-  secure_hash       String @db.VarChar(500)
-  status            String @db.VarChar(50) @default("PENDING")
+  description       String? @db.VarChar(200)
+  payment_url       String? @db.VarChar(1000)
+  callback_url      String? @db.VarChar(500)
+  secure_hash       String? @db.VarChar(500)
+  status            String? @db.VarChar(50) @default("PENDING")
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
   order             Order @relation(fields: [order_id], references: [id])
@@ -321,5 +322,19 @@ model Order{
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
   payment_gateway   PaymentGateway?
+  note              String? @db.VarChar(250)
+  order_deliveries  OrderDelivery[]
   @@map("tb_order")
+}
+model OrderDelivery{
+  id                Int @id @default(autoincrement())
+  status_name       String @db.VarChar(100)
+  note              String @db.VarChar(250)
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  account           Account? @relation(fields: [created_by], references: [id])
+  created_by        Int?   
+  order             Order? @relation(fields: [order_id], references: [id])
+  order_id          Int?
+  @@map("tb_order_delivery")  
 }
