@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client"
 import { Request, Response } from "express"
 import { omit } from "lodash"
+import { KEY } from "~/constants"
 import { ErrorException } from "~/exceptions"
 import { generatePassword, paginationData, transformDataHelper, validateRolesExist, validatorHelper } from "~/helpers"
-import { convertBoolean, convertOrderBy } from "~/utils"
+import { convertBoolean, convertOrderBy, decode } from "~/utils"
 import { CreateAccountDTO, UpdateAccountDTO } from "~/v1/dto/account.dto"
 
 const prisma = new PrismaClient()
@@ -30,7 +31,10 @@ class AccountController {
         select: {
           id: true,
           fullname: true, email: true, telephone: true, status: true,
-          deleted: true, created_at: true, updated_at: true, manager: true, avatar:true
+          deleted: true, created_at: true, updated_at: true, manager: true, avatar: true,
+          roles: includes.includes('roles') && {
+            select: { role: true }
+          }
         },
         skip: ((page * limit) - limit),
         take: limit,
@@ -46,7 +50,7 @@ class AccountController {
     const response = await prisma.account.findFirst({
       where: { id: id, deleted: false },
       select: {
-        fullname: true, email: true,avatar:true, telephone: true, status: true,
+        fullname: true, email: true, avatar: true, telephone: true, status: true,
         deleted: true, created_at: true, updated_at: true, manager: true,
         roles: { select: { role: true } }
       }

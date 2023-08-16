@@ -1,6 +1,6 @@
 import { accountController } from "~/v1/controllers";
 import { Router } from "express";
-import { authMiddleware, asyncMiddleware } from "~/middlewares";
+import { authMiddleware, asyncMiddleware, protectedMiddleware } from "~/middlewares";
 
 const accountRoute = Router()
 
@@ -27,6 +27,7 @@ accountRoute.put(
   '/:id',
   authMiddleware.authentication,
   authMiddleware.role,
+  protectedMiddleware.superAdmin,
   asyncMiddleware(accountController.update)
 )
 
@@ -34,6 +35,7 @@ accountRoute.delete(
   '/:id',
   authMiddleware.authentication,
   authMiddleware.role,
+  protectedMiddleware.superAdmin,
   asyncMiddleware(accountController.delete)
 )
 

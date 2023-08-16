@@ -32,7 +32,6 @@ export class UpdateAccountDTO {
   email!: string
 
   @IsOptional()
-  @IsEmail()
   telephone!: string
 
   @IsOptional()
