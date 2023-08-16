@@ -4,7 +4,6 @@ import { ErrorException } from "~/exceptions"
 export const validatorHelper = async <T extends object>(body: T) => {
   const errors = await validate(body)
   if (errors.length > 0) {
-    console.log(errors)
     const constraints = errors.map(i =>
       i.constraints?.isNotEmpty ||
       i.constraints?.isArray ||

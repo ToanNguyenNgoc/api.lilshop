@@ -41,7 +41,7 @@ import {
   putPaymentMethod,
   putPaymentMethodSchema
 } from "./payment-method"
-import { getOrdersAdmin, getOrderAdmin } from "./order"
+import { getOrdersAdmin, getOrderAdmin, postOrderAdmin } from "./order"
 
 import { dotenvInitialize } from '~/utils'
 
@@ -161,7 +161,7 @@ const swaggerJsDocOptions: Options = {
       '/paymentmethods': { get: getPaymentMethods, post: postPaymentMethod },
       '/paymentmethods/{id}': { put: putPaymentMethod },
 
-      '/orders': { get: getOrdersAdmin },
+      '/orders': { get: getOrdersAdmin, post: postOrderAdmin },
       '/orders/{id}': { get: getOrderAdmin }
     }
   },

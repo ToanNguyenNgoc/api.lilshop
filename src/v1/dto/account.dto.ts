@@ -32,7 +32,6 @@ export class UpdateAccountDTO {
   email!: string
 
   @IsOptional()
-  @IsEmail()
   telephone!: string
 
   @IsOptional()
@@ -48,7 +47,7 @@ export class UpdateAccountDTO {
   @IsArray()
   roles!: Array<number>
 }
-export class ForgotPassword{
+export class ForgotPassword {
   @IsNotEmpty()
-  password!:string
+  password!: string
 }

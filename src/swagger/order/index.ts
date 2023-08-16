@@ -38,9 +38,29 @@ export const getOrderAdmin: PathRequest = {
   summary: 'v1/orders/:id.GET',
   security: [{ bearerAuth: [] }],
   parameters: [
-    { in: 'path', name: 'id', description: 'Order id', type: 'integer', default: true }
+    { in: 'path', name: 'id', description: 'Order id', type: 'integer', required: true }
   ],
   responses: {
     '200': { description: 'Return order' }
+  }
+}
+export const postOrderAdmin: PathRequest = {
+  tags: ['Order'],
+  summary: 'v1/orders.POST',
+  security: [
+    { bearerAuth: [] }
+  ],
+  requestBody: {
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/postOrderSchema',
+        }
+      }
+    },
+    required: true
+  },
+  responses: {
+    '200': { description: 'Return new order' }
   }
 }

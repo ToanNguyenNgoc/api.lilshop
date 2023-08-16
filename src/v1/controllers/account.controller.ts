@@ -30,7 +30,10 @@ class AccountController {
         select: {
           id: true,
           fullname: true, email: true, telephone: true, status: true,
-          deleted: true, created_at: true, updated_at: true, manager: true, avatar:true
+          deleted: true, created_at: true, updated_at: true, manager: true, avatar:true,
+          roles:{
+            select:{role:true}
+          }
         },
         skip: ((page * limit) - limit),
         take: limit,
