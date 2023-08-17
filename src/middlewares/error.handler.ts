@@ -29,5 +29,5 @@ export const errHandler = (err: any, req: Request, res: Response, next: NextFunc
     statusCode,
     message
   })
-  pushLogErrorDiscord(req, statusCode, message)
+  //pushLogErrorDiscord(req, statusCode, message)
 }

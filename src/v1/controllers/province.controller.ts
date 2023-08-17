@@ -17,7 +17,7 @@ class ProvinceController {
       })
       return res.send(transformDataHelper(paginationData(result, result.length, 1, result.length)))
     }
-    return res.send(paginationData(response, response.length, 1, response.length))
+    return res.send(transformDataHelper(paginationData(response, response.length, 1, response.length)))
   }
 
   async districtsByProvince(req: Request, res: Response) {
