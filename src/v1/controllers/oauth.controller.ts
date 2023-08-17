@@ -4,5 +4,9 @@ class OAuthController {
   async google(req: Request, res: Response) {
     return res.send('google')
   }
+  async googleRedirect(req: Request, res: Response) {
+    return res.send(req.user)
+  }
+
 }
-export const oAuthController = new OAuthController()
+export const oauthController = new OAuthController()

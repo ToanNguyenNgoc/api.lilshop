@@ -114,7 +114,7 @@ const swaggerJsDocOptions: Options = {
       '/accounts/{id}': { get: getDetailAccount, put: putAccount, delete: deleteAccount },
 
       '/auth/login': { post: login },
-      '/auth/login/google': { post: loginGoogle },
+      '/auth/login/google': { get: loginGoogle },
       '/auth/register': { post: register },
       '/auth/forgot': { post: forgot },
       '/auth/profile': { get: profile },
