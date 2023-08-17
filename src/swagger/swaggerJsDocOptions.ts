@@ -1,6 +1,6 @@
 import { Options } from 'swagger-jsdoc'
 import { getAccount, getDetailAccount, putAccount, putAccountSchema, postAccount, postAccountSchema, deleteAccount } from './account'
-import { login, loginSchema, register, profile, registerSchema, roleAuth, forgot, forgotSchema, refreshToken } from './auth'
+import { login, loginSchema, register, profile, registerSchema, roleAuth, forgot, forgotSchema, refreshToken, loginGoogle } from './auth'
 import { postBanner, putBanner } from '~/swagger/banner'
 import { postAccountInit, postAccountInitSchema } from '~/swagger/initial'
 import { getRole, postRole, postRoleSchema, putRole, putRoleSchema, getDetailRole, deleteRole } from '~/swagger/role'
@@ -114,6 +114,7 @@ const swaggerJsDocOptions: Options = {
       '/accounts/{id}': { get: getDetailAccount, put: putAccount, delete: deleteAccount },
 
       '/auth/login': { post: login },
+      '/auth/login/google': { post: loginGoogle },
       '/auth/register': { post: register },
       '/auth/forgot': { post: forgot },
       '/auth/profile': { get: profile },

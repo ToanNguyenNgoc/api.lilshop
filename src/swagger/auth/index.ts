@@ -41,6 +41,13 @@ export const login: PathRequest = {
     '200': { description: 'Return user information' }
   }
 }
+export const loginGoogle: PathRequest = {
+  tags: ['Auth'],
+  summary: 'Auth login google',
+  responses: {
+    '200': { description: 'Redirect to google login form' }
+  }
+}
 export const register: PathRequest = {
   tags: ['Auth'],
   summary: 'Auth register',
