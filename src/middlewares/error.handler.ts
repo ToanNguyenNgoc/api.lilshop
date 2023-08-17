@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 import { pushLogErrorDiscord } from "~/helpers"
+import { convertBoolean } from "~/utils"
 
 export const errHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   let error = { ...err }
@@ -29,5 +30,7 @@ export const errHandler = (err: any, req: Request, res: Response, next: NextFunc
     statusCode,
     message
   })
-  //pushLogErrorDiscord(req, statusCode, message)
+  if (convertBoolean(process.env.DISCORD_IS_PUSH_NOTI)) {
+    pushLogErrorDiscord(req, statusCode, message)
+  }
 }
