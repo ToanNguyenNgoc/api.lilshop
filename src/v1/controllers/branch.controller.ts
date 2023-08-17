@@ -45,8 +45,8 @@ class BranchController {
     body.ward_code = Number(req.body.ward_code)
     body.hotline = req.body.hotline
     body.email = req.body.email
-    body.lat = Number(req.body.lat)
-    body.long = Number(req.body.long)
+    body.lat = Number(req.body.lat || 0)
+    body.long = Number(req.body.long || 0)
     await validatorHelper(body)
     const response = await prismaClient.branch.create({
       data: body
