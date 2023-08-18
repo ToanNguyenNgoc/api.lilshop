@@ -11,19 +11,20 @@ class TagController {
     const limit = Number(req.query.limit || 15)
     const orderBy = convertOrderByProduct(req.query.sort)
     const includes: string[] = typeof req.query.includes === "string" ? req.query.includes.trim().split('|') : []
+    const _filter = {
+      deleted: false,
+      status: convertBoolean(req.query.status),
+      type: req.query.type ? String(req.query.type) : undefined
+    }
     const [data, total] = await prismaClient.$transaction([
       prismaClient.tag.findMany({
-        where: {
-          deleted: false,
-          status: convertBoolean(req.query.status),
-          type: req.query.type ? String(req.query.type) : undefined
-        },
+        where: _filter,
         include: { categories: includes.includes('category') },
         orderBy: orderBy,
         skip: ((page * limit) - limit),
         take: limit
       }),
-      prismaClient.tag.count({ where: {} })
+      prismaClient.tag.count({ where: _filter })
     ])
     return res.send(transformDataHelper(paginationData(data, total, page, limit)))
   }
