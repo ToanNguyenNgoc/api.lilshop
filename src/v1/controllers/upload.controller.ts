@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client"
 import { Request, Response, NextFunction, Express } from "express"
 import { ErrorException } from "~/exceptions"
 import { paginationData, transformDataHelper } from "~/helpers"
-import { MediaModel } from "~/v1/models"
+import { MediaModel } from "../models"
 
 const prisma = new PrismaClient()
 interface FileUp extends Express.Multer.File {

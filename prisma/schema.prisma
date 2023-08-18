@@ -14,7 +14,7 @@ datasource db {
 model Account{
   id                Int @id @default(autoincrement())
   fullname          String? @db.VarChar(255) 
-  telephone         String @db.VarChar(10) @unique
+  telephone         String? @db.VarChar(10) @unique
   email             String @db.VarChar(64) @unique
   password          String @db.VarChar(255)
   manager           Boolean @default(false)
@@ -27,7 +27,8 @@ model Account{
   avatar            String? @db.VarChar(255)
   addresses         AccountAddress[]
   orders            Order[]
-  order_deliveries    OrderDelivery[]
+  order_deliveries  OrderDelivery[]
+  social_platform   String? @db.VarChar(50)
   @@fulltext([fullname])
   @@fulltext([fullname, email])
   @@fulltext([fullname, email, telephone])

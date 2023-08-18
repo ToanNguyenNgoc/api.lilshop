@@ -22,3 +22,10 @@ export class RegisterDTO {
 
   manager!:boolean
 }
+export class UserGoogle{
+  fullname!:string;
+  email!:string;
+  avatar!:string;
+  social_platform!:string
+  password!: string
+}

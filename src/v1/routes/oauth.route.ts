@@ -2,6 +2,7 @@ import { Router } from "express"
 import { oauthController } from "../controllers"
 import { OAuth2Strategy } from "passport-google-oauth"
 import passport = require("passport");
+import { asyncMiddleware } from "~/middlewares";
 
 passport.serializeUser(function (user: any, cb) {
     cb(null, user);
@@ -29,7 +30,7 @@ oauthRoute
     .get(
         '/redirect/google',
         passport.authenticate('google', { failureRedirect: '/404' }),
-        oauthController.googleRedirect
+        asyncMiddleware(oauthController.googleRedirect)
     )
 
 export default oauthRoute
