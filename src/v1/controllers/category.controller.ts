@@ -11,6 +11,7 @@ class CategoryController {
     const limit = Number(req.query.limit || 15)
     const tag_id = req.query.tag_id as any
     const orderBy = convertOrderByProduct(req.query.sort)
+    const search = req.query.search as any
     const filter = {
       AND: [
         {
@@ -19,6 +20,7 @@ class CategoryController {
             { tag: { name_slugify: tag_id } }
           ]
         },
+        { name: search ? { contains: search } : {} },
         { deleted: false },
         { status: convertBoolean(req.query.status) },
       ],

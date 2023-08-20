@@ -185,6 +185,7 @@ model Tag{
   products          Product[]
   categories        Category[]
   @@map("tb_tag")
+  @@fulltext([name])
 }
 model Category{
   id                Int @id @default(autoincrement())
@@ -198,6 +199,7 @@ model Category{
   tag_id            Int?
   products          Product[]
   @@map("tb_category")
+  @@fulltext([name])
 }
 model ProductsOnBranches{
   branch            Branch @relation(fields: [branch_id], references: [id])

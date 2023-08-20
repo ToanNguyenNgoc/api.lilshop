@@ -10,11 +10,13 @@ class TagController {
     const page = Number(req.query.page || 1)
     const limit = Number(req.query.limit || 15)
     const orderBy = convertOrderByProduct(req.query.sort)
+    const search = req.query.search as any
     const includes: string[] = typeof req.query.includes === "string" ? req.query.includes.trim().split('|') : []
     const _filter = {
       deleted: false,
       status: convertBoolean(req.query.status),
-      type: req.query.type ? String(req.query.type) : undefined
+      type: req.query.type ? String(req.query.type) : undefined,
+      name: search ? { contains: search } : {}
     }
     const [data, total] = await prismaClient.$transaction([
       prismaClient.tag.findMany({
