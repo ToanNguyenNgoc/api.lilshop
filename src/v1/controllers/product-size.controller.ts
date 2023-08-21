@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { ErrorException } from "~/exceptions"
-import { transformDataHelper, validatorHelper } from "~/helpers"
+import { paginationData, transformDataHelper, validatorHelper } from "~/helpers"
 import { prismaClient } from "~/prisma-client"
 import { ProductSizeDTO, UpdateProductSizeDTO } from "~/v1/dto"
 
@@ -11,7 +11,7 @@ class ProductSizeController {
     const response = await prismaClient.productSize.findMany({
       where: { product_id: product_id }
     })
-    return res.send(transformDataHelper(response))
+    return res.send(transformDataHelper(paginationData(response, response.length, 1, response.length)))
   }
 
   async findById(req: Request, res: Response) {
