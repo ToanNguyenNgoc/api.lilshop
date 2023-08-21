@@ -4,6 +4,7 @@ export const postProductSchema = {
   type: 'object',
   properties: {
     name: { type: 'string' },
+    thumbnail_url:{type:'string'},
     price_original: { type: 'integer' },
     price: { type: 'integer' },
     price_special: { type: 'integer' },

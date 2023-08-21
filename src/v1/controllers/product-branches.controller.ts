@@ -14,10 +14,11 @@ class ProductBranchesController {
             },
             select: {
                 quantity: true,
-                status:true,
-                created_at:true,
+                status: true,
+                created_at: true,
                 branch: {
                     select: {
+                        id: true,
                         name: true,
                         short_address: true,
                         email: true,
@@ -25,9 +26,9 @@ class ProductBranchesController {
                         province: { select: { name: true } },
                         district: { select: { name: true } },
                         ward: { select: { name: true } },
-                    }
-                }
-            }
+                    },
+                },
+            },
         })
         return res.send(transformDataHelper(paginationData(response, response.length, 1, response.length)))
     }

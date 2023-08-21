@@ -120,18 +120,21 @@ class ProductController {
     const body = new CreateProductDTO()
     body.name = req.body.name
     body.name_slugify = slugify(req.body.name)
+    body.thumbnail_url = req.body.thumbnail_url
     body.price_original = req.body.price_original
     body.price = req.body.price
     body.price_special = req.body.price_special || req.body.price
     body.short_content = req.body.short_content
     body.tag_id = Number(req.body.tag_id)
-    body.category_id = Number(req.body.category_id)
+    body.category_id = Number(req.body.category_id) || undefined
     const tag = await prismaClient.tag.findFirst({ where: { id: body.tag_id, deleted: false } })
     if (!tag) throw new ErrorException(404, "Tag is not found")
-    const category = await prismaClient.category.findFirst({
-      where: { id: body.category_id, deleted: false, tag_id: body.tag_id }
-    })
-    if (!category) throw new ErrorException(404, `Category is children of ${tag.name}(id=${tag.id})`)
+    if (body.category_id) {
+      const category = await prismaClient.category.findFirst({
+        where: { id: body.category_id, deleted: false, tag_id: body.tag_id }
+      })
+      if (!category) throw new ErrorException(404, `Category is children of ${tag.name}(id=${tag.id})`)
+    }
     await validatorHelper(body)
     const response = await prismaClient.product.create({
       data: {
@@ -151,6 +154,7 @@ class ProductController {
     if (!response) throw new ErrorException(404, "Resource not found")
     const body = new UpdateProductDTO()
     body.name = req.body.name
+    body.thumbnail_url = req.body.thumbnail_url
     body.price = req.body.price
     body.price_original = req.body.price_original
     body.price_special = req.body.price_special || req.body.price

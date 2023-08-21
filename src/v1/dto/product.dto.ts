@@ -10,6 +10,8 @@ export class CreateProductDTO {
   @IsNumber()
   price_original!: number
 
+  thumbnail_url!:string
+
   @IsNumber()
   price!: number
 
@@ -23,8 +25,9 @@ export class CreateProductDTO {
   @IsNumber()
   tag_id!: number;
 
+  @IsOptional()
   @IsNumber()
-  category_id!: number
+  category_id!: number|undefined
 }
 
 export class UpdateProductDTO {
@@ -33,6 +36,8 @@ export class UpdateProductDTO {
 
   @IsOptional()
   name_slugify!: string
+
+  thumbnail_url!:string
 
   @IsOptional()
   @IsNumber()
