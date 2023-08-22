@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+import { ErrorException } from "~/exceptions"
 import { paginationData, transformDataHelper } from "~/helpers"
 import { prismaClient } from "~/prisma-client"
 
@@ -6,6 +7,7 @@ class OrderController {
   async findAll(req: Request, res: Response) {
     const { page, limit } = req.query
     const search = req.query.search as any
+    const includes = typeof req.query.includes === 'string' ? req.query.includes.split('|') : []
     const p = Number(page || 1)
     const l = Number(limit || 15)
     const [data, total] = await prismaClient.$transaction([
@@ -16,7 +18,14 @@ class OrderController {
           },
           payment_method: true,
           payment_gateway: true,
-          order_deliveries: {
+          delivery_address: includes.includes('delivery_address') && {
+            include: {
+              province: { select: { name: true } },
+              district: { select: { name: true } },
+              ward: { select: { name: true } },
+            }
+          },
+          order_deliveries: includes.includes("order_deliveries") && {
             orderBy: { created_at: 'desc' },
             take: 1
           },
@@ -31,7 +40,30 @@ class OrderController {
   }
 
   async findById(req: Request, res: Response) {
-    return res.send('findById')
+    const id = Number(req.params.id)
+    if (!id) throw new ErrorException(404, "Resource not found")
+    const data = await prismaClient.order.findFirst({
+      where: { id: id },
+      include: {
+        account: {
+          select: { avatar: true, id: true, email: true, telephone: true, fullname: true }
+        },
+        payment_method: true,
+        payment_gateway: true,
+        delivery_address: {
+          include: {
+            province: { select: { name: true } },
+            district: { select: { name: true } },
+            ward: { select: { name: true } },
+          }
+        },
+        order_deliveries: {
+          orderBy: { created_at: 'desc' }
+        },
+      },
+    })
+    if (!data) throw new ErrorException(404, "Resource not found")
+    return res.send(transformDataHelper(data))
   }
 
   async create(req: Request, res: Response) {

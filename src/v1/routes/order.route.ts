@@ -1,16 +1,21 @@
 import { Router } from "express"
 import { orderController } from "../controllers"
+import { asyncMiddleware, authMiddleware } from "~/middlewares"
 
 const orderRoute = Router()
 
 orderRoute
   .get(
     '/:id',
-    orderController.findById
+    authMiddleware.authentication,
+    authMiddleware.role,
+    asyncMiddleware(orderController.findById)
   )
   .get(
     '/',
-    orderController.findAll
+    authMiddleware.authentication,
+    authMiddleware.role,
+    asyncMiddleware(orderController.findAll)
   )
   .post(
     '/',

@@ -3,7 +3,7 @@ import { prismaClient } from "~/prisma-client";
 import { encode } from "~/utils";
 
 export class OrderService {
-  static methodCash(order_id: number, amount: number, description: string) {
+  static methodCode(order_id: number, amount: number, description: string) {
     const transaction_txn = encode(`${moment().format('DDHHmmss')}-${moment().milliseconds()}-${order_id}`);
     const createDate = moment().format('YYYYMMDDHHmmss');
     return prismaClient.paymentGateway.create({

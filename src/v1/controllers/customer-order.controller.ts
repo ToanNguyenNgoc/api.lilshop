@@ -181,8 +181,8 @@ class CustomerOrderController {
       payment_gateway = responseGateway
     }
     const order = { ...response, payment_gateway: payment_gateway }
-    if (paymentMethod.method_key === "CASH") {
-      await OrderService.methodCash(response.id, amount, `${productables.map(i => i.name).join(',')}`)
+    if (paymentMethod.method_key === "CODE") {
+      await OrderService.methodCode(response.id, amount, `${productables.map(i => i.name).join(',')}`)
       await new SendmailService().sendBillOrder(order)
     }
     return res.send(transformDataHelper(order))
