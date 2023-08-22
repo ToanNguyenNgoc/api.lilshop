@@ -124,3 +124,10 @@ export const refreshToken: PathRequest = {
     '200': { description: 'Return refresh token' }
   }
 }
+export const postLogout: PathRequest = {
+  tags: ['Auth'],
+  summary: 'Auth logout',
+  responses: {
+    '200': { description: 'Logout account' }
+  }
+}

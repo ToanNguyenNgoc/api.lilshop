@@ -136,5 +136,24 @@ class AuthController {
     const { accessToken, token_expired_at } = generateToken(user?.id, user?.manager)
     return res.send(transformDataHelper({ accessToken, token_expired_at }))
   }
+  async logout(req: Request, res: Response) {
+    res
+      .clearCookie('refreshToken', {
+        secure: true,
+        sameSite: 'lax',
+        domain: process.env.DOMAIN_CLIENT,
+      })
+      .clearCookie('token_expired_at', {
+        secure: true,
+        domain: process.env.DOMAIN_CLIENT,
+        sameSite: 'lax',
+      })
+      .clearCookie('accessToken', {
+        secure: true,
+        domain: process.env.DOMAIN_CLIENT,
+        sameSite: 'lax',
+      })
+    return res.send(transformDataHelper({ message: 'Logout success' }))
+  }
 }
 export const authController = new AuthController()
