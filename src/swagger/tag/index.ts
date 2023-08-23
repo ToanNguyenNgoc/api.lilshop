@@ -43,6 +43,14 @@ export const getTags: PathRequest = {
         enum: ['false', 'true']
       }
     },
+    {
+      in: 'query',
+      name: 'includes',
+      type: 'string',
+      description: 'Includes: categories',
+      default: '',
+      required: false
+    },
   ],
   responses: {
     '200': { description: 'Return list of tag' }

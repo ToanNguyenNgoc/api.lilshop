@@ -181,7 +181,7 @@ class CustomerOrderController {
       payment_gateway = responseGateway
     }
     const order = { ...response, payment_gateway: payment_gateway }
-    if (paymentMethod.method_key === "CODE") {
+    if (paymentMethod.method_key === "COD") {
       await OrderService.methodCode(response.id, amount, `${productables.map(i => i.name).join(',')}`)
       await new SendmailService().sendBillOrder(order)
     }

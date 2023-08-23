@@ -21,7 +21,7 @@ class TagController {
     const [data, total] = await prismaClient.$transaction([
       prismaClient.tag.findMany({
         where: _filter,
-        include: { categories: includes.includes('category') },
+        include: { categories: includes.includes('categories') },
         orderBy: orderBy,
         skip: ((page * limit) - limit),
         take: limit
