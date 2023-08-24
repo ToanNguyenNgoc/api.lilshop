@@ -16,8 +16,9 @@ import { RequestHeader } from '~/interfaces'
 import { prismaClient } from '~/prisma-client'
 import { ForgotPassword } from '../dto/account.dto'
 import { SendmailService } from '~/services'
-import { aesDecode } from '~/utils'
+import { aesDecode, decode } from '~/utils'
 import { COOKIE_AGE } from '~/constants'
+import jwt from "jsonwebtoken"
 
 class AuthController {
   async login(req: Request, res: Response, next: NextFunction) {
@@ -59,16 +60,30 @@ class AuthController {
     body.password = await generatePassword(req.body.password)
     body.manager = false
     await validatorHelper<RegisterDTO>(body)
-    if (await prismaClient.account.findUnique({ where: { email: body.email } })) {
+    const userEmail = await prismaClient.account.findUnique({ where: { email: body.email } })
+    if (!userEmail) {
+      if (await prismaClient.account.findUnique({ where: { telephone: body.telephone } })) {
+        throw new ErrorException(403, `Telephone belong to another account`)
+      }
+      const result = await prismaClient.account.create({ data: { ...body, verify: false } })
+      await new SendmailService().sendVerify(result.email, result.fullname || '')
+      return res.send(transformDataHelper(omit(result, ['password'])))
+    }
+    if (userEmail && userEmail.verify === false) {
+      const userTelephone = await prismaClient.account.findUnique({ where: { telephone: body.telephone } })
+      if (userTelephone && userTelephone.email !== body.email) {
+        throw new ErrorException(403, `Telephone belong to another account`)
+      }
+      const result = await prismaClient.account.update({
+        where: { email: body.email },
+        data: { telephone: body.telephone }
+      })
+      await new SendmailService().sendVerify(result.email, result.fullname || '')
+      return res.send(transformDataHelper(omit(result, ['password'])))
+    }
+    if (userEmail && userEmail.verify === true) {
       throw new ErrorException(403, `Email belong to another account`)
     }
-    if (await prismaClient.account.findUnique({ where: { telephone: body.telephone } })) {
-      throw new ErrorException(403, `Telephone belong to another account`)
-    }
-    const result = await prismaClient.account.create({
-      data: body
-    })
-    return res.send(transformDataHelper(omit(result, 'password')))
   }
   async profile(req: RequestHeader, res: Response) {
     const response = await prismaClient.account.findUnique({
@@ -135,6 +150,24 @@ class AuthController {
     if (!user) throw new ErrorException(401, "Unauthenticated")
     const { accessToken, token_expired_at } = generateToken(user?.id, user?.manager)
     return res.send(transformDataHelper({ accessToken, token_expired_at }))
+  }
+  async verify(req: Request, res: Response) {
+    try {
+      const token = req.query.token as string
+      jwt.verify(token, process.env.JWT_SECRET_KET || 'jwt', async (err, jwtDecode: any) => {
+        if (err) {
+          return res.redirect(`${process.env.GOOGLE_CALLBACK_CLIENT}/auth/verify?code=0`)
+        }
+        const email = JSON.parse(aesDecode(jwtDecode.ctx)).id
+        await prismaClient.account.update({
+          where: { email: email },
+          data: { verify: true }
+        })
+        return res.redirect(`${process.env.GOOGLE_CALLBACK_CLIENT}/auth/verify`)
+      })
+    } catch (error) {
+      return res.redirect(`${process.env.GOOGLE_CALLBACK_CLIENT}/auth/verify?code=0`)
+    }
   }
   async logout(req: Request, res: Response) {
     res

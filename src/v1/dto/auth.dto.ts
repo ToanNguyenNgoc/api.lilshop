@@ -21,6 +21,8 @@ export class RegisterDTO {
   password!: string
 
   manager!:boolean
+
+  verify!:boolean
 }
 export class UserGoogle{
   fullname!:string;

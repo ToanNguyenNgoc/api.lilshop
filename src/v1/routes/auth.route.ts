@@ -11,6 +11,7 @@ authRoute
     .get('/profile', authMiddleware.authentication, asyncMiddleware(authController.profile))
     .get('/roles', authMiddleware.authentication, asyncMiddleware(authController.findRolesByUser))
     .post('/refresh', asyncMiddleware(authController.refreshToken))
+    .get('/verify', asyncMiddleware(authController.verify))
     .post('/logout', authController.logout)
 
 export default authRoute

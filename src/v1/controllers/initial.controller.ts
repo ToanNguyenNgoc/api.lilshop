@@ -19,6 +19,7 @@ export class InitialController {
     newAccount.telephone = req.body.telephone
     newAccount.password = await generatePassword(req.body.password)
     newAccount.manager = true
+    newAccount.verify = true
     const response = await prisma.account.create({
       data: {
         ...newAccount,

@@ -5,10 +5,13 @@ import fs from "fs"
 import { handlebars } from "hbs"
 import moment from "moment"
 import { fmPrice } from "~/utils"
+import { generateToken } from "~/helpers"
 
 export class SendmailService {
   emailTemplateOrder = fs.readFileSync(path.join(__dirname, "../templates/order-mail.hbs"), "utf-8")
   templateOrder = handlebars.compile(this.emailTemplateOrder)
+
+  templateVerify = handlebars.compile(fs.readFileSync(path.join(__dirname, "../templates/verify-mail.hbs"), "utf-8"))
   async forgot(email: string, token: string, platform: 'CLIENT' | 'ADMIN') {
     sgMail.setApiKey(process.env.SEND_GRID_MAIL_KEY || '')
     return sgMail.send({
@@ -51,5 +54,18 @@ export class SendmailService {
     } catch (error) {
 
     }
+  }
+  async sendVerify(email: string, fullname: string) {
+    const {accessToken} = generateToken(email, false)
+    sgMail.setApiKey(process.env.SEND_GRID_MAIL_KEY || '')
+    return sgMail.send({
+      to: email,
+      from: process.env.SEND_GRID_MAIL_ORIGIN || '',
+      subject: 'Xác nhận tài khoản | Fashional Shop',
+      html: this.templateVerify({
+        callback: `${process.env.DOMAIN}/v1/auth/verify?token=${accessToken}`,
+        fullname
+      })
+    })
   }
 }

@@ -7,11 +7,11 @@ dotenvInitialize()
 export const generateRefreshToken = (email: string, uA: any) => {
   return aesEncode(JSON.stringify({ email, uA }))
 }
-export const generateToken = (id: number, manager: boolean) => {
+export const generateToken = (id: number|string, manager: boolean) => {
   const accessToken = jwt.sign({
     ctx: aesEncode(JSON.stringify({ id, manager }))
   }, process.env.JWT_SECRET_KET || 'jwt',
-    { expiresIn: '2d' })
+    { expiresIn: '2m' })
   const currentTime = new Date()
   const newTime = currentTime.getTime() + (60 * 1000 * 2) + (60 * 1000 * 60 * Number(process.env.TIME_ZONE_UTC || 0))
   const token_expired_at = moment(newTime).format('YYYY-MM-DD HH:mm:ss');
