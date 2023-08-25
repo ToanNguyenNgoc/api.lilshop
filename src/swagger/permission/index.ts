@@ -6,7 +6,7 @@ export const postPermissionSchema = {
     type: 'string',
   },
   example: '['
-    + '"accounts","roles","permissions","banners","products","products branches"'
+    + '"accounts","roles","permissions","banners","branches","products","products branches"'
     + ',"products medias","products sizes","tags","categories"'
     + ',"orders","paymentmethods"'
     + ']'

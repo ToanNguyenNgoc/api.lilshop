@@ -177,6 +177,17 @@ model Branch{
 model Banner{
   id                Int @id @default(autoincrement())
   name              String @db.VarChar(255)
+  image_url         String? @db.VarChar(255)
+  type              String @db.VarChar(50)
+  product_id        Int?
+  html_template     String? @db.VarChar(5000)
+  url               String? @db.VarChar(50)
+  keyword           String? @db.VarChar(25)
+  status            Boolean @default(true)
+  deleted           Boolean @default(false)
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  priority          Int?
   @@map("tb_banner")
 }
 model Tag{

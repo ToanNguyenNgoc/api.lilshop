@@ -6,7 +6,7 @@ const authRoute = Router()
 
 authRoute
     .post('/login', asyncMiddleware(authController.login))
-    .post('/register', asyncMiddleware(authController.register))
+    .post('/register', recaptchaMiddleware.verify, asyncMiddleware(authController.register))
     .post('/forgot', recaptchaMiddleware.verify, asyncMiddleware(authController.forgot))
     .get('/profile', authMiddleware.authentication, asyncMiddleware(authController.profile))
     .get('/roles', authMiddleware.authentication, asyncMiddleware(authController.findRolesByUser))

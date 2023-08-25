@@ -16,7 +16,7 @@ import { RequestHeader } from '~/interfaces'
 import { prismaClient } from '~/prisma-client'
 import { ForgotPassword } from '../dto/account.dto'
 import { SendmailService } from '~/services'
-import { aesDecode, decode } from '~/utils'
+import { aesDecode } from '~/utils'
 import { COOKIE_AGE } from '~/constants'
 import jwt from "jsonwebtoken"
 
@@ -33,6 +33,7 @@ class AuthController {
     })
     if (!response) throw new ErrorException(404, `Email ${body.email} is not registered`)
     if (!response.status) throw new ErrorException(403, `Account is blocked`)
+    if (!response.verify) throw new ErrorException(403, 'This account is not verify')
     const passwordMatch = await comparePassword(body.password, response.password)
     if (!passwordMatch) throw new ErrorException(403, 'Password is wrong')
     const { accessToken, token_expired_at } = generateToken(response.id, response.manager)

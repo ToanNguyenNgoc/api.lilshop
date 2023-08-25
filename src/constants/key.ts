@@ -6,6 +6,7 @@ export const KEY = {
   SPA: process.env.SPA || ''
 }
 export const COOKIE_AGE = oneDay * 30 * 1000 //Convert to milliseconds
+export const BANNER_TYPE = ['HTML', 'PRODUCT', 'SEARCH', 'HOME', 'VIDEO']
 export const ORDER_DELIVERY = {
   INIT: {
     key: 'INITIALIZATION',

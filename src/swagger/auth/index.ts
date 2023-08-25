@@ -13,7 +13,8 @@ export const registerSchema = {
     fullname: { type: 'string' },
     telephone: { type: 'string' },
     email: { type: 'string' },
-    password: { type: 'string' }
+    password: { type: 'string' },
+    recaptcha: { type: 'string' },
   }
 }
 export const forgotSchema = {

@@ -41,3 +41,17 @@ export function convertFilterCategoryProduct(req: Request) {
     category_ids
   }
 }
+export function convertOrderByBanner(type: any) {
+  let orderBy: any = { 'created_at': 'desc' }
+  switch (type) {
+    case 'created_at':
+      return orderBy = { 'created_at': 'asc' };
+    case 'priority':
+      return orderBy = { 'priority': 'asc' };
+    case '-priority':
+      return orderBy = { 'priority': 'desc' };
+    default:
+      break;
+  }
+  return orderBy
+}

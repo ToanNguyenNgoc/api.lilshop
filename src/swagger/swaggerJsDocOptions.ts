@@ -13,7 +13,7 @@ import {
   loginGoogle,
   postLogout
 } from './auth'
-import { postBanner, putBanner } from '~/swagger/banner'
+import { postBanner, putBanner, putBannerSchema, postBannerSchema, getBanners, getBanner, deleteBanner } from '~/swagger/banner'
 import { postAccountInit, postAccountInitSchema } from '~/swagger/initial'
 import { getRole, postRole, postRoleSchema, putRole, putRoleSchema, getDetailRole, deleteRole } from '~/swagger/role'
 import { postPermission, postPermissionSchema, getPermissions } from "~/swagger/permission"
@@ -83,6 +83,7 @@ const swaggerJsDocOptions: Options = {
         },
       },
       schemas: {
+        postBannerSchema, putBannerSchema,
         putAccountSchema, postAccountSchema,
         loginSchema, forgotSchema, registerSchema,
         postAccountInitSchema,
@@ -134,8 +135,8 @@ const swaggerJsDocOptions: Options = {
       '/auth/refresh': { post: refreshToken },
       '/auth/logout': { post: postLogout },
 
-      '/banners': { post: postBanner },
-      '/banners/{id}': { put: putBanner },
+      '/banners': { get: getBanners, post: postBanner },
+      '/banners/{id}': { get: getBanner, put: putBanner, delete:deleteBanner },
 
       '/branches': { get: getBranch, post: postBranch },
       '/branches/{id}': { get: getDetailBranch, put: putBranch, delete: deleteBranch },

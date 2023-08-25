@@ -9,7 +9,7 @@ export class CreateAccountDTO {
   email!: string;
 
   @IsOptional()
-  @Matches(/\.(jpg|jpeg|png|gif|bmp)$/, { message: 'Avatar is not match link' })
+  @Matches(/\.(jpg|jpeg|png|gif|bmp|webp|HEIC|PNG)$/, { message: 'Avatar is not match link' })
   avatar!: string
 
   @IsNotEmpty()
@@ -35,7 +35,7 @@ export class UpdateAccountDTO {
   telephone!: string
 
   @IsOptional()
-  @Matches(/\.(jpg|jpeg|png|gif|bmp)$/, { message: 'Avatar is not match link' })
+  @Matches(/\.(jpg|jpeg|png|gif|bmp|webp|HEIC|PNG)$/, { message: 'Avatar is not match link' })
   avatar!: string
 
 
