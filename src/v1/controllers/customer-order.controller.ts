@@ -115,7 +115,8 @@ class CustomerOrderController {
         price_order: productable.price_special < productable.price ?
           quantity * productable.price_special
           :
-          quantity * productable.price
+          quantity * productable.price,
+        branch_id: productItem?.branch_id
       }
     })
     const amount = products.reduce((total, product) => total + product.price_order, 0);
@@ -132,7 +133,8 @@ class CustomerOrderController {
               product_id: product.id,
               quantity: product.quantity,
               product_size_id: product.product_size_id,
-              price_order: product.price_order
+              price_order: product.price_order,
+              branch_id: product.branch_id
             }))
           }
         },

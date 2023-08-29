@@ -1,7 +1,11 @@
 import { Request, Response } from "express"
 import { ErrorException } from "~/exceptions"
-import { paginationData, transformDataHelper } from "~/helpers"
+import { paginationData, transformDataHelper, validatorHelper } from "~/helpers"
 import { prismaClient } from "~/prisma-client"
+import { UpdateOrderDTO } from "../dto"
+import { ORDER_DELIVERY } from "~/constants"
+import { RequestHeader } from "~/interfaces"
+import { omit } from "lodash"
 
 class OrderController {
   async findAll(req: Request, res: Response) {
@@ -70,8 +74,52 @@ class OrderController {
     return res.send('create')
   }
 
-  async update(req: Request, res: Response) {
-    return res.send('update')
+  async update(req: RequestHeader, res: Response) {
+    const id = Number(req.params.id)
+    const { body, user } = req
+    if (!id) throw new ErrorException(404, "Resource not found")
+    const updateOrder = new UpdateOrderDTO()
+    updateOrder.note = body.note
+    updateOrder.confirm = body.confirm
+    updateOrder.products = body.product_ids
+    await validatorHelper(updateOrder)
+    const order = await prismaClient.order.findFirst({
+      where: { id: id },
+      include: {
+        payment_method: true
+      }
+    })
+    if (!order) throw new ErrorException(404, "Resource not found")
+    const response = await prismaClient.order.update({
+      where: { id: id },
+      data: {
+        ...omit(updateOrder, ['products']),
+        confirm: !order.confirm ? updateOrder.confirm : undefined,
+        products: {
+          update: updateOrder.products.map(item => ({
+            data: {
+              branch_id: item.branch_id
+            },
+            where: { id: item.id }
+          }))
+        }
+      },
+      include: {
+        products: true
+      }
+    })
+    //[UPDATE] order delivery when employ confirm with customer
+    if (!order.confirm) {
+      await prismaClient.orderDelivery.create({
+        data: {
+          order_id: id,
+          status_name: ORDER_DELIVERY.CONF.key,
+          note: ORDER_DELIVERY.CONF.txt,
+          created_by: user.id
+        }
+      })
+    }
+    return res.send(transformDataHelper(response))
   }
 
   async delete(req: Request, res: Response) {

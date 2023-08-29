@@ -21,6 +21,7 @@ import customerRoute from "./customer.route"
 import paymentMethodRoute from "./payment-method.route"
 import paymentGatewayRoute from "./payment-gateway.route"
 import orderRoute from "./order.route"
+import orderDeliveryRoute from "./order-delivery.route"
 
 const initializeRouteV1 = (app: express.Application) => {
   app.use('/v1/accounts', accountRoute)
@@ -44,6 +45,7 @@ const initializeRouteV1 = (app: express.Application) => {
   app.use('/v1/provinces', provinceRouter)
   app.use('/v1/districts', districtRoute)
   app.use('/v1/orders', orderRoute)
+  app.use('/v1/orders', orderDeliveryRoute)
   app.use('/media', mediaRoute)
 }
 export default initializeRouteV1

@@ -47,7 +47,7 @@ export const postProductBranches: PathRequest = {
 }
 export const putProductBranches: PathRequest = {
     tags: ['Product & Product media & Product size'],
-    summary: 'v1/products/:id/branches/:child_id.POST',
+    summary: 'v1/products/:id/branches/:child_id.PUT',
     security: [{ bearerAuth: [] }],
     parameters: [
         { in: 'path', name: 'id', type: 'integer', description: 'Product id', required: true },

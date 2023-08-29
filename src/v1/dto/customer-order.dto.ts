@@ -1,4 +1,4 @@
-import { ArrayMinSize, IsArray, IsNumber, ValidateNested } from "class-validator";
+import { ArrayMinSize, IsArray, IsNumber, IsOptional, ValidateNested } from "class-validator";
 
 class OrderProductIds {
     @IsNumber()
@@ -9,6 +9,9 @@ class OrderProductIds {
 
     @IsNumber()
     product_size_id!: number
+
+    @IsOptional()
+    branch_id!:number
 }
 export class CreateCustomerOrderDTO {
     @IsNumber()

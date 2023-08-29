@@ -7,6 +7,10 @@ export const KEY = {
 }
 export const COOKIE_AGE = oneDay * 30 * 1000 //Convert to milliseconds
 export const BANNER_TYPE = ['HTML', 'PRODUCT', 'SEARCH', 'HOME', 'VIDEO']
+export const PM_METHOD = {
+  COD: 'COD',
+  VNPAY: 'VNPAY'
+}
 export const ORDER_DELIVERY = {
   INIT: {
     key: 'INITIALIZATION',
@@ -27,5 +31,9 @@ export const ORDER_DELIVERY = {
   REJECT: {
     key: 'REJECT',
     txt: 'Giao hàng thất bại'
+  },
+  REFUND: {
+    key: 'REFUND',
+    txt: 'Trả hàng'
   }
 }

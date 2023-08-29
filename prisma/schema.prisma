@@ -171,7 +171,7 @@ model Branch{
   hotline           String? @db.Char(20)
   email             String? @db.Char(50)
   products          ProductsOnBranches[]
-  orders            Order[]
+  products_on_orders ProductsOnOrders[]
   @@map("tb_branch")
 }
 model Banner{
@@ -322,6 +322,8 @@ model ProductsOnOrders{
   status            Boolean @default(true)
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
+  branch            Branch? @relation(fields: [branch_id], references: [id])
+  branch_id         Int?
   @@map("tb_products_on_orders")    
 }
 model Order{
@@ -333,9 +335,8 @@ model Order{
   payment_method_id Int
   delivery_address  AccountAddress @relation(fields: [address_id], references: [id])
   address_id        Int
-  branch            Branch? @relation(fields: [branch_id], references: [id])
-  branch_id         Int?
   status            Boolean @default(true)
+  confirm           Boolean @default(false)
   deleted           Boolean @default(false)
   amount            Int
   order_original    String @db.Char(20)

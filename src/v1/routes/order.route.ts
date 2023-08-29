@@ -23,6 +23,8 @@ orderRoute
   )
   .put(
     '/:id',
+    authMiddleware.authentication,
+    authMiddleware.role,
     orderController.update
   )
   .delete(

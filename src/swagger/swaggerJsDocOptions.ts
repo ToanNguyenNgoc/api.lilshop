@@ -53,7 +53,8 @@ import {
   putPaymentMethod,
   putPaymentMethodSchema
 } from "./payment-method"
-import { getOrdersAdmin, getOrderAdmin } from "./order"
+import { getOrdersAdmin, getOrderAdmin, putOrderAdmin, putOrderAdminSchema, postOrderAdminSchema } from "./order"
+import { postOrderDelivery, postOrderDeliverySchema } from "./order-delivery"
 
 import { dotenvInitialize } from '~/utils'
 
@@ -98,6 +99,8 @@ const swaggerJsDocOptions: Options = {
         postProductBranchesSchema, putProductBranchesSchema,
         postAddressSchema, putAddressSchema,
         postOrderSchema,
+        postOrderAdminSchema, putOrderAdminSchema,
+        postOrderDeliverySchema,
         postPaymentMethodSchema, putPaymentMethodSchema
       },
     },
@@ -136,7 +139,7 @@ const swaggerJsDocOptions: Options = {
       '/auth/logout': { post: postLogout },
 
       '/banners': { get: getBanners, post: postBanner },
-      '/banners/{id}': { get: getBanner, put: putBanner, delete:deleteBanner },
+      '/banners/{id}': { get: getBanner, put: putBanner, delete: deleteBanner },
 
       '/branches': { get: getBranch, post: postBranch },
       '/branches/{id}': { get: getDetailBranch, put: putBranch, delete: deleteBranch },
@@ -177,7 +180,8 @@ const swaggerJsDocOptions: Options = {
       '/paymentmethods/{id}': { put: putPaymentMethod },
 
       '/orders': { get: getOrdersAdmin },
-      '/orders/{id}': { get: getOrderAdmin }
+      '/orders/{id}': { get: getOrderAdmin, put: putOrderAdmin },
+      '/orders/{id}/deliveries': { post: postOrderDelivery }
     }
   },
   apis: ['./v1/routes/*.ts']

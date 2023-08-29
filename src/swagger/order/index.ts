@@ -4,12 +4,12 @@ export const postOrderAdminSchema = {
   type: 'object',
   properties: {
     address_id: { type: 'integer' },
-    branch_id: { type: 'integer' },
     product_ids: {
       type: 'array',
       items: {
         type: 'object',
         properties: {
+          branch_id: { type: 'integer' },
           product_id: { type: 'integer' },
           quantity: { type: 'integer' },
           product_size_id: { type: 'integer' }
@@ -17,6 +17,25 @@ export const postOrderAdminSchema = {
       }
     },
     payment_method_id: { type: 'integer' }
+  }
+}
+export const putOrderAdminSchema = {
+  type: 'object',
+  properties: {
+    product_ids: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: { type: 'integer' },
+          branch_id: { type: 'integer' },
+          product_id: { type: 'integer' },
+          quantity: { type: 'integer' },
+          product_size_id: { type: 'integer' }
+        }
+      }
+    },
+    confirm: { type: 'boolean' }
   }
 }
 
@@ -71,7 +90,7 @@ export const getOrderAdmin: PathRequest = {
     '200': { description: 'Return order' }
   }
 }
-export const postOrder = {
+export const postOrderAdmin = {
   tags: ['Order'],
   summary: 'v1/orders.POST',
   security: [
@@ -88,4 +107,25 @@ export const postOrder = {
     required: true
   },
   responses: { '200': { description: 'Return new order' } }
+}
+export const putOrderAdmin = {
+  tags: ['Order'],
+  summary: 'v1/orders/:id.PUT',
+  security: [
+    { bearerAuth: [] }
+  ],
+  parameters: [
+    { in: 'path', name: 'id', type: 'integer', description: 'Order id', required: true }
+  ],
+  requestBody: {
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/putOrderAdminSchema',
+        }
+      }
+    },
+    required: true
+  },
+  responses: { '200': { description: 'Return order' } }
 }

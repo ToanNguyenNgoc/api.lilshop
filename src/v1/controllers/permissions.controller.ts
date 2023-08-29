@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 class PermissionController {
   async findAll(req: Request, res: Response) {
     const [data, total] = await prisma.$transaction([
-      prisma.permission.findMany(),
+      prisma.permission.findMany({}),
       prisma.permission.count()
     ])
     return res.send(transformDataHelper({ data, total }))
@@ -35,7 +35,7 @@ class PermissionController {
     }).flat()
     const response = await prisma.permission.createMany({
       data: permissions,
-      skipDuplicates:true
+      skipDuplicates: true
     })
     return res.send(transformDataHelper(response))
   }
