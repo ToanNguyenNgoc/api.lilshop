@@ -17,7 +17,7 @@ import { prismaClient } from '~/prisma-client'
 import { ForgotPassword } from '../dto/account.dto'
 import { SendmailService } from '~/services'
 import { aesDecode } from '~/utils'
-import { COOKIE_AGE } from '~/constants'
+import { COOKIE_AGE, PLAT_FROM } from '~/constants'
 import jwt from "jsonwebtoken"
 
 class AuthController {
@@ -49,6 +49,7 @@ class AuthController {
       })
       .send(transformDataHelper(omit({
         ...response,
+        refreshToken:req.body.platform === PLAT_FROM.CLIENT_APP.key && refreshToken,
         accessToken,
         token_expired_at
       }, 'password')))

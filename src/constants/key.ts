@@ -11,6 +11,11 @@ export const PM_METHOD = {
   COD: 'COD',
   VNPAY: 'VNPAY'
 }
+export const PLAT_FROM = {
+  ADMIN: { key: 'ADMIN', txt: 'Trang quản lý' },
+  CLIENT: { key: 'CLIENT', txt: 'Web client' },
+  CLIENT_APP: { key: 'CLIENT_APP', txt: 'Mobile app' }
+}
 export const ORDER_DELIVERY = {
   INIT: {
     key: 'INITIALIZATION',
