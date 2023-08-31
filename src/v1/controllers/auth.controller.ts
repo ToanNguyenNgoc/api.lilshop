@@ -141,7 +141,7 @@ class AuthController {
     }
   }
   async refreshToken(req: Request, res: Response) {
-    const obj: any = JSON.parse(aesDecode(req.cookies.refreshToken))
+    const obj: any = JSON.parse(aesDecode(req.cookies.refreshToken || req.body.refresh_token))
     if (obj.uA !== req.headers['user-agent'])
       throw new ErrorException(401, "Unauthenticated")
     const user = await prismaClient.account.findFirst({
