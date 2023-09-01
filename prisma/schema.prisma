@@ -237,7 +237,7 @@ model Product{
   price_original    Int @db.Int
   price             Int @db.Int
   price_special     Int @db.Int
-  short_content     String? @db.VarChar(250)
+  short_content     String? @db.VarChar(5000)
   status            Boolean @default(true)
   deleted           Boolean @default(false)
   updated_at        DateTime @updatedAt
