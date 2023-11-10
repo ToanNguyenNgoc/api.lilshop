@@ -26,6 +26,7 @@ categoryRoute.put(
   authMiddleware.authentication,
   authMiddleware.role,
   asyncMiddleware(categoryController.update)
+  // categoryController.update
 )
 
 categoryRoute.delete(

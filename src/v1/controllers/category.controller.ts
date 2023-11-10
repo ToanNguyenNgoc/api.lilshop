@@ -65,6 +65,7 @@ class CategoryController {
     body.name = req.body.name
     body.name_slugify = slugify(req.body.name)
     body.tag_id = tag.id
+    body.image_url = req.body.image_url
     await validatorHelper(body)
     const response = await prismaClient.category.create({
       data: body
@@ -78,8 +79,9 @@ class CategoryController {
     const body = new UpdateCategoryDTO()
     body.name = req.body.name
     body.name_slugify = slugify(req.body.name)
-    body.tag_id = Number(req.body.tag_id)
+    body.tag_id =  Number(req.body.tag_id)
     body.status = req.body.status
+    body.image_url = req.body.image_url
     const response = await prismaClient.category.update({
       where: { id: id },
       data: body

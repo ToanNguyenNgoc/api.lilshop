@@ -4,13 +4,16 @@ export const postCategorySchema = {
   type: 'object',
   properties: {
     name: { type: 'string' },
-    tag_id: { type: 'integer' }
+    tag_id: { type: 'integer' },
+    image_url:{type:'string'}
   }
 }
 export const putCategorySchema = {
-  ...postCategorySchema,
+  type: 'object',
   properties: {
-    ...postCategorySchema.properties,
+    name: { type: 'string' },
+    tag_id: { type: 'integer' },
+    image_url:{type:'string'},
     status: { type: 'boolean' }
   }
 }
@@ -80,7 +83,7 @@ export const putCategory: PathRequest = {
     content: {
       'application/json': {
         schema: {
-          $ref: '#/components/schemas/putTagCategorySchema',
+          $ref: '#/components/schemas/putCategorySchema',
         }
       }
     },

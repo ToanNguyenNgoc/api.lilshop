@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import { IsBoolean, IsEmpty, IsNotEmpty, IsNumber, IsOptional, Matches } from "class-validator";
 
 export class CreateCategoryDTO {
   @IsNotEmpty()
@@ -9,6 +9,10 @@ export class CreateCategoryDTO {
 
   @IsNumber()
   tag_id!: number
+
+  @IsOptional()
+  @Matches(/\.(jpg|jpeg|png|gif|bmp|webp|HEIC|PNG)$/, { message: 'Avatar is not match link' })
+  image_url!:string
 }
 
 export class UpdateCategoryDTO {
@@ -24,4 +28,8 @@ export class UpdateCategoryDTO {
   @IsOptional()
   @IsBoolean()
   status!: boolean
+
+  @IsOptional()
+  @Matches(/\.(jpg|jpeg|png|gif|bmp|webp|HEIC|PNG)$/, { message: 'Avatar is not match link' })
+  image_url!:string
 }

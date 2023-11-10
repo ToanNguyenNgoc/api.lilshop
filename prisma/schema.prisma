@@ -199,6 +199,7 @@ model Tag{
   deleted           Boolean @default(false)
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
+  image_url         String? @db.Char(250)
   products          Product[]
   categories        Category[]
   @@map("tb_tag")
@@ -209,6 +210,7 @@ model Category{
   name              String @db.VarChar(50)
   name_slugify      String @db.Char(250)
   status            Boolean @default(true)
+  image_url         String? @db.Char(250)
   deleted           Boolean @default(false)
   updated_at        DateTime @updatedAt
   created_at        DateTime @default(now())
