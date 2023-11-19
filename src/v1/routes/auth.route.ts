@@ -5,7 +5,7 @@ import { asyncMiddleware, authMiddleware, recaptchaMiddleware } from "~/middlewa
 const authRoute = Router()
 
 authRoute
-    .post('/login', authController.login)
+    .post('/login', asyncMiddleware(authController.login))
     .post('/register', recaptchaMiddleware.verify, asyncMiddleware(authController.register))
     .post('/forgot', recaptchaMiddleware.verify, asyncMiddleware(authController.forgot))
     .get('/profile', authMiddleware.authentication, asyncMiddleware(authController.profile))
