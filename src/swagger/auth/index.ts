@@ -26,6 +26,15 @@ export const forgotSchema = {
     password: { type: 'string', example: '123456' }
   }
 }
+export const loginGoogleMobaSchema={
+  type:'object',
+  properties:{
+    email:{type:'string'},
+    name:{type:'string'},
+    avatar:{type:'string'},
+    server_auth_code:{type:'string'}
+  }
+}
 export const login: PathRequest = {
   tags: ['Auth'],
   summary: 'Auth login',
@@ -42,6 +51,24 @@ export const login: PathRequest = {
     '200': { description: 'Return user information' }
   }
 }
+
+export const loginGoogleMoba: PathRequest = {
+  tags: ['Auth'],
+  summary: 'Auth login google moba',
+  requestBody: {
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/loginGoogleMobaSchema',
+        }
+      }
+    }
+  },
+  responses: {
+    '200': { description: 'Return user information' }
+  }
+}
+
 export const loginGoogle: PathRequest = {
   tags: ['Auth'],
   summary: 'Auth login google',

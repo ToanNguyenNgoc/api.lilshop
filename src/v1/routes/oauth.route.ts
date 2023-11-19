@@ -32,5 +32,9 @@ oauthRoute
         passport.authenticate('google', { failureRedirect: '/404' }),
         asyncMiddleware(oauthController.googleRedirect)
     )
+    .post(
+        '/login/google/moba',
+        asyncMiddleware(oauthController.loginGoogleMoba)
+    )
 
 export default oauthRoute

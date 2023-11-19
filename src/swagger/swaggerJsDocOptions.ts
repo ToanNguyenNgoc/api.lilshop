@@ -11,7 +11,9 @@ import {
   forgotSchema,
   refreshToken,
   loginGoogle,
-  postLogout
+  postLogout,
+  loginGoogleMoba,
+  loginGoogleMobaSchema
 } from './auth'
 import { postBanner, putBanner, putBannerSchema, postBannerSchema, getBanners, getBanner, deleteBanner } from '~/swagger/banner'
 import { postAccountInit, postAccountInitSchema } from '~/swagger/initial'
@@ -86,7 +88,7 @@ const swaggerJsDocOptions: Options = {
       schemas: {
         postBannerSchema, putBannerSchema,
         putAccountSchema, postAccountSchema,
-        loginSchema, forgotSchema, registerSchema,
+        loginSchema, forgotSchema, registerSchema,loginGoogleMobaSchema,
         postAccountInitSchema,
         postRoleSchema, putRoleSchema,
         postPermissionSchema,
@@ -131,6 +133,7 @@ const swaggerJsDocOptions: Options = {
 
       '/auth/login': { post: login },
       '/auth/login/google': { get: loginGoogle },
+      '/auth/login/google/moba':{post:loginGoogleMoba},
       '/auth/register': { post: register },
       '/auth/forgot': { post: forgot },
       '/auth/profile': { get: profile },

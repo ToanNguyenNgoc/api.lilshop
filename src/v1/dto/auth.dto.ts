@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator";
+import { IsEmail, IsNotEmpty } from "class-validator";
 
 export class LoginDTO {
   @IsNotEmpty()
@@ -23,6 +23,14 @@ export class RegisterDTO {
   manager!:boolean
 
   verify!:boolean
+}
+export class LoginGoogleMobaDTO{
+  @IsNotEmpty()
+  @IsEmail()
+  email!:string;
+
+  @IsNotEmpty()
+  server_auth_code!:string
 }
 export class UserGoogle{
   fullname!:string;
