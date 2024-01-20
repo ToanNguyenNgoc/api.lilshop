@@ -90,7 +90,7 @@ class AuthController {
   async profile(req: RequestHeader, res: Response) {
     const response = await prismaClient.account.findUnique({
       where: {
-        id: req.user?.i
+        id: req.user?.id
       }
     })
     return res.send(transformDataHelper(omit(response, 'password')))
