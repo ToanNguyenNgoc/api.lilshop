@@ -6,6 +6,7 @@ import { handlebars } from "hbs"
 import moment from "moment"
 import { fmPrice } from "~/utils"
 import { generateToken } from "~/helpers"
+import { forgotMobaTemplate } from "~/templates/mail/forgot-moba"
 
 export class SendmailService {
   emailTemplateOrder = fs.readFileSync(path.join(__dirname, "../templates/order-mail.hbs"), "utf-8")
@@ -24,6 +25,18 @@ export class SendmailService {
           `${process.env.SEND_MAIL_REDIRECT_URL_CLIENT}?token=${token}`
           :
           `${process.env.SEND_MAIL_REDIRECT_URL_ADMIN}?token=${token}`
+      ),
+    })
+  }
+  async forgotMoba(email: string, otp:string) {
+    sgMail.setApiKey(process.env.SEND_GRID_MAIL_KEY || '')
+    return sgMail.send({
+      to: email,
+      from: process.env.SEND_GRID_MAIL_ORIGIN || '',
+      subject: 'Forgot password | Fashional Shop',
+      html: forgotMobaTemplate(
+        email,
+        otp
       ),
     })
   }

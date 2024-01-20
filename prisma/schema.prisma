@@ -361,3 +361,11 @@ model OrderDelivery{
   order_id          Int?
   @@map("tb_order_delivery")  
 }
+model Opt{
+  id                Int @id @default(autoincrement())
+  email             String @db.VarChar(250)
+  code              String @db.VarChar(250)
+  updated_at        DateTime @updatedAt
+  created_at        DateTime @default(now())
+  @@map("tb_otp")
+}

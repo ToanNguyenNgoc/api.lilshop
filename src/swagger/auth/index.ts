@@ -26,13 +26,30 @@ export const forgotSchema = {
     password: { type: 'string', example: '123456' }
   }
 }
-export const loginGoogleMobaSchema={
+export const forgotMobaSchema={
   type:'object',
   properties:{
     email:{type:'string'},
-    name:{type:'string'},
-    avatar:{type:'string'},
-    server_auth_code:{type:'string'}
+    code:{type:'string'},
+    new_password:{type:'string'},
+    recaptcha: { type: 'string' }, 
+  }
+}
+export const loginGoogleMobaSchema = {
+  type: 'object',
+  properties: {
+    email: { type: 'string' },
+    name: { type: 'string' },
+    avatar: { type: 'string' },
+    server_auth_code: { type: 'string' }
+  }
+}
+export const putProfileScheme = {
+  type: 'object',
+  properties: {
+    fullname: { type: 'string' },
+    telephone: { type: 'string' },
+    avatar: { type: 'string' }
   }
 }
 export const login: PathRequest = {
@@ -110,6 +127,23 @@ export const forgot: PathRequest = {
   }
 }
 
+export const forgotMoba: PathRequest = {
+  tags: ['Auth'],
+  summary: 'Auth forgot moba',
+  requestBody: {
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/forgotMobaSchema',
+        }
+      }
+    }
+  },
+  responses: {
+    '200': { description: 'Return forgot password' }
+  }
+}
+
 
 export const profile: PathRequest = {
   tags: ['Auth'],
@@ -157,5 +191,26 @@ export const postLogout: PathRequest = {
   summary: 'Auth logout',
   responses: {
     '200': { description: 'Logout account' }
+  }
+}
+export const putProfile: PathRequest = {
+  tags: ['Auth'],
+  summary: 'Auth put profile',
+  security: [
+    {
+      bearerAuth: []
+    }
+  ],
+  requestBody: {
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/putProfileScheme',
+        }
+      }
+    }
+  },
+  responses: {
+    '200': { description: 'Return profile' }
   }
 }

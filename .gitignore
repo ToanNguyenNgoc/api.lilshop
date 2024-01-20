@@ -4,3 +4,5 @@ _tk.txt
 /dist
 prisma/migrations
 /uploads
+.DS_Store
+src/.DS_Store

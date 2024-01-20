@@ -9,14 +9,14 @@ import {
   decodeTokenForgot,
   generateRefreshToken
 } from '~/helpers'
-import { LoginDTO, RegisterDTO } from '~/v1/dto'
-import { omit } from "lodash"
+import { ForgotMobaDTO, LoginDTO, PutProfileDTO, RegisterDTO } from '~/v1/dto'
+import { identity, omit, pickBy } from "lodash"
 import { ErrorException } from '~/exceptions'
 import { RequestHeader } from '~/interfaces'
 import { prismaClient } from '~/prisma-client'
 import { ForgotPassword } from '../dto/account.dto'
 import { SendmailService } from '~/services'
-import { aesDecode } from '~/utils'
+import { aesDecode, randomCode } from '~/utils'
 import { COOKIE_AGE, PLAT_FROM } from '~/constants'
 import jwt from "jsonwebtoken"
 
@@ -49,7 +49,7 @@ class AuthController {
       })
       .send(transformDataHelper(omit({
         ...response,
-        refreshToken:req.body.platform === PLAT_FROM.CLIENT_APP.key && refreshToken,
+        refreshToken: req.body.platform === PLAT_FROM.CLIENT_APP.key && refreshToken,
         accessToken,
         token_expired_at
       }, 'password')))
@@ -90,10 +90,29 @@ class AuthController {
   async profile(req: RequestHeader, res: Response) {
     const response = await prismaClient.account.findUnique({
       where: {
-        id: req.user?.id
+        id: req.user?.i
       }
     })
     return res.send(transformDataHelper(omit(response, 'password')))
+  }
+  async putProfile(req: RequestHeader, res: Response) {
+    const { user } = req
+    if (req.body.telephone) {
+      const userTelephone = await prismaClient.account.findFirst({ where: { telephone: req.body.telephone } })
+      if (userTelephone && userTelephone.id !== user.id) {
+        throw new ErrorException(403, `Telephone belong to another account`)
+      }
+    }
+    const body = new PutProfileDTO()
+    body.fullname = req.body.fullname
+    body.telephone = req.body.telephone
+    body.avatar = req.body.avatar
+    await validatorHelper(body)
+    const response = await prismaClient.account.update({
+      where: { id: user.id },
+      data: body
+    })
+    return res.send(transformDataHelper(response))
   }
   async findRolesByUser(req: RequestHeader, res: Response) {
     const user = req.user
@@ -138,6 +157,56 @@ class AuthController {
         }
       })
       return res.send(transformDataHelper({ message: "Change password success" }))
+    }
+  }
+  async forgotMoba(req: Request, res: Response) {
+    const body = new ForgotMobaDTO()
+    body.recaptcha = req.body.recaptcha
+    body.email = req.body.email
+    body.code = req.body.code
+    body.new_password = req.body.new_password
+    await validatorHelper(body)
+    const responseUser = await prismaClient.account.findFirst({
+      where: {
+        email: body.email,
+        deleted: false
+      }
+    })
+    if (!responseUser) throw new ErrorException(404, `Email ${body.email} is not registered`)
+    if (!responseUser.status) throw new ErrorException(403, `Account is blocked`)
+    if (body.email && body.code && body.new_password) {
+      const responseOtp = await prismaClient.opt.findFirst({
+        where: {
+          email: body.email,
+          code: body.code
+        }
+      })
+      if (!responseOtp) throw new ErrorException(404, `Otp is invalid!`)
+      await prismaClient.account.update({
+        where: { email: body.email },
+        data: {
+          password: await generatePassword(body.new_password)
+        }
+      })
+      await prismaClient.opt.deleteMany({
+        where: {
+          email: {
+            contains: body.email
+          }
+        }
+      })
+      return res.send(transformDataHelper({ message: 'Update password success !' }))
+    }
+    if (body.email) {
+      const otp = randomCode(6).trim()
+      await prismaClient.opt.create({
+        data: {
+          code: otp,
+          email: body.email
+        }
+      })
+      await new SendmailService().forgotMoba(body.email, otp)
+      return res.send(transformDataHelper({ message: `An email send to ${body.email}` }))
     }
   }
   async refreshToken(req: Request, res: Response) {
