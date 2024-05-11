@@ -8,5 +8,7 @@ paymentGatewayRoute
         '/vnpay',
         paymentGatewayController.vnPayUpdateStatus
     )
+    .get('/notify', paymentGatewayController.notifyVnPay)
+    .post('/notify', paymentGatewayController.notifyVnPay)
 
 export default paymentGatewayRoute
